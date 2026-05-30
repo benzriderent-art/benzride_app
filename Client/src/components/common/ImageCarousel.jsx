@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { Bike } from 'lucide-react'
 
 const MAX_RETRIES = 2
@@ -9,6 +9,7 @@ export default function ImageCarousel({ images = [], alt = 'Motor', className = 
   const [retryCount, setRetryCount] = useState({})
   const timerRef = useRef(null)
   const retryTimers = useRef({})
+  const imgElRefs = useRef({})
 
   const stopTimer = () => clearInterval(timerRef.current)
 
@@ -23,6 +24,7 @@ export default function ImageCarousel({ images = [], alt = 'Motor', className = 
     setCurrent(0)
     setStatus({})
     setRetryCount({})
+    imgElRefs.current = {}
     Object.values(retryTimers.current).forEach(clearTimeout)
     retryTimers.current = {}
     stopTimer()
@@ -30,6 +32,20 @@ export default function ImageCarousel({ images = [], alt = 'Motor', className = 
     return () => {
       stopTimer()
       Object.values(retryTimers.current).forEach(clearTimeout)
+    }
+  }, [images.length, images[0]?.id ?? images[0]?.imageUrl])
+
+  // Gambar yang sudah di memory cache load secara synchronous — onLoad tidak terpanggil.
+  // useLayoutEffect dijalankan setelah DOM update, sebelum browser paint,
+  // sehingga kita bisa deteksi img.complete dan langsung set status tanpa flash.
+  useLayoutEffect(() => {
+    const updates = {}
+    images.forEach((_, i) => {
+      const el = imgElRefs.current[i]
+      if (el?.complete && el.naturalWidth > 0) updates[i] = 'loaded'
+    })
+    if (Object.keys(updates).length > 0) {
+      setStatus(prev => ({ ...prev, ...updates }))
     }
   }, [images.length, images[0]?.id ?? images[0]?.imageUrl])
 
@@ -81,6 +97,7 @@ export default function ImageCarousel({ images = [], alt = 'Motor', className = 
               )}
               <img
                 key={`${img.id ?? i}-${retryCount[i] ?? 0}`}
+                ref={(el) => { if (el) imgElRefs.current[i] = el }}
                 src={img.imageUrl}
                 alt={`${alt} ${i + 1}`}
                 onLoad={() => setStatus(prev => ({ ...prev, [i]: 'loaded' }))}
