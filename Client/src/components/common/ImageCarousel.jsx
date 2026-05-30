@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { Bike } from 'lucide-react'
 
+const MAX_RETRIES = 2
+
 export default function ImageCarousel({ images = [], alt = 'Motor', className = '', dark = false }) {
   const [current, setCurrent] = useState(0)
   const [status, setStatus] = useState({})
+  const [retryCount, setRetryCount] = useState({})
   const timerRef = useRef(null)
+  const retryTimers = useRef({})
 
   const stopTimer = () => clearInterval(timerRef.current)
 
@@ -18,10 +22,28 @@ export default function ImageCarousel({ images = [], alt = 'Motor', className = 
   useEffect(() => {
     setCurrent(0)
     setStatus({})
+    setRetryCount({})
+    Object.values(retryTimers.current).forEach(clearTimeout)
+    retryTimers.current = {}
     stopTimer()
     startTimer(images.length)
-    return stopTimer
+    return () => {
+      stopTimer()
+      Object.values(retryTimers.current).forEach(clearTimeout)
+    }
   }, [images.length, images[0]?.id ?? images[0]?.imageUrl])
+
+  const handleError = (i) => {
+    const count = retryCount[i] ?? 0
+    if (count < MAX_RETRIES) {
+      retryTimers.current[i] = setTimeout(() => {
+        setRetryCount(prev => ({ ...prev, [i]: count + 1 }))
+        setStatus(prev => { const s = { ...prev }; delete s[i]; return s })
+      }, 1500 * (count + 1))
+    } else {
+      setStatus(prev => ({ ...prev, [i]: 'error' }))
+    }
+  }
 
   const emptyBg  = dark ? 'bg-transparent'  : 'bg-off-white'
   const iconColor = dark ? 'text-white/15'   : 'text-gray-300'
@@ -58,10 +80,11 @@ export default function ImageCarousel({ images = [], alt = 'Motor', className = 
                 <div className={`absolute inset-0 ${pulseBg} animate-pulse`} />
               )}
               <img
+                key={`${img.id ?? i}-${retryCount[i] ?? 0}`}
                 src={img.imageUrl}
                 alt={`${alt} ${i + 1}`}
                 onLoad={() => setStatus(prev => ({ ...prev, [i]: 'loaded' }))}
-                onError={() => setStatus(prev => ({ ...prev, [i]: 'error' }))}
+                onError={() => handleError(i)}
                 className={`w-full h-full object-cover transition-opacity duration-300 ${status[i] === 'loaded' ? 'opacity-100' : 'opacity-0'}`}
               />
             </>
