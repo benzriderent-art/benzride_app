@@ -3,6 +3,7 @@
     "fleet": "Armada",
     "howToRent": "Cara Sewa",
     "reviews": "Ulasan",
+    "faq": "FAQ",
     "contact": "Kontak",
     "rentNow": "Sewa Sekarang"
   },
@@ -21,7 +22,8 @@
     },
     "trust": {
       "delivery": "Gratis antar hotel & bandara",
-      "equipment": "Helm & jas hujan gratis"
+      "equipment": "Helm & jas hujan gratis",
+      "noDeposit": "Tanpa jaminan KTP"
     }
   },
   "vehicles": {
@@ -50,7 +52,12 @@
     "availableBadge": "✓ Tersedia",
     "notAvailableBadge": "Tidak Tersedia",
     "loadError": "Gagal memuat data motor. Silakan coba lagi.",
-    "searchPlaceholder": "Cari nama motor..."
+    "searchPlaceholder": "Cari nama motor...",
+    "trustHelmet": "Helm & jas hujan gratis",
+    "trustDelivery": "Antar hotel & bandara",
+    "trustMaintenance": "Motor terawat & bersih",
+    "trustSupport": "Support 24 jam",
+    "mostPopular": "Paling Diminati"
   },
   "features": {
     "title": "Kenapa Pilih Benz Rental?",
@@ -162,6 +169,9 @@
     "fullName": "Nama Lengkap",
     "phone": "No. WhatsApp",
     "deliveryLoc": "Lokasi Pengiriman",
+    "namePlaceholder": "Nama sesuai KTP / Passport",
+    "phonePlaceholder": "08xxxxxxxxxx",
+    "notesPlaceholder": "Contoh: tiba malam hari, butuh helm anak-anak, dll.",
     "deliveryPlaceholder": "Nama hotel, villa, atau alamat lengkap di Bali",
     "notes": "Catatan (opsional)",
     "priceCalc": "Kalkulasi Harga",
@@ -172,7 +182,7 @@
     "xenditSoon": "Segera hadir",
     "required": "Wajib diisi",
     "selectDatesFirst": "Pilih tanggal terlebih dahulu untuk melihat total harga",
-    "invalidDate": "Tanggal selesai harus setelah tanggal mulai",
+    "invalidDate": "Minimal sewa adalah 3 hari",
     "dateConflict": "Motor sudah dipesan pada tanggal ini. Pilih tanggal lain.",
     "notFound": "Motor Tidak Ditemukan",
     "notFoundDesc": "Motor yang kamu cari tidak tersedia. Silakan pilih motor lain dari armada kami.",
@@ -180,7 +190,9 @@
   },
   "common": {
     "back": "Kembali",
-    "backToFleet": "Kembali ke Armada"
+    "backToFleet": "Kembali ke Armada",
+    "home": "Home",
+    "reviews200": "200+ ulasan"
   },
   "detail": {
     "fleet": "Armada",
@@ -205,7 +217,8 @@
     "disclaimer": "Dengan memesan, kamu menyetujui syarat & ketentuan sewa Benz Rental Bali.",
     "statusAvailable": "● Tersedia",
     "statusUnavailable": "○ Tidak Tersedia",
-    "ratingText": "4.9 · 200+ ulasan"
+    "ratingText": "4.9 · 200+ ulasan",
+    "savePct": "Hemat {{pct}}%"
   },
   "bookingPage": {
     "back": "Kembali",
@@ -217,6 +230,7 @@
     "includes": "Sudah Termasuk",
     "includesList": ["Helm gratis", "Antar-jemput Bali", "Motor terawat", "Support 24 jam"],
     "dateSection": "Tanggal Sewa",
+    "minDaysHint": "Min. 3 hari",
     "renterSection": "Data Penyewa",
     "unavailableTitle": "Motor Tidak Tersedia",
     "unavailableDesc": "Motor ini sedang tidak tersedia. Hubungi kami untuk cek ketersediaan atau pilih motor lain.",
@@ -249,7 +263,7 @@
       },
       {
         "q": "Berapa minimal durasi sewa?",
-        "a": "Minimal sewa adalah 1 hari (24 jam). Tersedia harga spesial untuk sewa mingguan dan bulanan yang lebih hemat dibanding sewa harian."
+        "a": "Minimal sewa adalah 3 hari. Tersedia harga spesial untuk sewa mingguan dan bulanan yang lebih hemat dibanding sewa harian."
       },
       {
         "q": "Apakah ada helm yang disediakan?",
@@ -286,5 +300,76 @@
     "privacy": "Kebijakan Privasi",
     "badge": "Legal",
     "lastUpdated": "Terakhir diperbarui: Mei 2025"
+  },
+  "bookingSuccess": {
+    "badge": "Pembayaran Berhasil",
+    "title": "Booking Dikonfirmasi!",
+    "desc": "Terima kasih telah memesan di Benz Rental Bali. Tim kami akan segera menghubungimu untuk konfirmasi pengiriman motor.",
+    "idLabel": "ID Booking",
+    "idHint": "Simpan ID ini untuk melacak status bookingmu",
+    "confirmWA": "Konfirmasi via WhatsApp",
+    "trackBtn": "Lacak Status Booking",
+    "backHome": "Kembali ke Beranda"
+  },
+  "bookingFailed": {
+    "badge": "Pembayaran Gagal",
+    "title": "Oops, Ada Masalah",
+    "desc": "Pembayaran tidak berhasil diproses. Jangan khawatir — tidak ada yang dicharge. Kamu bisa coba lagi atau hubungi kami langsung via WhatsApp.",
+    "retry": "Coba Lagi",
+    "contactWA": "Hubungi via WhatsApp",
+    "viewOther": "atau lihat motor lain →"
+  },
+  "track": {
+    "title": "Lacak Booking",
+    "desc": "Masukkan ID booking dan nomor HP yang kamu gunakan saat memesan.",
+    "idLabel": "ID Booking",
+    "idPlaceholder": "Contoh: BENZ-20250601-XXXX",
+    "phoneLabel": "Nomor HP / WhatsApp",
+    "phonePlaceholder": "08xxxxxxxxxx",
+    "searching": "Mencari...",
+    "searchBtn": "Cari Booking",
+    "notFound": "Booking tidak ditemukan. Periksa kembali ID booking dan nomor HP yang kamu masukkan.",
+    "statusLabel": "Status Booking",
+    "motorLabel": "Motor",
+    "customerLabel": "Nama Pemesan",
+    "startLabel": "Tanggal Mulai",
+    "endLabel": "Tanggal Selesai",
+    "durationLabel": "Durasi",
+    "durationUnit": "hari",
+    "paymentLabel": "Pembayaran",
+    "totalLabel": "Total",
+    "completePay": "Selesaikan Pembayaran",
+    "payLinkNote": "Link pembayaran memiliki batas waktu. Jika tidak bisa dibuka, hubungi kami via WhatsApp.",
+    "expiredTitle": "Link Pembayaran Kedaluwarsa",
+    "expiredNote": "Hubungi kami via WhatsApp untuk membuat link pembayaran baru.",
+    "deliveryLabel": "Lokasi Pengiriman",
+    "viewOther": "Lihat motor lainnya",
+    "statusPending": "Menunggu Pembayaran",
+    "statusActive": "Aktif / Sedang Berjalan",
+    "statusCompleted": "Selesai",
+    "statusCancelled": "Dibatalkan",
+    "payUnpaid": "Belum Dibayar",
+    "payPaid": "Lunas",
+    "payExpired": "Link Kedaluwarsa",
+    "payRefunded": "Dikembalikan"
+  },
+  "notFound": {
+    "title": "Halaman Tidak Ditemukan",
+    "desc": "Halaman yang kamu cari tidak ada atau sudah dipindahkan. Yuk kembali dan temukan motor sewa impianmu.",
+    "backHome": "Kembali ke Beranda",
+    "viewFleet": "Lihat Armada"
+  },
+  "fleetCta": {
+    "badge": "Butuh Bantuan?",
+    "title": "Bingung pilih motor yang tepat?",
+    "desc": "Tim kami siap membantu memilihkan motor yang sesuai kebutuhan dan budget perjalananmu di Bali.",
+    "whatsapp": "Chat WhatsApp",
+    "call": "Hubungi Kami"
+  },
+  "bookingTrust": {
+    "delivery": "Antar & Jemput Gratis",
+    "deposit": "Tanpa Deposit KTP",
+    "maintenance": "Motor Terawat & Bersih",
+    "support": "Support 24 Jam"
   }
 }

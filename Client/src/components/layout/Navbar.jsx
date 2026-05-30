@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { key: 'fleet',     page: '/fleet' },
   { key: 'howToRent', anchor: '#how-to-rent' },
   { key: 'reviews',   anchor: '#reviews' },
+  { key: 'faq',       page: '/faq' },
   { key: 'contact',   anchor: '#contact' },
 ]
 
@@ -30,8 +31,22 @@ export default function Navbar() {
 
   const closeMenu = () => setMenuOpen(false)
 
-  const renderNavLink = ({ key, anchor, page }, className) => {
+  const isActive = (link) => link.page && pathname === link.page
+
+  const renderNavLink = ({ key, anchor, page }, isMobile = false) => {
     const label = t(`nav.${key}`)
+    const active = isActive({ key, anchor, page })
+
+    const desktopClass = active
+      ? 'text-sm font-semibold text-gold border-b-2 border-gold pb-0.5'
+      : 'text-sm font-medium text-charcoal hover:text-gold transition-colors'
+
+    const mobileClass = active
+      ? 'block py-3 text-sm font-semibold text-gold border-b border-gray-50'
+      : 'block py-3 text-sm font-medium text-charcoal border-b border-gray-50 hover:text-gold transition-colors'
+
+    const className = isMobile ? mobileClass : desktopClass
+
     if (page) {
       return (
         <Link key={key} to={page} onClick={closeMenu} className={className}>
@@ -47,10 +62,6 @@ export default function Navbar() {
     )
   }
 
-  const contactHref = isHome ? '#contact' : '/#contact'
-  const linkClass = 'text-sm font-medium text-charcoal hover:text-gold transition-colors'
-  const mobileClass = 'block py-3 text-sm font-medium text-charcoal border-b border-gray-50 hover:text-gold transition-colors'
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 bg-white transition-all ${
@@ -65,18 +76,18 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map(link => renderNavLink(link, linkClass))}
+        <div className="hidden md:flex items-center gap-7">
+          {NAV_LINKS.map(link => renderNavLink(link, false))}
         </div>
 
         <div className="hidden md:flex items-center gap-5">
           <LanguageSwitcher />
-          <a
-            href={contactHref}
+          <Link
+            to="/fleet"
             className="bg-charcoal text-white text-sm font-semibold px-5 py-2.5 rounded hover:bg-gold transition-colors"
           >
             {t('nav.rentNow')}
-          </a>
+          </Link>
         </div>
 
         <button
@@ -90,16 +101,16 @@ export default function Navbar() {
 
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 px-4 pb-5">
-          {NAV_LINKS.map(link => renderNavLink(link, mobileClass))}
+          {NAV_LINKS.map(link => renderNavLink(link, true))}
           <div className="flex items-center justify-between pt-4">
             <LanguageSwitcher />
-            <a
-              href={contactHref}
+            <Link
+              to="/fleet"
               onClick={closeMenu}
               className="bg-charcoal text-white text-sm font-semibold px-5 py-2.5 rounded hover:bg-gold transition-colors"
             >
               {t('nav.rentNow')}
-            </a>
+            </Link>
           </div>
         </div>
       )}

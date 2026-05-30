@@ -13,8 +13,12 @@
   --font-family-body: 'Inter', system-ui, sans-serif;
 }
 
+/* ─── Document ──────────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%; /* Prevent iOS font zoom on orientation change */
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent; /* Remove iOS blue tap flash */
 }
 
 body {
@@ -24,12 +28,49 @@ body {
   background: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* Prevent accidental horizontal scroll on narrow viewports */
 }
 
 #root {
   min-height: 100vh;
 }
 
+/* ─── Interactive touch targets ─────────────────────────────────────────── */
+button,
+[role="button"],
+a {
+  touch-action: manipulation; /* Prevent 300ms double-tap delay on mobile */
+}
+
+/* ─── Form inputs — cross-browser normalize ─────────────────────────────── */
+
+/* Date/time inputs: remove native OS chrome for consistent styling across
+   Safari, Chrome, and Firefox. The native picker (calendar/wheel) still works. */
+input[type="date"],
+input[type="datetime-local"],
+input[type="time"],
+input[type="month"] {
+  -webkit-appearance: none;
+  appearance: none;
+  min-height: 2.75rem; /* 44px minimum Apple touch target */
+}
+
+/* Select: remove native OS arrow so custom border/bg styling is consistent
+   across Safari iOS, Chrome, and Firefox. */
+select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ─── Backdrop filter — Safari requires the -webkit- prefix ─────────────── */
+/* Tailwind utility classes get autoprefixed, but React inline styles do not.
+   Components that use backdropFilter inline also call this class to get both. */
+.backdrop-fix {
+  -webkit-backdrop-filter: var(--backdrop-blur-value);
+  backdrop-filter: var(--backdrop-blur-value);
+}
+
+/* ─── Page animation ────────────────────────────────────────────────────── */
 @keyframes pageFadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }

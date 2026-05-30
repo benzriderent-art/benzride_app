@@ -3,6 +3,7 @@
     "fleet": "Fleet",
     "howToRent": "How to Rent",
     "reviews": "Reviews",
+    "faq": "FAQ",
     "contact": "Contact",
     "rentNow": "Rent Now"
   },
@@ -21,7 +22,8 @@
     },
     "trust": {
       "delivery": "Free hotel & airport delivery",
-      "equipment": "Helmet & rain jacket free"
+      "equipment": "Helmet & rain jacket free",
+      "noDeposit": "No ID card deposit"
     }
   },
   "vehicles": {
@@ -50,7 +52,12 @@
     "availableBadge": "✓ Available",
     "notAvailableBadge": "Unavailable",
     "loadError": "Failed to load vehicles. Please try again.",
-    "searchPlaceholder": "Search by name..."
+    "searchPlaceholder": "Search by name...",
+    "trustHelmet": "Helmet & rain jacket free",
+    "trustDelivery": "Hotel & airport delivery",
+    "trustMaintenance": "Well-maintained bikes",
+    "trustSupport": "24/7 support",
+    "mostPopular": "Most Popular"
   },
   "features": {
     "title": "Why Choose Benz Rental?",
@@ -162,6 +169,9 @@
     "fullName": "Full Name",
     "phone": "WhatsApp Number",
     "deliveryLoc": "Delivery Location",
+    "namePlaceholder": "Name as on ID / Passport",
+    "phonePlaceholder": "08xxxxxxxxxx",
+    "notesPlaceholder": "E.g. arriving at night, need a child helmet, etc.",
     "deliveryPlaceholder": "Hotel name, villa, or full address in Bali",
     "notes": "Notes (optional)",
     "priceCalc": "Price Calculation",
@@ -172,7 +182,7 @@
     "xenditSoon": "Coming soon",
     "required": "Required",
     "selectDatesFirst": "Select dates to see your total price",
-    "invalidDate": "End date must be after start date",
+    "invalidDate": "Minimum rental is 3 days",
     "dateConflict": "This bike is already booked on these dates. Please choose different dates.",
     "notFound": "Vehicle Not Found",
     "notFoundDesc": "The vehicle you're looking for is not available. Please choose another from our fleet.",
@@ -180,7 +190,9 @@
   },
   "common": {
     "back": "Back",
-    "backToFleet": "Back to Fleet"
+    "backToFleet": "Back to Fleet",
+    "home": "Home",
+    "reviews200": "200+ reviews"
   },
   "detail": {
     "fleet": "Fleet",
@@ -205,7 +217,8 @@
     "disclaimer": "By booking, you agree to the terms & conditions of Benz Rental Bali.",
     "statusAvailable": "● Available",
     "statusUnavailable": "○ Unavailable",
-    "ratingText": "4.9 · 200+ reviews"
+    "ratingText": "4.9 · 200+ reviews",
+    "savePct": "Save {{pct}}%"
   },
   "bookingPage": {
     "back": "Back",
@@ -217,6 +230,7 @@
     "includes": "What's Included",
     "includesList": ["Free helmet", "Bali delivery", "Well-maintained bike", "24/7 support"],
     "dateSection": "Rental Dates",
+    "minDaysHint": "Min. 3 days",
     "renterSection": "Your Details",
     "unavailableTitle": "Bike Not Available",
     "unavailableDesc": "This bike is currently unavailable. Contact us to check availability or choose another bike.",
@@ -249,7 +263,7 @@
       },
       {
         "q": "What is the minimum rental duration?",
-        "a": "The minimum rental is 1 day (24 hours). We offer special rates for weekly and monthly rentals that are much more affordable than daily rates."
+        "a": "The minimum rental is 3 days. We offer special rates for weekly and monthly rentals that are much more affordable than daily rates."
       },
       {
         "q": "Is a helmet provided?",
@@ -286,5 +300,76 @@
     "privacy": "Privacy Policy",
     "badge": "Legal",
     "lastUpdated": "Last updated: May 2025"
+  },
+  "bookingSuccess": {
+    "badge": "Payment Successful",
+    "title": "Booking Confirmed!",
+    "desc": "Thank you for booking with Benz Rental Bali. Our team will contact you shortly to confirm your bike delivery.",
+    "idLabel": "Booking ID",
+    "idHint": "Save this ID to track your booking status",
+    "confirmWA": "Confirm via WhatsApp",
+    "trackBtn": "Track Booking Status",
+    "backHome": "Back to Home"
+  },
+  "bookingFailed": {
+    "badge": "Payment Failed",
+    "title": "Oops, Something Went Wrong",
+    "desc": "Your payment could not be processed. Don't worry — nothing was charged. You can try again or contact us directly via WhatsApp.",
+    "retry": "Try Again",
+    "contactWA": "Contact via WhatsApp",
+    "viewOther": "or view other bikes →"
+  },
+  "track": {
+    "title": "Track Booking",
+    "desc": "Enter your booking ID and the phone number you used when booking.",
+    "idLabel": "Booking ID",
+    "idPlaceholder": "e.g. BENZ-20250601-XXXX",
+    "phoneLabel": "Phone / WhatsApp Number",
+    "phonePlaceholder": "08xxxxxxxxxx",
+    "searching": "Searching...",
+    "searchBtn": "Search Booking",
+    "notFound": "Booking not found. Please double-check your booking ID and phone number.",
+    "statusLabel": "Booking Status",
+    "motorLabel": "Bike",
+    "customerLabel": "Customer Name",
+    "startLabel": "Start Date",
+    "endLabel": "End Date",
+    "durationLabel": "Duration",
+    "durationUnit": "days",
+    "paymentLabel": "Payment",
+    "totalLabel": "Total",
+    "completePay": "Complete Payment",
+    "payLinkNote": "The payment link has an expiry time. If it doesn't open, contact us via WhatsApp.",
+    "expiredTitle": "Payment Link Expired",
+    "expiredNote": "Contact us via WhatsApp to generate a new payment link.",
+    "deliveryLabel": "Delivery Location",
+    "viewOther": "View other bikes",
+    "statusPending": "Awaiting Payment",
+    "statusActive": "Active / In Progress",
+    "statusCompleted": "Completed",
+    "statusCancelled": "Cancelled",
+    "payUnpaid": "Unpaid",
+    "payPaid": "Paid",
+    "payExpired": "Link Expired",
+    "payRefunded": "Refunded"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "desc": "The page you're looking for doesn't exist or has been moved. Go back and find your perfect rental bike.",
+    "backHome": "Back to Home",
+    "viewFleet": "View Fleet"
+  },
+  "fleetCta": {
+    "badge": "Need Help?",
+    "title": "Not sure which bike to pick?",
+    "desc": "Our team is ready to help you find the right bike for your needs and budget in Bali.",
+    "whatsapp": "Chat on WhatsApp",
+    "call": "Call Us"
+  },
+  "bookingTrust": {
+    "delivery": "Free Delivery & Pickup",
+    "deposit": "No ID Card Deposit",
+    "maintenance": "Clean & Well-Maintained",
+    "support": "24/7 Support"
   }
 }

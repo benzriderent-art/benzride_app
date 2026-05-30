@@ -28,11 +28,11 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/fleet" element={<FleetPage />} />
-        <Route path="/motor/:id" element={<VehicleDetailPage />} />
+
         <Route path="/booking/success" element={<BookingSuccess />} />
         <Route path="/booking/failed" element={<BookingFailed />} />
         <Route path="/booking/track" element={<BookingTrackPage />} />
-        <Route path="/booking/:id" element={<BookingPage />} />
+        <Route path="/booking/:slug" element={<BookingPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />

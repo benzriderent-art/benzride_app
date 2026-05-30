@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { MapPin, Search, Star } from 'lucide-react'
+import { Search, Star } from 'lucide-react'
 
-const LOCATIONS = ['Kuta', 'Seminyak', 'Ubud', 'Canggu', 'Sanur']
 const BG_IMAGE = 'https://images.pexels.com/photos/10740492/pexels-photo-10740492.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop'
 
 function heroStyle(visible, delay) {
@@ -21,11 +20,10 @@ export default function HeroSection() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 80)
-    return () => clearTimeout(t)
+    const timer = setTimeout(() => setVisible(true), 80)
+    return () => clearTimeout(timer)
   }, [])
 
-  const durations = t('hero.booking.durations', { returnObjects: true })
   const motors = t('hero.booking.motors', { returnObjects: true })
 
   const handleSearch = () => {
@@ -49,7 +47,10 @@ export default function HeroSection() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 w-full py-16">
         <div className="text-center mb-10">
-          <div style={heroStyle(visible, 0)} className="inline-flex items-center gap-2 border border-gold/50 text-gold text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 backdrop-blur-sm" style={{ ...heroStyle(visible, 0), background: 'rgba(201,162,75,0.08)' }}>
+          <div
+            style={{ ...heroStyle(visible, 0), background: 'rgba(201,162,75,0.08)' }}
+            className="inline-flex items-center gap-2 border border-gold/50 text-gold text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 backdrop-blur-sm"
+          >
             <span className="w-1.5 h-1.5 rounded-full bg-gold" />
             {t('hero.badge')}
           </div>
@@ -72,51 +73,23 @@ export default function HeroSection() {
             ...heroStyle(visible, 340),
             background: 'rgba(255,255,255,0.97)',
             backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
             boxShadow: '0 24px 64px rgba(0,0,0,0.30)',
           }}
         >
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-            <div>
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] block mb-2">
-                <MapPin size={10} className="inline mr-1 text-gold" />
-                {t('hero.booking.location')}
-              </label>
-              <select className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-charcoal bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold">
-                {LOCATIONS.map(l => <option key={l}>{l}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] block mb-2">
-                {t('hero.booking.startDate')}
-              </label>
-              <input
-                type="date"
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-charcoal bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
-              />
-            </div>
-            <div>
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] block mb-2">
-                {t('hero.booking.duration')}
-              </label>
-              <select className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-charcoal bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold">
-                {Array.isArray(durations) && durations.map(d => <option key={d}>{d}</option>)}
-              </select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4 items-end">
-            <div>
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] block mb-2">
-                {t('hero.booking.motorType')}
-              </label>
-              <select
-                value={typeIdx}
-                onChange={e => setTypeIdx(Number(e.target.value))}
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-charcoal bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
-              >
-                {Array.isArray(motors) && motors.map((m, i) => <option key={m} value={i}>{m}</option>)}
-              </select>
-            </div>
+          <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] block mb-3">
+            {t('hero.booking.motorType')}
+          </label>
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3 mb-5">
+            <select
+              value={typeIdx}
+              onChange={e => setTypeIdx(Number(e.target.value))}
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-charcoal bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
+            >
+              {Array.isArray(motors) && motors.map((m, i) => (
+                <option key={m} value={i}>{m}</option>
+              ))}
+            </select>
             <button
               onClick={handleSearch}
               className="flex items-center justify-center gap-2 bg-charcoal text-white font-bold px-8 py-3.5 rounded-xl hover:bg-gold transition-colors text-sm whitespace-nowrap"
@@ -125,13 +98,25 @@ export default function HeroSection() {
               {t('hero.booking.search')}
             </button>
           </div>
+
+          <div className="flex flex-wrap gap-x-5 gap-y-2 pt-4 border-t border-gray-100">
+            <span className="flex items-center gap-1.5 text-xs text-gray-500">
+              <span className="text-gold">✓</span> {t('hero.trust.delivery')}
+            </span>
+            <span className="flex items-center gap-1.5 text-xs text-gray-500">
+              <span className="text-gold">✓</span> {t('hero.trust.equipment')}
+            </span>
+            <span className="flex items-center gap-1.5 text-xs text-gray-500">
+              <span className="text-gold">✓</span> {t('hero.trust.noDeposit')}
+            </span>
+          </div>
         </div>
 
         <div className="flex flex-wrap justify-center gap-6 mt-8 text-sm text-white/60" style={heroStyle(visible, 460)}>
           <div className="flex items-center gap-1.5">
             {[...Array(5)].map((_, i) => <Star key={i} size={12} fill="#C9A24B" className="text-gold" />)}
             <span className="font-semibold text-white">4.9</span>
-            <span>· 200+ ulasan</span>
+            <span>· {t('common.reviews200')}</span>
           </div>
           <span className="hidden sm:block text-white/20">|</span>
           <span>✓ {t('hero.trust.delivery')}</span>

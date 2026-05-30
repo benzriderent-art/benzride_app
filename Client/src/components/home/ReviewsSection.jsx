@@ -36,7 +36,7 @@ export default function ReviewsSection() {
           <div className="flex items-center gap-2 shrink-0 pb-1">
             <Stars count={5} size={14} />
             <span className="font-heading font-bold text-charcoal">4.9</span>
-            <span className="text-gray-400 text-sm">· 200+ {t('reviews.reviewCount')}</span>
+            <span className="text-gray-400 text-sm">· {t('common.reviews200')}</span>
           </div>
         </Animate>
 
