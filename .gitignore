@@ -1,0 +1,17 @@
+# dependencies
+Client/node_modules/
+Server/target/
+
+# build
+Client/dist/
+
+# env
+.env
+*.env
+
+# logs
+*.log
+
+# IDE
+.vscode/
+.idea/

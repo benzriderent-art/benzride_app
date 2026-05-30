@@ -1,0 +1,290 @@
+{
+  "nav": {
+    "fleet": "Fleet",
+    "howToRent": "How to Rent",
+    "reviews": "Reviews",
+    "contact": "Contact",
+    "rentNow": "Rent Now"
+  },
+  "hero": {
+    "badge": "Trusted by 500+ Customers in Bali",
+    "headline": "Find Your Ride for Bali Adventures",
+    "description": "Book now — fleet available, delivered straight to your location.",
+    "booking": {
+      "location": "Pickup Location",
+      "startDate": "Start Date",
+      "duration": "Duration",
+      "motorType": "Bike Type",
+      "search": "Search Bikes",
+      "durations": ["1 Day", "3 Days", "1 Week", "2 Weeks", "1 Month"],
+      "motors": ["All Types", "Automatic 110cc", "Automatic 125cc", "PCX 150cc", "NMAX 155cc", "ADV 160cc"]
+    },
+    "trust": {
+      "delivery": "Free hotel & airport delivery",
+      "equipment": "Helmet & rain jacket free"
+    }
+  },
+  "vehicles": {
+    "title": "Our Fleet",
+    "subtitle": "Well-maintained motorcycles ready to accompany your journey all around Bali",
+    "perDay": "/ day",
+    "perWeek": "/ week",
+    "perMonth": "/ month",
+    "rentNow": "Rent Now",
+    "cc": "CC",
+    "transmission": "Transmission",
+    "year": "Year",
+    "automatic": "Automatic",
+    "manual": "Manual",
+    "available": "Available",
+    "notAvailable": "Unavailable",
+    "startFrom": "Starting from",
+    "availableFleet": "{{count}} units available",
+    "viewAll": "View All Fleet",
+    "filterAll": "All",
+    "filterAvailable": "Available Only",
+    "sortDefault": "Default Order",
+    "sortPriceAsc": "Lowest Price",
+    "sortPriceDesc": "Highest Price",
+    "noResults": "No vehicles match your filter",
+    "availableBadge": "✓ Available",
+    "notAvailableBadge": "Unavailable",
+    "loadError": "Failed to load vehicles. Please try again.",
+    "searchPlaceholder": "Search by name..."
+  },
+  "features": {
+    "title": "Why Choose Benz Rental?",
+    "subtitle": "We're here to make your Bali journey safe, comfortable, and completely worry-free",
+    "statCustomers": "Happy Customers",
+    "statRating": "Star Rating",
+    "statSupport": "WhatsApp Support",
+    "items": {
+      "helmet": {
+        "title": "Helmet & Rain Jacket Included",
+        "desc": "Every rental includes an SNI-certified helmet and rain jacket at no extra cost"
+      },
+      "delivery": {
+        "title": "Hotel & Airport Delivery",
+        "desc": "We deliver the bike to your location and pick it up when your rental ends anywhere in Bali"
+      },
+      "support": {
+        "title": "WhatsApp 24/7",
+        "desc": "Our team is always ready to help anytime via WhatsApp for any questions you have"
+      },
+      "insurance": {
+        "title": "Insurance Included",
+        "desc": "Bikes are covered by insurance throughout the rental period for your peace of mind"
+      },
+      "maintenance": {
+        "title": "Well-Maintained & Clean Bikes",
+        "desc": "Every bike undergoes regular servicing and thorough cleaning before being handed over"
+      },
+      "flexible": {
+        "title": "Flexible Rental",
+        "desc": "Choose daily, weekly, or monthly packages to match the length of your Bali stay"
+      }
+    }
+  },
+  "howToRent": {
+    "title": "How to Rent",
+    "subtitle": "Simple and fast booking — bike delivered to you within hours",
+    "steps4": "4 easy steps",
+    "steps": {
+      "choose": {
+        "title": "Choose a Bike",
+        "desc": "Pick the motorcycle that fits your needs and travel budget from our fleet"
+      },
+      "book": {
+        "title": "Fill Booking Form",
+        "desc": "Share your details, rental dates, and delivery location via WhatsApp or our form"
+      },
+      "pay": {
+        "title": "Make Payment",
+        "desc": "Pay securely via bank transfer, credit card, or e-wallet through Xendit"
+      },
+      "ride": {
+        "title": "Receive Your Bike",
+        "desc": "Bike delivered to you on time. Enjoy your adventure around Bali!"
+      }
+    }
+  },
+  "reviews": {
+    "title": "Customer Reviews",
+    "subtitle": "What our customers say about renting with us for their Bali trips",
+    "reviewCount": "reviews",
+    "items": [
+      {
+        "name": "Sarah M.",
+        "origin": "Jakarta, Indonesia",
+        "rating": 5,
+        "text": "Excellent service! The bike was clean and well-maintained. Delivered on time to our hotel. Helmet and rain jacket were included. Will definitely rent again on my next Bali trip!"
+      },
+      {
+        "name": "David K.",
+        "origin": "Melbourne, Australia",
+        "rating": 5,
+        "text": "Excellent service! The bike was in perfect condition and was delivered right to our villa in Seminyak. Very responsive on WhatsApp and everything was smooth and easy."
+      },
+      {
+        "name": "Rina S.",
+        "origin": "Surabaya, Indonesia",
+        "rating": 5,
+        "text": "Transparent pricing, no hidden fees. Clean and comfortable bike. Highly recommended for tourists who want to explore Bali freely at their own pace!"
+      }
+    ]
+  },
+  "cta": {
+    "title": "Ready to Explore Bali?",
+    "subtitle": "Contact us now and get your dream bike. Delivered to hotel or airport, available 24/7.",
+    "whatsapp": "Chat on WhatsApp",
+    "call": "Call Us",
+    "available": "Bikes Available Today",
+    "noHiddenFees": "No hidden fees"
+  },
+  "footer": {
+    "tagline": "Trusted motorcycle rental in Bali since 2018. Delivery, transparent pricing, free helmet.",
+    "address": "Jl. Bypass Ngurah Rai No. 88, Kuta, Bali 80361",
+    "links": "Links",
+    "contact": "Contact",
+    "rights": "All rights reserved",
+    "social": "Follow Us",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "trackBooking": "Track Booking"
+  },
+  "booking": {
+    "title": "Booking Form",
+    "subtitle": "Fill in your booking details and choose a payment method",
+    "vehicleInfo": "Vehicle Info",
+    "rentalDetail": "Rental Details",
+    "startDate": "Rental Start Date",
+    "endDate": "Rental End Date",
+    "fullName": "Full Name",
+    "phone": "WhatsApp Number",
+    "deliveryLoc": "Delivery Location",
+    "deliveryPlaceholder": "Hotel name, villa, or full address in Bali",
+    "notes": "Notes (optional)",
+    "priceCalc": "Price Calculation",
+    "days": "days",
+    "total": "Total Rental Cost",
+    "orderWA": "Order via WhatsApp",
+    "payXendit": "Pay with Xendit",
+    "xenditSoon": "Coming soon",
+    "required": "Required",
+    "selectDatesFirst": "Select dates to see your total price",
+    "invalidDate": "End date must be after start date",
+    "dateConflict": "This bike is already booked on these dates. Please choose different dates.",
+    "notFound": "Vehicle Not Found",
+    "notFoundDesc": "The vehicle you're looking for is not available. Please choose another from our fleet.",
+    "backToFleet": "View Fleet"
+  },
+  "common": {
+    "back": "Back",
+    "backToFleet": "Back to Fleet"
+  },
+  "detail": {
+    "fleet": "Fleet",
+    "notFound": "Motorcycle not found.",
+    "backToFleet": "← Back to Fleet",
+    "bookedDates": "Unavailable Dates",
+    "bookedDatesHint": "Please choose dates outside the schedule above.",
+    "includes": "What's Included",
+    "includesList": [
+      "Free full-face helmet",
+      "Delivery anywhere in Bali",
+      "Clean & well-maintained bike",
+      "24/7 WhatsApp support"
+    ],
+    "pricing": "Rental Price",
+    "perDay": "Per Day",
+    "perWeek": "Per Week",
+    "perMonth": "Per Month",
+    "perDayTag": "Daily",
+    "bookNow": "Book Now",
+    "askWA": "Ask via WhatsApp",
+    "disclaimer": "By booking, you agree to the terms & conditions of Benz Rental Bali.",
+    "statusAvailable": "● Available",
+    "statusUnavailable": "○ Unavailable",
+    "ratingText": "4.9 · 200+ reviews"
+  },
+  "bookingPage": {
+    "back": "Back",
+    "available": "Available",
+    "full": "Fully Booked",
+    "perDay": "Per Day",
+    "perWeek": "Per Week",
+    "perMonth": "Per Month",
+    "includes": "What's Included",
+    "includesList": ["Free helmet", "Bali delivery", "Well-maintained bike", "24/7 support"],
+    "dateSection": "Rental Dates",
+    "renterSection": "Your Details",
+    "unavailableTitle": "Bike Not Available",
+    "unavailableDesc": "This bike is currently unavailable. Contact us to check availability or choose another bike.",
+    "unavailableAsk": "Ask via WhatsApp",
+    "submitError": "Failed to create booking. Please try again.",
+    "processing": "Processing...",
+    "disclaimer": "By booking, you agree to the terms & conditions of Benz Rental Bali.",
+    "trustItems": [
+      "Secure & encrypted payment",
+      "Instant WhatsApp confirmation",
+      "Free Bali delivery included",
+      "Cash payment on delivery available"
+    ],
+    "ratingText": "4.9 · 200+ reviews"
+  },
+  "faq": {
+    "badge": "Common Questions",
+    "title": "Frequently Asked",
+    "notFoundQ": "Can't find the answer you're looking for?",
+    "notFoundA": "Our team is ready to help 24/7 via WhatsApp.",
+    "askWA": "Ask via WhatsApp",
+    "items": [
+      {
+        "q": "What documents are required to rent a motorcycle?",
+        "a": "You need to provide a national ID (for Indonesian citizens) or Passport (for foreigners), and a valid driving license (SIM A or SIM C). A deposit will be required upon pickup."
+      },
+      {
+        "q": "Can the motorcycle be delivered to my location?",
+        "a": "Yes! We offer free delivery and pickup anywhere in Bali — hotels, villas, the airport, seaport, or any location. Just include your address when booking."
+      },
+      {
+        "q": "What is the minimum rental duration?",
+        "a": "The minimum rental is 1 day (24 hours). We offer special rates for weekly and monthly rentals that are much more affordable than daily rates."
+      },
+      {
+        "q": "Is a helmet provided?",
+        "a": "Yes, every motorcycle comes with 1 full-face or half-face helmet for free. You can request additional helmets by noting it in the comments section when booking."
+      },
+      {
+        "q": "How can I make a payment?",
+        "a": "Two options: (1) Online payment via Xendit link — supports credit/debit cards, bank transfers, GoPay, OVO, and more. (2) Order via WhatsApp and pay cash when the bike is delivered."
+      },
+      {
+        "q": "Can I extend my rental period?",
+        "a": "Of course! Contact us via WhatsApp before your rental period ends. We'll confirm availability and arrange the extension for you."
+      },
+      {
+        "q": "What happens if the motorcycle breaks down or has an accident?",
+        "a": "Contact us immediately via WhatsApp. Don't panic — we'll help and guide you through the next steps. The bike's condition at pickup and return will be documented together."
+      },
+      {
+        "q": "Can I rent without a driving license?",
+        "a": "No. A valid SIM A or SIM C driving license is a mandatory requirement for safety and legal compliance in Indonesia. We cannot waive this requirement."
+      },
+      {
+        "q": "What is the cancellation policy?",
+        "a": "For cancellations, contact us as soon as possible via WhatsApp. Refund policy depends on the cancellation time and payment method used. We always try to find the best solution."
+      },
+      {
+        "q": "Is the motorcycle available 24 hours?",
+        "a": "Our WhatsApp service is active 24 hours. Bike delivery is arranged by mutual agreement. For deliveries outside normal hours (night/early morning), please discuss this with us beforehand."
+      }
+    ]
+  },
+  "legal": {
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "badge": "Legal",
+    "lastUpdated": "Last updated: May 2025"
+  }
+}

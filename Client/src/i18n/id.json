@@ -1,0 +1,290 @@
+{
+  "nav": {
+    "fleet": "Armada",
+    "howToRent": "Cara Sewa",
+    "reviews": "Ulasan",
+    "contact": "Kontak",
+    "rentNow": "Sewa Sekarang"
+  },
+  "hero": {
+    "badge": "Dipercaya 500+ Pelanggan di Bali",
+    "headline": "Cari Motor untuk Petualangan Bali",
+    "description": "Pesan sekarang — armada tersedia, antar langsung ke lokasimu.",
+    "booking": {
+      "location": "Lokasi Ambil",
+      "startDate": "Tanggal Mulai",
+      "duration": "Durasi Sewa",
+      "motorType": "Tipe Motor",
+      "search": "Cari Motor",
+      "durations": ["1 Hari", "3 Hari", "1 Minggu", "2 Minggu", "1 Bulan"],
+      "motors": ["Semua Tipe", "Matic 110cc", "Matic 125cc", "PCX 150cc", "NMAX 155cc", "ADV 160cc"]
+    },
+    "trust": {
+      "delivery": "Gratis antar hotel & bandara",
+      "equipment": "Helm & jas hujan gratis"
+    }
+  },
+  "vehicles": {
+    "title": "Armada Kami",
+    "subtitle": "Motor pilihan yang terawat dan siap pakai untuk menemani perjalananmu di seluruh Bali",
+    "perDay": "/ hari",
+    "perWeek": "/ minggu",
+    "perMonth": "/ bulan",
+    "rentNow": "Sewa Sekarang",
+    "cc": "CC",
+    "transmission": "Transmisi",
+    "year": "Tahun",
+    "automatic": "Matik",
+    "manual": "Manual",
+    "available": "Tersedia",
+    "notAvailable": "Tidak Tersedia",
+    "startFrom": "Mulai dari",
+    "availableFleet": "{{count}} armada tersedia",
+    "viewAll": "Lihat Semua Armada",
+    "filterAll": "Semua",
+    "filterAvailable": "Tersedia Saja",
+    "sortDefault": "Urutan Default",
+    "sortPriceAsc": "Harga Terendah",
+    "sortPriceDesc": "Harga Tertinggi",
+    "noResults": "Tidak ada motor yang sesuai filter",
+    "availableBadge": "✓ Tersedia",
+    "notAvailableBadge": "Tidak Tersedia",
+    "loadError": "Gagal memuat data motor. Silakan coba lagi.",
+    "searchPlaceholder": "Cari nama motor..."
+  },
+  "features": {
+    "title": "Kenapa Pilih Benz Rental?",
+    "subtitle": "Kami hadir untuk memastikan perjalananmu di Bali aman, nyaman, dan bebas khawatir",
+    "statCustomers": "Pelanggan Puas",
+    "statRating": "Rating Bintang",
+    "statSupport": "Dukungan WhatsApp",
+    "items": {
+      "helmet": {
+        "title": "Helm & Jas Hujan Gratis",
+        "desc": "Setiap sewa sudah termasuk helm standar SNI dan jas hujan tanpa biaya tambahan"
+      },
+      "delivery": {
+        "title": "Antar-Jemput Hotel & Bandara",
+        "desc": "Kami antar motor langsung ke lokasimu dan jemput saat sewa berakhir di mana saja di Bali"
+      },
+      "support": {
+        "title": "WhatsApp 24/7",
+        "desc": "Tim kami selalu siap membantu kapan saja melalui WhatsApp untuk segala pertanyaan"
+      },
+      "insurance": {
+        "title": "Asuransi Disertakan",
+        "desc": "Motor dilindungi asuransi selama masa sewa untuk ketenangan pikiranmu berkendara"
+      },
+      "maintenance": {
+        "title": "Motor Terawat & Bersih",
+        "desc": "Setiap motor menjalani servis berkala dan pembersihan menyeluruh sebelum diserahkan"
+      },
+      "flexible": {
+        "title": "Sewa Fleksibel",
+        "desc": "Pilih paket harian, mingguan, atau bulanan sesuai durasi perjalananmu ke Bali"
+      }
+    }
+  },
+  "howToRent": {
+    "title": "Cara Sewa Motor",
+    "subtitle": "Proses booking yang mudah dan cepat, motor siap diantarkan dalam hitungan jam",
+    "steps4": "4 langkah mudah",
+    "steps": {
+      "choose": {
+        "title": "Pilih Motor",
+        "desc": "Pilih motor yang sesuai dengan kebutuhan dan budget perjalananmu dari armada kami"
+      },
+      "book": {
+        "title": "Isi Form Booking",
+        "desc": "Isi data diri, tanggal sewa, dan lokasi pengiriman motor melalui WhatsApp atau form"
+      },
+      "pay": {
+        "title": "Lakukan Pembayaran",
+        "desc": "Bayar dengan transfer bank, kartu kredit, atau e-wallet via Xendit dengan aman"
+      },
+      "ride": {
+        "title": "Terima Motor",
+        "desc": "Motor diantarkan ke lokasimu tepat waktu. Selamat menikmati perjalanan di Bali!"
+      }
+    }
+  },
+  "reviews": {
+    "title": "Ulasan Pelanggan",
+    "subtitle": "Apa kata mereka yang sudah mempercayakan perjalanan Bali-nya bersama kami",
+    "reviewCount": "ulasan",
+    "items": [
+      {
+        "name": "Sarah M.",
+        "origin": "Jakarta, Indonesia",
+        "rating": 5,
+        "text": "Pelayanan sangat bagus! Motor bersih dan terawat. Diantarkan tepat waktu ke hotel kami. Helm dan jas hujan sudah termasuk. Pasti sewa lagi di trip Bali berikutnya!"
+      },
+      {
+        "name": "David K.",
+        "origin": "Melbourne, Australia",
+        "rating": 5,
+        "text": "Excellent service! The bike was in perfect condition and was delivered right to our villa in Seminyak. Very responsive on WhatsApp and everything was smooth and easy."
+      },
+      {
+        "name": "Rina S.",
+        "origin": "Surabaya, Indonesia",
+        "rating": 5,
+        "text": "Harga transparan, tidak ada biaya tersembunyi. Motor bersih dan nyaman dikendarai. Sangat recommended untuk wisatawan yang mau keliling Bali dengan bebas!"
+      }
+    ]
+  },
+  "cta": {
+    "title": "Siap Jelajahi Bali?",
+    "subtitle": "Hubungi kami sekarang dan dapatkan motor impianmu. Antar ke hotel atau bandara, tersedia 24 jam.",
+    "whatsapp": "Chat WhatsApp",
+    "call": "Hubungi Kami",
+    "available": "Motor Tersedia Hari Ini",
+    "noHiddenFees": "Tanpa biaya tersembunyi"
+  },
+  "footer": {
+    "tagline": "Rental motor terpercaya di Bali sejak 2018. Antar-jemput, harga transparan, helm gratis.",
+    "address": "Jl. Bypass Ngurah Rai No. 88, Kuta, Bali 80361",
+    "links": "Tautan",
+    "contact": "Kontak",
+    "rights": "Hak cipta dilindungi",
+    "social": "Ikuti Kami",
+    "terms": "Syarat & Ketentuan",
+    "privacy": "Kebijakan Privasi",
+    "trackBooking": "Lacak Booking"
+  },
+  "booking": {
+    "title": "Form Pemesanan",
+    "subtitle": "Lengkapi detail pemesananmu dan pilih metode pembayaran",
+    "vehicleInfo": "Info Motor",
+    "rentalDetail": "Detail Sewa",
+    "startDate": "Tanggal Mulai Sewa",
+    "endDate": "Tanggal Selesai Sewa",
+    "fullName": "Nama Lengkap",
+    "phone": "No. WhatsApp",
+    "deliveryLoc": "Lokasi Pengiriman",
+    "deliveryPlaceholder": "Nama hotel, villa, atau alamat lengkap di Bali",
+    "notes": "Catatan (opsional)",
+    "priceCalc": "Kalkulasi Harga",
+    "days": "hari",
+    "total": "Total Biaya Sewa",
+    "orderWA": "Pesan via WhatsApp",
+    "payXendit": "Bayar dengan Xendit",
+    "xenditSoon": "Segera hadir",
+    "required": "Wajib diisi",
+    "selectDatesFirst": "Pilih tanggal terlebih dahulu untuk melihat total harga",
+    "invalidDate": "Tanggal selesai harus setelah tanggal mulai",
+    "dateConflict": "Motor sudah dipesan pada tanggal ini. Pilih tanggal lain.",
+    "notFound": "Motor Tidak Ditemukan",
+    "notFoundDesc": "Motor yang kamu cari tidak tersedia. Silakan pilih motor lain dari armada kami.",
+    "backToFleet": "Lihat Armada"
+  },
+  "common": {
+    "back": "Kembali",
+    "backToFleet": "Kembali ke Armada"
+  },
+  "detail": {
+    "fleet": "Armada",
+    "notFound": "Motor tidak ditemukan.",
+    "backToFleet": "← Kembali ke Armada",
+    "bookedDates": "Tanggal Tidak Tersedia",
+    "bookedDatesHint": "Pilih tanggal di luar jadwal di atas.",
+    "includes": "Yang Sudah Termasuk",
+    "includesList": [
+      "Helm full-face gratis",
+      "Antar-jemput ke seluruh Bali",
+      "Motor terawat & bersih",
+      "Support 24 jam via WhatsApp"
+    ],
+    "pricing": "Harga Sewa",
+    "perDay": "Per Hari",
+    "perWeek": "Per Minggu",
+    "perMonth": "Per Bulan",
+    "perDayTag": "Harian",
+    "bookNow": "Pesan Sekarang",
+    "askWA": "Tanya via WhatsApp",
+    "disclaimer": "Dengan memesan, kamu menyetujui syarat & ketentuan sewa Benz Rental Bali.",
+    "statusAvailable": "● Tersedia",
+    "statusUnavailable": "○ Tidak Tersedia",
+    "ratingText": "4.9 · 200+ ulasan"
+  },
+  "bookingPage": {
+    "back": "Kembali",
+    "available": "Tersedia",
+    "full": "Penuh",
+    "perDay": "Per Hari",
+    "perWeek": "Per Minggu",
+    "perMonth": "Per Bulan",
+    "includes": "Sudah Termasuk",
+    "includesList": ["Helm gratis", "Antar-jemput Bali", "Motor terawat", "Support 24 jam"],
+    "dateSection": "Tanggal Sewa",
+    "renterSection": "Data Penyewa",
+    "unavailableTitle": "Motor Tidak Tersedia",
+    "unavailableDesc": "Motor ini sedang tidak tersedia. Hubungi kami untuk cek ketersediaan atau pilih motor lain.",
+    "unavailableAsk": "Tanya via WhatsApp",
+    "submitError": "Gagal membuat booking. Silakan coba lagi.",
+    "processing": "Memproses...",
+    "disclaimer": "Dengan memesan, kamu menyetujui syarat & ketentuan sewa Benz Rental Bali.",
+    "trustItems": [
+      "Pembayaran aman & terenkripsi",
+      "Konfirmasi instan via WA",
+      "Gratis antar-jemput Bali",
+      "Bisa bayar tunai saat terima"
+    ],
+    "ratingText": "4.9 · 200+ ulasan"
+  },
+  "faq": {
+    "badge": "Pertanyaan Umum",
+    "title": "Sering Ditanya",
+    "notFoundQ": "Tidak menemukan jawaban yang kamu cari?",
+    "notFoundA": "Tim kami siap membantu 24 jam via WhatsApp.",
+    "askWA": "Tanya via WhatsApp",
+    "items": [
+      {
+        "q": "Dokumen apa yang diperlukan untuk menyewa motor?",
+        "a": "Kamu perlu menyiapkan KTP (untuk WNI) atau Paspor (untuk WNA), dan SIM A atau SIM C yang masih berlaku. Deposit akan diminta saat pengambilan motor."
+      },
+      {
+        "q": "Apakah motor bisa diantarkan ke lokasi saya?",
+        "a": "Ya! Kami menyediakan layanan antar-jemput gratis ke seluruh wilayah Bali — hotel, villa, bandara, pelabuhan, atau lokasi manapun. Cukup cantumkan alamat saat booking."
+      },
+      {
+        "q": "Berapa minimal durasi sewa?",
+        "a": "Minimal sewa adalah 1 hari (24 jam). Tersedia harga spesial untuk sewa mingguan dan bulanan yang lebih hemat dibanding sewa harian."
+      },
+      {
+        "q": "Apakah ada helm yang disediakan?",
+        "a": "Ya, setiap motor sudah dilengkapi 1 helm full-face atau half-face secara gratis. Kamu bisa meminta helm tambahan dengan menuliskannya di kolom catatan saat booking."
+      },
+      {
+        "q": "Bagaimana cara melakukan pembayaran?",
+        "a": "Tersedia dua cara: (1) Pembayaran online via link Xendit — mendukung kartu kredit/debit, transfer bank, GoPay, OVO, dan berbagai metode lainnya. (2) Pesan via WhatsApp dan bayar tunai saat motor diantarkan."
+      },
+      {
+        "q": "Bisakah saya memperpanjang masa sewa?",
+        "a": "Tentu! Hubungi kami via WhatsApp sebelum masa sewa habis. Kami akan mengkonfirmasi ketersediaan dan mengatur perpanjangan untuk kamu."
+      },
+      {
+        "q": "Apa yang terjadi jika motor mengalami kerusakan atau kecelakaan?",
+        "a": "Segera hubungi kami via WhatsApp. Jangan panik — kami akan membantu dan memandu langkah selanjutnya. Kondisi motor saat pengambilan dan pengembalian akan dicatat bersama."
+      },
+      {
+        "q": "Apakah bisa sewa motor tanpa SIM?",
+        "a": "Tidak bisa. SIM A atau SIM C yang masih berlaku adalah syarat wajib demi keselamatan dan kepatuhan hukum di Indonesia. Kami tidak dapat mengabaikan ketentuan ini."
+      },
+      {
+        "q": "Bagaimana kebijakan pembatalan?",
+        "a": "Untuk pembatalan, hubungi kami sesegera mungkin via WhatsApp. Kebijakan refund bergantung pada waktu pembatalan dan metode pembayaran yang digunakan. Kami selalu berusaha mencari solusi terbaik."
+      },
+      {
+        "q": "Apakah motor tersedia 24 jam?",
+        "a": "Layanan WhatsApp kami aktif 24 jam. Pengiriman motor dilakukan sesuai kesepakatan waktu. Untuk pengiriman di luar jam normal (malam/dini hari), silakan diskusikan terlebih dahulu dengan kami."
+      }
+    ]
+  },
+  "legal": {
+    "terms": "Syarat & Ketentuan",
+    "privacy": "Kebijakan Privasi",
+    "badge": "Legal",
+    "lastUpdated": "Terakhir diperbarui: Mei 2025"
+  }
+}
