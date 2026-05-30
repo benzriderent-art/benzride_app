@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 export default function NotFound() {
+  const { t } = useTranslation()
+
   return (
     <div className="min-h-screen bg-charcoal flex flex-col items-center justify-center px-4 text-center relative overflow-hidden">
       <div
@@ -27,10 +30,10 @@ export default function NotFound() {
 
         <p className="text-xs font-black text-gold tracking-[0.25em] uppercase mb-3">Error 404</p>
         <h1 className="font-heading text-4xl sm:text-5xl font-bold text-white mb-4 leading-[1.1]">
-          Halaman Tidak Ditemukan
+          {t('notFound.title')}
         </h1>
         <p className="text-white/40 mb-10 max-w-sm leading-relaxed">
-          Halaman yang kamu cari tidak ada atau sudah dipindahkan. Yuk kembali dan temukan motor sewa impianmu.
+          {t('notFound.desc')}
         </p>
 
         <div className="flex flex-wrap gap-3 justify-center">
@@ -39,13 +42,13 @@ export default function NotFound() {
             className="inline-flex items-center gap-2 bg-gold text-charcoal font-bold px-7 py-3.5 rounded-xl hover:opacity-90 transition-opacity text-sm"
           >
             <ArrowLeft size={15} />
-            Kembali ke Beranda
+            {t('notFound.backHome')}
           </Link>
           <Link
             to="/fleet"
             className="inline-flex items-center gap-2 border border-white/15 text-white/60 hover:text-gold hover:border-gold/50 font-bold px-7 py-3.5 rounded-xl transition-colors text-sm"
           >
-            Lihat Armada
+            {t('notFound.viewFleet')}
           </Link>
         </div>
       </div>
