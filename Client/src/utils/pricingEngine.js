@@ -30,24 +30,24 @@ export function getPriceBreakdown(duration, priceDay, priceWeek, priceMonth) {
   if (pMonth > 0 && duration >= 30) {
     const months = Math.floor(duration / 30)
     const remaining = duration % 30
-    lines.push({ qty: months, unit: 'bulan', price: pMonth })
+    lines.push({ qty: months, unit: 'month', price: pMonth })
     if (remaining > 0) {
       if (pWeek > 0 && remaining >= 7) {
         const weeks = Math.floor(remaining / 7)
         const days = remaining % 7
-        if (weeks > 0) lines.push({ qty: weeks, unit: 'minggu', price: pWeek })
-        if (days > 0) lines.push({ qty: days, unit: 'hari', price: pDay })
+        if (weeks > 0) lines.push({ qty: weeks, unit: 'week', price: pWeek })
+        if (days > 0) lines.push({ qty: days, unit: 'day', price: pDay })
       } else {
-        lines.push({ qty: remaining, unit: 'hari', price: pDay })
+        lines.push({ qty: remaining, unit: 'day', price: pDay })
       }
     }
   } else if (pWeek > 0 && duration >= 7) {
     const weeks = Math.floor(duration / 7)
     const remaining = duration % 7
-    lines.push({ qty: weeks, unit: 'minggu', price: pWeek })
-    if (remaining > 0) lines.push({ qty: remaining, unit: 'hari', price: pDay })
+    lines.push({ qty: weeks, unit: 'week', price: pWeek })
+    if (remaining > 0) lines.push({ qty: remaining, unit: 'day', price: pDay })
   } else {
-    lines.push({ qty: duration, unit: 'hari', price: pDay })
+    lines.push({ qty: duration, unit: 'day', price: pDay })
   }
 
   return lines

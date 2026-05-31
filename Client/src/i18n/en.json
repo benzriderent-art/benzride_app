@@ -1,5 +1,7 @@
 {
   "nav": {
+    "home": "Home",
+    "about": "About",
     "fleet": "Fleet",
     "howToRent": "How to Rent",
     "reviews": "Reviews",
@@ -119,24 +121,33 @@
     "title": "Customer Reviews",
     "subtitle": "What our customers say about renting with us for their Bali trips",
     "reviewCount": "reviews",
+    "googleBadge": "Google Reviews",
+    "seeGoogle": "See all reviews on Google",
+    "verifiedGoogle": "Verified Google Review",
     "items": [
       {
-        "name": "Sarah M.",
-        "origin": "Jakarta, Indonesia",
+        "name": "James R.",
+        "origin": "Sydney, Australia",
         "rating": 5,
-        "text": "Excellent service! The bike was clean and well-maintained. Delivered on time to our hotel. Helmet and rain jacket were included. Will definitely rent again on my next Bali trip!"
+        "text": "Absolutely seamless experience. Booked via WhatsApp, the NMAX was delivered to our villa in Canggu exactly on time. Spotless bike, great condition. Will use Benzride every time I visit Bali."
+      },
+      {
+        "name": "Emma L.",
+        "origin": "London, United Kingdom",
+        "rating": 5,
+        "text": "Really impressed! I was nervous about renting in Bali but the team made it so easy. The Scoopy was delivered to my hotel in Seminyak, and they even helped me with a route recommendation."
       },
       {
         "name": "David K.",
         "origin": "Melbourne, Australia",
         "rating": 5,
-        "text": "Excellent service! The bike was in perfect condition and was delivered right to our villa in Seminyak. Very responsive on WhatsApp and everything was smooth and easy."
+        "text": "Delivered to our villa at the exact time we agreed. PCX was immaculate. Super responsive on WhatsApp — even replied at 11 PM when I had a question. Couldn't ask for better service."
       },
       {
         "name": "Rina S.",
         "origin": "Surabaya, Indonesia",
         "rating": 5,
-        "text": "Transparent pricing, no hidden fees. Clean and comfortable bike. Highly recommended for tourists who want to explore Bali freely at their own pace!"
+        "text": "Harga transparan, tidak ada biaya tersembunyi. Motor bersih dan nyaman. Sangat direkomendasikan buat wisatawan yang ingin jelajah Bali dengan bebas!"
       }
     ]
   },
@@ -149,8 +160,8 @@
     "noHiddenFees": "No hidden fees"
   },
   "footer": {
-    "tagline": "Trusted motorcycle rental in Bali since 2018. Delivery, transparent pricing, free helmet.",
-    "address": "Jl. Bypass Ngurah Rai No. 88, Kuta, Bali 80361",
+    "tagline": "Premium scooter & motorcycle rental in Bali. Delivery to hotel, airport, and villa. Transparent pricing.",
+    "address": "Jl. Uluwatu II No. 6, Jimbaran, Bali, Indonesia",
     "links": "Links",
     "contact": "Contact",
     "rights": "All rights reserved",
@@ -186,7 +197,22 @@
     "dateConflict": "This bike is already booked on these dates. Please choose different dates.",
     "notFound": "Vehicle Not Found",
     "notFoundDesc": "The vehicle you're looking for is not available. Please choose another from our fleet.",
-    "backToFleet": "View Fleet"
+    "backToFleet": "View Fleet",
+    "deliveryTime": "Delivery Time",
+    "deliveryTimeHint": "We'll deliver the bike to your location at this time on your start date.",
+    "identitySection": "Identity",
+    "identityType": "Identity Type",
+    "identityKTP": "🇮🇩 Indonesian (KTP)",
+    "identityPassport": "🌍 Foreigner (Passport)",
+    "identityNumber": "ID / Passport Number (optional)",
+    "identityNumberKTPPlaceholder": "16-digit KTP number",
+    "identityNumberPassportPlaceholder": "Passport number",
+    "identityPhoto": "Upload ID / Passport Photo",
+    "identityPhotoPlaceholder": "Click to select photo or PDF",
+    "identityNote": "Upload your ID photo here or send it via WhatsApp after submitting. Our team will verify before confirming your booking.",
+    "unit_day": "day",
+    "unit_week": "week",
+    "unit_month": "month"
   },
   "common": {
     "back": "Back",

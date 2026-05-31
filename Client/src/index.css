@@ -40,6 +40,7 @@ button,
 [role="button"],
 a {
   touch-action: manipulation; /* Prevent 300ms double-tap delay on mobile */
+  cursor: pointer;
 }
 
 /* ─── Form inputs — cross-browser normalize ─────────────────────────────── */
@@ -60,6 +61,11 @@ input[type="month"] {
 select {
   -webkit-appearance: none;
   appearance: none;
+  cursor: pointer;
+}
+
+label {
+  cursor: pointer;
 }
 
 /* ─── Backdrop filter — Safari requires the -webkit- prefix ─────────────── */

@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AdminAuthProvider } from '@/context/AdminAuthContext'
+import { CurrencyProvider } from '@/context/CurrencyContext'
 import LandingPage from '@/pages/LandingPage'
 import BookingPage from '@/pages/BookingPage'
 import AdminLogin from '@/pages/admin/AdminLogin'
@@ -19,6 +20,8 @@ import ScrollToTop from '@/components/common/ScrollToTop'
 import FAQPage from '@/pages/FAQPage'
 import TermsPage from '@/pages/TermsPage'
 import PrivacyPage from '@/pages/PrivacyPage'
+import AboutPage from '@/pages/AboutPage'
+import SeoLandingPage from '@/pages/SeoLandingPage'
 
 function AppRoutes() {
   const { pathname } = useLocation()
@@ -33,6 +36,8 @@ function AppRoutes() {
         <Route path="/booking/failed" element={<BookingFailed />} />
         <Route path="/booking/track" element={<BookingTrackPage />} />
         <Route path="/booking/:slug" element={<BookingPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/sewa-motor-:area" element={<SeoLandingPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
@@ -52,8 +57,10 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <AdminAuthProvider>
-      <AppRoutes />
-    </AdminAuthProvider>
+    <CurrencyProvider>
+      <AdminAuthProvider>
+        <AppRoutes />
+      </AdminAuthProvider>
+    </CurrencyProvider>
   )
 }

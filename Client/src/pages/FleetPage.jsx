@@ -1,8 +1,10 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useSearchParams } from 'react-router-dom'
-import { X, MessageCircle, Phone } from 'lucide-react'
+import { X, MessageCircle, Phone, ChevronDown, ChevronUp } from 'lucide-react'
 import { formatIDR } from '@/utils/formatCurrency'
+import { useCurrency } from '@/context/CurrencyContext'
+import CurrencyToggle from '@/components/common/CurrencyToggle'
 import { motorSlug } from '@/utils/slugify'
 import ImageCarousel from '@/components/common/ImageCarousel'
 import Animate from '@/components/common/Animate'
@@ -22,8 +24,70 @@ const TYPE_FILTERS = [
 
 const DARK = '#111111'
 
+function PriceTable({ vehicles, t }) {
+  const [open, setOpen] = useState(true)
+  const { formatPrice } = useCurrency()
+  const isID = t('vehicles.perDay') === '/ hari'
+
+  const available = vehicles.filter(v => v.available)
+  if (available.length === 0) return null
+
+  return (
+    <div className="mt-10 rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+      <button
+        onClick={() => setOpen(v => !v)}
+        className="w-full flex items-center justify-between px-6 py-4"
+        style={{ background: 'rgba(255,255,255,0.04)' }}
+      >
+        <p className="text-xs font-black text-gold tracking-[0.2em] uppercase">
+          {isID ? 'Tabel Harga Armada' : 'Fleet Price Overview'}
+        </p>
+        {open
+          ? <ChevronUp size={15} className="text-white/40" />
+          : <ChevronDown size={15} className="text-white/40" />}
+      </button>
+      {open && (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                {[isID ? 'Motor' : 'Motorcycle', isID ? 'CC' : 'CC', isID ? 'Harian' : 'Daily', isID ? 'Mingguan' : 'Weekly', isID ? 'Bulanan' : 'Monthly', isID ? 'Status' : 'Status'].map(h => (
+                  <th key={h} className="text-left text-[10px] font-black text-white/30 tracking-widest uppercase px-5 py-3">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {vehicles.map((v, i) => (
+                <tr key={v.id} style={{ borderBottom: i < vehicles.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
+                  <td className="px-5 py-3.5">
+                    <Link to={`/booking/${motorSlug(v)}`} className="font-semibold text-white hover:text-gold transition-colors text-sm">
+                      {v.name}
+                    </Link>
+                  </td>
+                  <td className="px-5 py-3.5 text-xs text-white/40">{v.cc} CC</td>
+                  <td className="px-5 py-3.5 text-gold font-bold text-sm">{formatPrice(v.priceDay)}</td>
+                  <td className="px-5 py-3.5 text-white/70 text-sm">{v.priceWeek > 0 ? formatPrice(v.priceWeek) : '—'}</td>
+                  <td className="px-5 py-3.5 text-white/70 text-sm">{v.priceMonth > 0 ? formatPrice(v.priceMonth) : '—'}</td>
+                  <td className="px-5 py-3.5">
+                    <span className={`text-[9px] font-black tracking-wider uppercase px-2 py-1 rounded-full ${
+                      v.available ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/10 text-white/30'
+                    }`}>
+                      {v.available ? (isID ? 'Tersedia' : 'Available') : (isID ? 'Tidak Tersedia' : 'Unavailable')}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function FleetPage() {
   const { t } = useTranslation()
+  const { formatPrice } = useCurrency()
   const [searchParams, setSearchParams] = useSearchParams()
   const [vehicles, setVehicles] = useState([])
   const [loading, setLoading] = useState(true)
@@ -146,6 +210,9 @@ export default function FleetPage() {
 
         {/* Grid */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+          <div className="flex justify-end mb-5">
+            <CurrencyToggle variant="dark" />
+          </div>
           {loading && (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {[...Array(6)].map((_, i) => (
@@ -182,20 +249,27 @@ export default function FleetPage() {
                           {v.cc} CC · {t(`vehicles.${v.transmission ?? 'automatic'}`)} · {v.year}
                         </p>
                         <h2 className="font-heading text-xl font-bold text-white mb-3 leading-tight">{v.name}</h2>
-                        <div className="flex items-center justify-between">
-                          <div>
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="min-w-0">
                             <p className="text-[9px] text-white/35 uppercase tracking-wider">{t('vehicles.startFrom')}</p>
                             <p className="text-gold font-black text-xl leading-none">
-                              {formatIDR(v.priceDay)}
+                              {formatPrice(v.priceDay)}
                               <span className="text-white/35 text-xs font-normal ml-0.5">{t('vehicles.perDay')}</span>
                             </p>
+                            {(v.priceWeek > 0 || v.priceMonth > 0) && (
+                              <p className="text-[9px] text-white/25 mt-1 leading-snug truncate">
+                                {v.priceWeek > 0 && <>{formatPrice(v.priceWeek)}{t('vehicles.perWeek')}</>}
+                                {v.priceWeek > 0 && v.priceMonth > 0 && ' · '}
+                                {v.priceMonth > 0 && <>{formatPrice(v.priceMonth)}{t('vehicles.perMonth')}</>}
+                              </p>
+                            )}
                           </div>
                           {v.available ? (
-                            <Link to={`/booking/${motorSlug(v)}`} className="pointer-events-auto text-xs font-bold px-4 py-2.5 rounded-xl bg-gold text-charcoal hover:opacity-90 transition-opacity">
+                            <Link to={`/booking/${motorSlug(v)}`} className="pointer-events-auto text-xs font-bold px-4 py-2.5 rounded-xl bg-gold text-charcoal hover:opacity-90 transition-opacity shrink-0">
                               {t('vehicles.rentNow')}
                             </Link>
                           ) : (
-                            <span className="pointer-events-auto text-xs font-bold px-4 py-2.5 rounded-xl bg-white/10 text-white/25 cursor-not-allowed select-none">
+                            <span className="pointer-events-auto text-xs font-bold px-4 py-2.5 rounded-xl bg-white/10 text-white/25 cursor-not-allowed select-none shrink-0">
                               {t('vehicles.notAvailable')}
                             </span>
                           )}
@@ -206,6 +280,9 @@ export default function FleetPage() {
                 </Animate>
               ))}
             </div>
+          )}
+          {!loading && !error && vehicles.length > 0 && (
+            <PriceTable vehicles={vehicles} t={t} />
           )}
         </div>
 

@@ -4,6 +4,17 @@ import { motorApi } from '@/api/motors'
 import { motorImageApi } from '@/api/motorImages'
 import { formatIDR } from '@/utils/formatCurrency'
 
+const STATUSES = [
+  { value: 'AVAILABLE',   label: 'Tersedia',        color: 'bg-green-50 text-green-600' },
+  { value: 'RENTED',      label: 'Sedang Disewa',   color: 'bg-blue-50 text-blue-600' },
+  { value: 'MAINTENANCE', label: 'Maintenance',      color: 'bg-amber-50 text-amber-600' },
+]
+
+const statusFromMotor = (m) => {
+  if (!m.available) return m.status ?? 'RENTED'
+  return 'AVAILABLE'
+}
+
 const EMPTY_FORM = {
   name: '',
   cc: '',
@@ -13,6 +24,7 @@ const EMPTY_FORM = {
   priceWeek: '',
   priceMonth: '',
   available: true,
+  status: 'AVAILABLE',
 }
 
 export default function AdminMotors() {
@@ -49,7 +61,7 @@ export default function AdminMotors() {
 
   const openEdit = (motor) => {
     setEditing(motor.id)
-    setForm({ ...motor })
+    setForm({ ...motor, status: statusFromMotor(motor) })
     setErrors({})
     setModal(true)
   }
@@ -83,6 +95,7 @@ export default function AdminMotors() {
       priceDay: parseInt(form.priceDay),
       priceWeek: parseInt(form.priceWeek),
       priceMonth: parseInt(form.priceMonth),
+      available: form.status === 'AVAILABLE',
     }
 
     setSaving(true)
@@ -209,13 +222,14 @@ export default function AdminMotors() {
                     </button>
                   </td>
                   <td className="px-4 py-3">
-                    <span
-                      className={`text-xs font-semibold px-2 py-0.5 rounded ${
-                        motor.available ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-400'
-                      }`}
-                    >
-                      {motor.available ? 'Tersedia' : 'Tidak Tersedia'}
-                    </span>
+                    {(() => {
+                      const s = STATUSES.find(s => s.value === statusFromMotor(motor)) ?? STATUSES[0]
+                      return (
+                        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${s.color}`}>
+                          {s.label}
+                        </span>
+                      )
+                    })()}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
@@ -285,9 +299,24 @@ export default function AdminMotors() {
                 ))}
               </div>
 
-              <div className="flex items-center gap-2.5">
-                <input type="checkbox" id="available" checked={form.available} onChange={(e) => setForm({ ...form, available: e.target.checked })} className="accent-gold w-4 h-4" />
-                <label htmlFor="available" className="text-sm font-medium text-charcoal">Motor tersedia untuk disewa</label>
+              <div>
+                <label className="block text-xs font-semibold text-charcoal mb-1.5">Status Motor *</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {STATUSES.map(({ value, label, color }) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => setForm({ ...form, status: value, available: value === 'AVAILABLE' })}
+                      className={`py-2 px-3 rounded-lg text-xs font-semibold border-2 transition-all ${
+                        form.status === value
+                          ? `${color} border-current`
+                          : 'border-gray-200 text-gray-400 hover:border-gray-300'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
