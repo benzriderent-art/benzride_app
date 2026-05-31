@@ -40,9 +40,9 @@ export default function FAQPage() {
         <div className="border-b border-gray-100 bg-white py-12">
           <div className="max-w-3xl mx-auto px-4 sm:px-6">
             <div className="flex items-center gap-2 text-xs text-gray-400 mb-4">
-              <Link to="/" className="hover:text-gold transition-colors">Home</Link>
+              <Link to="/" className="hover:text-gold transition-colors">{t('common.home')}</Link>
               <span>/</span>
-              <span className="text-gray-600">FAQ</span>
+              <span className="text-gray-600">{t('nav.faq')}</span>
             </div>
             <p className="text-xs font-black text-gold tracking-[0.25em] uppercase mb-2">{t('faq.badge')}</p>
             <h1 className="font-heading text-4xl font-bold text-charcoal">{t('faq.title')}</h1>

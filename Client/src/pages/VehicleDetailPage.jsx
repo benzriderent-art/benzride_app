@@ -8,7 +8,8 @@ import Footer from '@/components/layout/Footer'
 import ImageCarousel from '@/components/common/ImageCarousel'
 import { motorApi } from '@/api/motors'
 import { bookingApi } from '@/api/bookings'
-import { formatIDR } from '@/utils/formatCurrency'
+import { useCurrency } from '@/context/CurrencyContext'
+import CurrencyToggle from '@/components/common/CurrencyToggle'
 import { waLink } from '@/constants/contact'
 import Animate from '@/components/common/Animate'
 
@@ -23,6 +24,7 @@ export default function VehicleDetailPage() {
   const id = extractIdFromSlug(slug)
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { formatPrice } = useCurrency()
 
   const [vehicle, setVehicle] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -189,7 +191,10 @@ export default function VehicleDetailPage() {
               <div className="space-y-4 lg:sticky lg:top-24">
 
                 <div style={CARD} className="p-5">
-                  <p className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-4">{t('detail.pricing')}</p>
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="text-xs font-black text-gray-400 uppercase tracking-[0.2em]">{t('detail.pricing')}</p>
+                    <CurrencyToggle variant="light" />
+                  </div>
                   <div className="space-y-2">
                     <div
                       className="flex items-center justify-between px-4 py-3.5 rounded-xl"
@@ -197,7 +202,7 @@ export default function VehicleDetailPage() {
                     >
                       <div>
                         <p className="text-xs text-gray-500 mb-0.5">{t('detail.perDay')}</p>
-                        <p className="text-gold font-black text-2xl leading-none">{formatIDR(vehicle.priceDay)}</p>
+                        <p className="text-gold font-black text-2xl leading-none">{formatPrice(vehicle.priceDay)}</p>
                       </div>
                       <span className="text-[10px] font-black text-gold/60 uppercase tracking-wider">{t('detail.perDayTag')}</span>
                     </div>
@@ -206,7 +211,7 @@ export default function VehicleDetailPage() {
                       <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-gray-50 border border-gray-100">
                         <div>
                           <p className="text-xs text-gray-500">{t('detail.perWeek')}</p>
-                          <p className="text-charcoal font-bold text-base">{formatIDR(vehicle.priceWeek)}</p>
+                          <p className="text-charcoal font-bold text-base">{formatPrice(vehicle.priceWeek)}</p>
                         </div>
                         {savings(vehicle.priceWeek, vehicle.priceDay * 7) > 0 && (
                           <span className="text-[10px] font-black bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-1 rounded-lg">
@@ -220,7 +225,7 @@ export default function VehicleDetailPage() {
                       <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-gray-50 border border-gray-100">
                         <div>
                           <p className="text-xs text-gray-500">{t('detail.perMonth')}</p>
-                          <p className="text-charcoal font-bold text-base">{formatIDR(vehicle.priceMonth)}</p>
+                          <p className="text-charcoal font-bold text-base">{formatPrice(vehicle.priceMonth)}</p>
                         </div>
                         {savings(vehicle.priceMonth, vehicle.priceDay * 30) > 0 && (
                           <span className="text-[10px] font-black bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-1 rounded-lg">

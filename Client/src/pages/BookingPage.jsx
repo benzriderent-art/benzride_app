@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, MessageCircle, Star, Bike, AlertCircle, CalendarDays, MapPin, User, Phone, FileText, CreditCard, CheckCircle, Truck, Shield, Wrench } from 'lucide-react'
+import { ArrowLeft, MessageCircle, Star, Bike, AlertCircle, CalendarDays, MapPin, User, Phone, FileText, CreditCard, CheckCircle, Truck, Shield, Wrench, Clock, IdCard } from 'lucide-react'
 import ImageCarousel from '@/components/common/ImageCarousel'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import { motorApi } from '@/api/motors'
 import { bookingApi } from '@/api/bookings'
 import { formatIDR } from '@/utils/formatCurrency'
+import { useCurrency } from '@/context/CurrencyContext'
+import CurrencyToggle from '@/components/common/CurrencyToggle'
 import { calculateBookingPrice, getPriceBreakdown } from '@/utils/pricingEngine'
 import { extractIdFromSlug } from '@/utils/slugify'
 import { waLink } from '@/constants/contact'
@@ -20,20 +22,144 @@ const CARD = {
 }
 
 function buildWAMessage(vehicle, form, duration, total) {
+  const identityLine = form.identityType
+    ? `Tipe ID: ${form.identityType === 'KTP' ? 'WNI - KTP' : 'WNA - Passport'}${form.identityNumber ? ` (${form.identityNumber})` : ''}`
+    : ''
+  const photoLine = form.identityFileName
+    ? `Foto ID: ${form.identityFileName} *(akan dikirim di chat ini)*`
+    : `Foto ID: akan dikirim via WhatsApp`
+
   return `Halo Benz Rental Bali, saya ingin memesan motor:
 
 Motor: ${vehicle.name}
 Tanggal Mulai: ${form.startDate}
 Tanggal Selesai: ${form.endDate}
+Jam Pengantaran: ${form.deliveryTime || '-'}
 Durasi: ${duration} hari
 Total Harga: ${formatIDR(total)}
 
 Nama: ${form.name}
 No. WhatsApp: ${form.phone}
 Lokasi Pengiriman: ${form.deliveryLocation}
+${identityLine}
+${photoLine}
 ${form.notes ? `Catatan: ${form.notes}` : ''}
-
 Mohon konfirmasi ketersediaan. Terima kasih!`
+}
+
+const DELIVERY_HOURS = Array.from({ length: 17 }, (_, i) => i + 6) // 06:00–22:00
+const MINUTES = ['00', '30']
+
+function DeliveryTimePicker({ value, onChange, isID, hasError }) {
+  const parts = value ? value.split(':') : ['', '00']
+  const h24 = parts[0] !== '' ? parseInt(parts[0]) : ''
+  const min = parts[1] ?? '00'
+
+  const selCls = (err) =>
+    `rounded-xl px-3 py-3 text-sm text-white bg-white/[0.05] border focus:outline-none transition-colors appearance-none cursor-pointer ` +
+    (err ? 'border-red-500/40 focus:border-red-400' : 'border-white/10 focus:border-gold')
+
+  const commit = (newH24, newMin) => {
+    if (newH24 === '' || newH24 === undefined) { onChange(''); return }
+    onChange(`${String(newH24).padStart(2, '0')}:${newMin}`)
+  }
+
+  if (isID) {
+    return (
+      <div className="flex gap-2">
+        <select
+          value={h24}
+          onChange={e => commit(e.target.value !== '' ? parseInt(e.target.value) : '', min)}
+          className={`flex-1 ${selCls(hasError)}`}
+          style={{ background: 'rgba(255,255,255,0.05)' }}
+        >
+          <option value="" style={{ background: '#1a1a1a' }}>-- Jam --</option>
+          {DELIVERY_HOURS.map(h => (
+            <option key={h} value={h} style={{ background: '#1a1a1a' }}>
+              {String(h).padStart(2, '0')}
+            </option>
+          ))}
+        </select>
+        <select
+          value={min}
+          onChange={e => commit(h24, e.target.value)}
+          disabled={h24 === ''}
+          className={`w-20 ${selCls(false)}`}
+          style={{ background: 'rgba(255,255,255,0.05)' }}
+        >
+          {MINUTES.map(m => (
+            <option key={m} value={m} style={{ background: '#1a1a1a' }}>{m}</option>
+          ))}
+        </select>
+        <div className="flex items-center justify-center px-3 rounded-xl text-xs font-bold text-white/25 border border-white/10 shrink-0">
+          WITA
+        </div>
+      </div>
+    )
+  }
+
+  // EN: 12-hour with AM/PM
+  const ampm = h24 !== '' ? (h24 >= 12 ? 'PM' : 'AM') : 'AM'
+  const h12display = h24 !== '' ? (h24 % 12 || 12) : ''
+
+  const handleH12 = (val) => {
+    if (!val) { onChange(''); return }
+    const h = parseInt(val)
+    const h24new = ampm === 'AM' ? (h === 12 ? 0 : h) : (h === 12 ? 12 : h + 12)
+    commit(h24new, min)
+  }
+
+  const handleAmPm = (period) => {
+    if (h24 === '') return
+    let h = h24
+    if (period === 'AM' && h >= 12) h -= 12
+    if (period === 'PM' && h < 12) h += 12
+    commit(h, min)
+  }
+
+  return (
+    <div className="flex gap-2">
+      <select
+        value={h12display}
+        onChange={e => handleH12(e.target.value)}
+        className={`flex-1 ${selCls(hasError)}`}
+        style={{ background: 'rgba(255,255,255,0.05)' }}
+      >
+        <option value="" style={{ background: '#1a1a1a' }}>-- Hour --</option>
+        {[...Array(12)].map((_, i) => {
+          const h = i + 1
+          return <option key={h} value={h} style={{ background: '#1a1a1a' }}>{h}</option>
+        })}
+      </select>
+      <select
+        value={min}
+        onChange={e => { if (h24 !== '') commit(h24, e.target.value) }}
+        disabled={h12display === ''}
+        className={`w-20 ${selCls(false)}`}
+        style={{ background: 'rgba(255,255,255,0.05)' }}
+      >
+        {MINUTES.map(m => (
+          <option key={m} value={m} style={{ background: '#1a1a1a' }}>{m}</option>
+        ))}
+      </select>
+      <div className="flex rounded-xl overflow-hidden border border-white/10 shrink-0">
+        {['AM', 'PM'].map(period => (
+          <button
+            key={period}
+            type="button"
+            onClick={() => handleAmPm(period)}
+            className={`px-3 py-2 text-xs font-bold transition-colors ${
+              ampm === period
+                ? 'bg-gold text-charcoal'
+                : 'bg-white/[0.03] text-white/30 hover:text-white/60'
+            }`}
+          >
+            {period}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 function Label({ icon: Icon, text, required }) {
@@ -50,7 +176,9 @@ export default function BookingPage() {
   const { slug } = useParams()
   const id = extractIdFromSlug(slug)
   const navigate = useNavigate()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const isID = i18n.language === 'id'
+  const { formatPrice, currency } = useCurrency()
 
   const [vehicle, setVehicle] = useState(null)
   const [vehicleLoading, setVehicleLoading] = useState(true)
@@ -62,9 +190,13 @@ export default function BookingPage() {
   const [form, setForm] = useState({
     startDate: '',
     endDate: '',
+    deliveryTime: '',
     name: '',
     phone: '',
     deliveryLocation: '',
+    identityType: 'KTP',
+    identityNumber: '',
+    identityFileName: '',
     notes: '',
   })
   const [errors, setErrors] = useState({})
@@ -96,7 +228,7 @@ export default function BookingPage() {
   }
 
   const minEndDate = form.startDate
-    ? new Date(new Date(form.startDate).getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+    ? new Date(new Date(form.startDate).getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
     : today
 
   const duration = getDuration()
@@ -125,6 +257,7 @@ export default function BookingPage() {
       if (d < 3) errs.endDate = t('booking.invalidDate')
       else if (hasOverlap(f.startDate, f.endDate)) errs.endDate = t('booking.dateConflict')
     }
+    if (!f.deliveryTime) errs.deliveryTime = t('booking.required')
     if (!f.name.trim()) errs.name = t('booking.required')
     if (!f.phone.trim()) errs.phone = t('booking.required')
     if (!f.deliveryLocation.trim()) errs.deliveryLocation = t('booking.required')
@@ -227,8 +360,7 @@ export default function BookingPage() {
 
           <div className="grid lg:grid-cols-[5fr_7fr] gap-6 items-start">
 
-            <Animate type="left">
-              <div className="lg:sticky lg:top-24 space-y-4">
+            <div className="lg:sticky lg:top-24 space-y-4">
                 <div style={CARD} className="overflow-hidden shadow-sm">
                   <div className="aspect-[4/3]">
                     <ImageCarousel images={vehicle.images ?? []} alt={vehicle.name} />
@@ -256,17 +388,25 @@ export default function BookingPage() {
                       ))}
                     </div>
 
-                    <div className="space-y-1.5 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                      {[
-                        { key: 'perDay', price: vehicle.priceDay },
-                        { key: 'perWeek', price: vehicle.priceWeek },
-                        { key: 'perMonth', price: vehicle.priceMonth },
-                      ].filter(r => r.price > 0).map(({ key, price }) => (
-                        <div key={key} className="flex items-center justify-between text-sm">
-                          <span className="text-white/30">{t(`bookingPage.${key}`)}</span>
-                          <span className="font-semibold text-white/70">{formatIDR(price)}</span>
-                        </div>
-                      ))}
+                    <div className="pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-[10px] font-black text-white/25 uppercase tracking-[0.2em]">
+                          {t('booking.priceCalc')}
+                        </span>
+                        <CurrencyToggle variant="dark" />
+                      </div>
+                      <div className="space-y-1.5">
+                        {[
+                          { key: 'perDay', price: vehicle.priceDay },
+                          { key: 'perWeek', price: vehicle.priceWeek },
+                          { key: 'perMonth', price: vehicle.priceMonth },
+                        ].filter(r => r.price > 0).map(({ key, price }) => (
+                          <div key={key} className="flex items-center justify-between text-sm">
+                            <span className="text-white/30">{t(`bookingPage.${key}`)}</span>
+                            <span className="font-semibold text-white/70">{formatPrice(price)}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
                     <div className="flex items-center gap-1.5 mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
@@ -289,8 +429,7 @@ export default function BookingPage() {
                     ))}
                   </div>
                 </div>
-              </div>
-            </Animate>
+            </div>
 
             <Animate type="right" delay={80}>
               <div style={CARD} className="p-6 sm:p-8 shadow-sm">
@@ -356,9 +495,25 @@ export default function BookingPage() {
                         {errors.endDate && <p className="text-xs text-red-500 mt-1.5">{errors.endDate}</p>}
                       </div>
                     </div>
+
+                    <div className="mt-3">
+                      <Label icon={Clock} text={t('booking.deliveryTime')} required />
+                      <DeliveryTimePicker
+                        value={form.deliveryTime}
+                        onChange={val => {
+                          const updated = { ...form, deliveryTime: val }
+                          setForm(updated)
+                          if (touched) setErrors(validate(updated))
+                        }}
+                        isID={isID}
+                        hasError={!!errors.deliveryTime}
+                      />
+                      {errors.deliveryTime && <p className="text-xs text-red-500 mt-1.5">{errors.deliveryTime}</p>}
+                      <p className="text-[11px] text-white/20 mt-1.5">{t('booking.deliveryTimeHint')}</p>
+                    </div>
                   </div>
 
-                  {duration && totalPrice ? (
+                  {duration !== null && totalPrice !== null && totalPrice > 0 ? (
                     <div
                       className="rounded-xl p-4"
                       style={{ background: 'rgba(201,162,75,0.08)', border: '1px solid rgba(201,162,75,0.2)' }}
@@ -367,8 +522,8 @@ export default function BookingPage() {
                       <div className="space-y-1.5 mb-3">
                         {priceLines.map((line, i) => (
                           <div key={i} className="flex items-center justify-between text-sm text-gray-600">
-                            <span>{line.qty} {line.unit} × {formatIDR(line.price)}</span>
-                            <span className="font-semibold text-charcoal">{formatIDR(line.qty * line.price)}</span>
+                            <span>{line.qty} {t(`booking.unit_${line.unit}`)} × {formatPrice(line.price)}</span>
+                            <span className="font-semibold text-charcoal">{formatPrice(line.qty * line.price)}</span>
                           </div>
                         ))}
                       </div>
@@ -377,7 +532,12 @@ export default function BookingPage() {
                         style={{ borderColor: 'rgba(201,162,75,0.25)' }}
                       >
                         <span className="text-sm font-bold text-gray-600">{t('booking.total')}</span>
-                        <span className="text-2xl font-black text-gold">{formatIDR(totalPrice)}</span>
+                        <div className="text-right">
+                          <span className="text-2xl font-black text-gold block">{formatPrice(totalPrice)}</span>
+                          {currency === 'USD' && (
+                            <span className="text-[10px] text-white/25">{formatIDR(totalPrice)} IDR</span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ) : (
@@ -441,6 +601,82 @@ export default function BookingPage() {
                           placeholder={t('booking.notesPlaceholder')}
                           className={`${fieldClass('notes')} resize-none`}
                         />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Identity Section */}
+                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '20px' }}>
+                    <p className="text-[10px] font-black text-white/25 uppercase tracking-[0.25em] mb-4 flex items-center gap-2">
+                      <IdCard size={10} className="text-gold" />
+                      {t('booking.identitySection')}
+                    </p>
+                    <div className="space-y-4">
+                      <div>
+                        <Label icon={IdCard} text={t('booking.identityType')} required />
+                        <div className="grid grid-cols-2 gap-2">
+                          {['KTP', 'PASSPORT'].map(type => (
+                            <button
+                              key={type}
+                              type="button"
+                              onClick={() => setForm(f => ({ ...f, identityType: type }))}
+                              className={`py-3 rounded-xl text-sm font-bold transition-all ${
+                                form.identityType === type
+                                  ? 'bg-gold text-charcoal'
+                                  : 'text-white/40 border border-white/10 hover:border-white/25'
+                              }`}
+                            >
+                              {type === 'KTP' ? t('booking.identityKTP') : t('booking.identityPassport')}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label icon={FileText} text={t('booking.identityNumber')} />
+                        <input
+                          type="text"
+                          name="identityNumber"
+                          value={form.identityNumber}
+                          onChange={handleChange}
+                          placeholder={form.identityType === 'KTP' ? t('booking.identityNumberKTPPlaceholder') : t('booking.identityNumberPassportPlaceholder')}
+                          className={fieldClass('identityNumber')}
+                        />
+                      </div>
+
+                      <div>
+                        <Label icon={FileText} text={t('booking.identityPhoto')} />
+                        <label
+                          className={`flex items-center gap-3 w-full rounded-xl px-4 py-3 text-sm border transition-colors ${
+                            form.identityFileName
+                              ? 'border-gold/40 bg-gold/5'
+                              : 'border-white/10 bg-white/[0.05] hover:border-white/25'
+                          }`}
+                        >
+                          <FileText size={15} className={form.identityFileName ? 'text-gold shrink-0' : 'text-white/25 shrink-0'} />
+                          <span className={`text-sm truncate ${form.identityFileName ? 'text-white/80' : 'text-white/25'}`}>
+                            {form.identityFileName || t('booking.identityPhotoPlaceholder')}
+                          </span>
+                          <input
+                            type="file"
+                            accept="image/*,.pdf"
+                            className="hidden"
+                            onChange={e => {
+                              const file = e.target.files[0]
+                              if (file) setForm(f => ({ ...f, identityFileName: file.name }))
+                            }}
+                          />
+                        </label>
+                      </div>
+
+                      <div
+                        className="flex items-start gap-3 rounded-xl px-4 py-3.5"
+                        style={{ background: 'rgba(201,162,75,0.06)', border: '1px solid rgba(201,162,75,0.15)' }}
+                      >
+                        <MessageCircle size={13} className="text-gold mt-0.5 shrink-0" />
+                        <p className="text-xs text-white/40 leading-relaxed">
+                          {t('booking.identityNote')}
+                        </p>
                       </div>
                     </div>
                   </div>

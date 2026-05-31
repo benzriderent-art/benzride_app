@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
-import { MapPin, Phone, MessageCircle, Star } from 'lucide-react'
-import { waLink, PHONE_DISPLAY, PHONE_TEL, SOCIAL } from '@/constants/contact'
+import { MapPin, Phone, MessageCircle, Star, Mail } from 'lucide-react'
+import { waLink, PHONE_DISPLAY, PHONE_TEL, SOCIAL, EMAIL, EMAIL_HREF } from '@/constants/contact'
 
 const NAV_LINKS = [
+  { key: 'about',     page: '/about' },
   { key: 'fleet',     page: '/fleet' },
   { key: 'howToRent', anchor: '#how-to-rent' },
   { key: 'reviews',   anchor: '#reviews' },
@@ -67,11 +68,13 @@ export default function Footer() {
         <div className="py-14 grid sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-10">
           <div>
             <div className="mb-5">
-              <Link to="/" className="inline-flex items-baseline gap-1.5">
-                <span className="font-heading text-2xl font-bold text-white tracking-wider">BENZ</span>
-                <span className="font-heading text-2xl font-bold text-gold">RENTAL</span>
+              <Link to="/" className="inline-block">
+                <img
+                  src="/logo_dengan_background_putih.png"
+                  alt="Benzride.com"
+                  className="h-20 w-auto rounded-xl"
+                />
               </Link>
-              <p className="text-[10px] text-white/25 tracking-[0.3em] uppercase mt-1">Bali, Indonesia</p>
             </div>
             <p className="text-sm text-white/35 leading-relaxed max-w-xs mb-6">
               {t('footer.tagline')}
@@ -95,7 +98,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="text-sm text-white/35 hover:text-gold transition-colors">FAQ</Link>
+                <Link to="/faq" className="text-sm text-white/35 hover:text-gold transition-colors">{t('nav.faq')}</Link>
               </li>
               <li className="pt-1.5 border-t border-white/[0.06]" />
               <li>
@@ -134,6 +137,15 @@ export default function Footer() {
                 >
                   <Phone size={14} className="text-gold shrink-0" />
                   {PHONE_DISPLAY}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={EMAIL_HREF}
+                  className="flex items-center gap-2.5 text-sm text-white/35 hover:text-gold transition-colors"
+                >
+                  <Mail size={14} className="text-gold shrink-0" />
+                  {EMAIL}
                 </a>
               </li>
             </ul>
@@ -183,7 +195,7 @@ export default function Footer() {
 
         <div className="border-t border-white/[0.07] py-5 flex items-center justify-between gap-4 flex-wrap">
           <p className="text-xs text-white/20">
-            © {year} Benz Rental Bali. {t('footer.rights')}.
+            © {year} Benzride.com · PT Malaya Benz Group. {t('footer.rights')}.
           </p>
           <div className="flex items-center gap-1.5">
             {[...Array(5)].map((_, i) => (

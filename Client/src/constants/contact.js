@@ -1,6 +1,8 @@
-export const WA_NUMBER = '6281234567890'
-export const PHONE_DISPLAY = '+62 812-3456-7890'
-export const PHONE_TEL = 'tel:+6281234567890'
+export const WA_NUMBER = '62818540525'
+export const PHONE_DISPLAY = '+62 818-540-525'
+export const PHONE_TEL = 'tel:+62818540525'
+export const EMAIL = 'hello@benzride.com'
+export const EMAIL_HREF = 'mailto:hello@benzride.com'
 
 export const SOCIAL = {
   instagram: 'https://instagram.com/benzrentalbali',

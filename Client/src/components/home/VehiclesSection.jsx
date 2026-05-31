@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
-import { formatIDR } from '@/utils/formatCurrency'
+import { useCurrency } from '@/context/CurrencyContext'
 import { motorSlug } from '@/utils/slugify'
 import ImageCarousel from '@/components/common/ImageCarousel'
 import Animate from '@/components/common/Animate'
@@ -10,6 +10,7 @@ import { motorApi } from '@/api/motors'
 
 export default function VehiclesSection() {
   const { t } = useTranslation()
+  const { formatPrice } = useCurrency()
   const [vehicles, setVehicles] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -100,20 +101,33 @@ export default function VehiclesSection() {
                         {v.cc} CC · {t(`vehicles.${v.transmission ?? 'automatic'}`)} · {v.year}
                       </p>
                       <h3 className="font-heading text-xl font-bold text-white mb-3 leading-tight">{v.name}</h3>
-                      <div className="flex items-center justify-between">
-                        <div>
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="min-w-0">
                           <p className="text-[9px] text-white/35 uppercase tracking-wider">{t('vehicles.startFrom')}</p>
                           <p className="text-gold font-black text-xl leading-none">
-                            {formatIDR(v.priceDay)}
+                            {formatPrice(v.priceDay)}
                             <span className="text-white/35 text-xs font-normal ml-0.5">{t('vehicles.perDay')}</span>
                           </p>
+                          {(v.priceWeek > 0 || v.priceMonth > 0) && (
+                            <p className="text-[9px] text-white/25 mt-1 leading-snug truncate">
+                              {v.priceWeek > 0 && <>{formatPrice(v.priceWeek)}{t('vehicles.perWeek')}</>}
+                              {v.priceWeek > 0 && v.priceMonth > 0 && ' · '}
+                              {v.priceMonth > 0 && <>{formatPrice(v.priceMonth)}{t('vehicles.perMonth')}</>}
+                            </p>
+                          )}
                         </div>
-                        <Link
-                          to={v.available ? `/booking/${motorSlug(v)}` : '#'}
-                          className={`pointer-events-auto text-xs font-bold px-4 py-2.5 rounded-xl transition-colors ${v.available ? 'bg-gold text-charcoal hover:opacity-90' : 'bg-white/10 text-white/25 cursor-not-allowed'}`}
-                        >
-                          {v.available ? t('vehicles.rentNow') : t('vehicles.notAvailable')}
-                        </Link>
+                        {v.available ? (
+                          <Link
+                            to={`/booking/${motorSlug(v)}`}
+                            className="pointer-events-auto text-xs font-bold px-4 py-2.5 rounded-xl bg-gold text-charcoal hover:opacity-90 transition-opacity shrink-0"
+                          >
+                            {t('vehicles.rentNow')}
+                          </Link>
+                        ) : (
+                          <span className="pointer-events-auto text-xs font-bold px-4 py-2.5 rounded-xl bg-white/10 text-white/25 cursor-not-allowed select-none shrink-0">
+                            {t('vehicles.notAvailable')}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>

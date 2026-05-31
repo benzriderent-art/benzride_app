@@ -1,5 +1,7 @@
 {
   "nav": {
+    "home": "Home",
+    "about": "Tentang",
     "fleet": "Armada",
     "howToRent": "Cara Sewa",
     "reviews": "Ulasan",
@@ -119,18 +121,27 @@
     "title": "Ulasan Pelanggan",
     "subtitle": "Apa kata mereka yang sudah mempercayakan perjalanan Bali-nya bersama kami",
     "reviewCount": "ulasan",
+    "googleBadge": "Google Reviews",
+    "seeGoogle": "Lihat semua ulasan di Google",
+    "verifiedGoogle": "Ulasan Google Terverifikasi",
     "items": [
       {
-        "name": "Sarah M.",
-        "origin": "Jakarta, Indonesia",
+        "name": "James R.",
+        "origin": "Sydney, Australia",
         "rating": 5,
-        "text": "Pelayanan sangat bagus! Motor bersih dan terawat. Diantarkan tepat waktu ke hotel kami. Helm dan jas hujan sudah termasuk. Pasti sewa lagi di trip Bali berikutnya!"
+        "text": "Pengalaman yang sangat mulus. Pesan via WhatsApp, NMAX diantar ke villa di Canggu tepat waktu. Motor bersih sekali. Akan pakai Benzride setiap kali ke Bali!"
+      },
+      {
+        "name": "Emma L.",
+        "origin": "London, United Kingdom",
+        "rating": 5,
+        "text": "Sangat impress! Saya sempat khawatir sewa motor di Bali tapi timnya membuat semuanya mudah. Scoopy diantar ke hotel di Seminyak, dan mereka bahkan bantu rekomendasikan rute."
       },
       {
         "name": "David K.",
         "origin": "Melbourne, Australia",
         "rating": 5,
-        "text": "Excellent service! The bike was in perfect condition and was delivered right to our villa in Seminyak. Very responsive on WhatsApp and everything was smooth and easy."
+        "text": "PCX diantar tepat sesuai waktu yang disepakati. Motor sangat bersih. Responsif di WhatsApp bahkan jam 11 malam waktu saya ada pertanyaan. Tidak bisa minta lebih!"
       },
       {
         "name": "Rina S.",
@@ -149,8 +160,8 @@
     "noHiddenFees": "Tanpa biaya tersembunyi"
   },
   "footer": {
-    "tagline": "Rental motor terpercaya di Bali sejak 2018. Antar-jemput, harga transparan, helm gratis.",
-    "address": "Jl. Bypass Ngurah Rai No. 88, Kuta, Bali 80361",
+    "tagline": "Sewa skuter & motor premium di Bali. Antar ke hotel, bandara, dan villa. Harga transparan.",
+    "address": "Jl. Uluwatu II No. 6, Jimbaran, Bali, Indonesia",
     "links": "Tautan",
     "contact": "Kontak",
     "rights": "Hak cipta dilindungi",
@@ -186,7 +197,22 @@
     "dateConflict": "Motor sudah dipesan pada tanggal ini. Pilih tanggal lain.",
     "notFound": "Motor Tidak Ditemukan",
     "notFoundDesc": "Motor yang kamu cari tidak tersedia. Silakan pilih motor lain dari armada kami.",
-    "backToFleet": "Lihat Armada"
+    "backToFleet": "Lihat Armada",
+    "deliveryTime": "Jam Pengantaran",
+    "deliveryTimeHint": "Kami akan mengantarkan motor ke lokasimu pada jam ini di tanggal mulai sewa.",
+    "identitySection": "Identitas",
+    "identityType": "Tipe Identitas",
+    "identityKTP": "🇮🇩 WNI (KTP)",
+    "identityPassport": "🌍 WNA (Paspor)",
+    "identityNumber": "Nomor KTP / Paspor (opsional)",
+    "identityNumberKTPPlaceholder": "16 digit nomor KTP",
+    "identityNumberPassportPlaceholder": "Nomor paspor",
+    "identityPhoto": "Upload Foto KTP / Paspor",
+    "identityPhotoPlaceholder": "Klik untuk pilih foto atau PDF",
+    "identityNote": "Upload foto identitasmu di sini atau kirim via WhatsApp setelah pesan. Tim kami akan memverifikasi sebelum konfirmasi booking.",
+    "unit_day": "hari",
+    "unit_week": "minggu",
+    "unit_month": "bulan"
   },
   "common": {
     "back": "Kembali",

@@ -5,11 +5,11 @@ import { Menu, X } from 'lucide-react'
 import LanguageSwitcher from '@/components/common/LanguageSwitcher'
 
 const NAV_LINKS = [
+  { key: 'home',      page: '/' },
   { key: 'fleet',     page: '/fleet' },
-  { key: 'howToRent', anchor: '#how-to-rent' },
-  { key: 'reviews',   anchor: '#reviews' },
   { key: 'faq',       page: '/faq' },
-  { key: 'contact',   anchor: '#contact' },
+  { key: 'about',     page: '/about' },
+  { key: 'howToRent', anchor: '#how-to-rent' },
 ]
 
 export default function Navbar() {
@@ -69,11 +69,8 @@ export default function Navbar() {
       }`}
     >
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
-        <Link to="/" className="flex flex-col leading-none select-none">
-          <span className="font-heading text-xl font-bold text-charcoal tracking-wider">BENZ</span>
-          <span className="text-[10px] text-gold font-bold tracking-[0.2em] uppercase -mt-0.5">
-            Rental Bali
-          </span>
+        <Link to="/" className="flex items-center shrink-0">
+          <img src="/logo.png" alt="Benzride.com" className="h-12 w-auto" />
         </Link>
 
         <div className="hidden md:flex items-center gap-7">
