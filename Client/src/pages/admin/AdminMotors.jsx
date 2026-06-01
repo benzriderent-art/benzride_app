@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { Plus, Pencil, Trash2, X, Camera, Upload } from 'lucide-react'
+import { Plus, Pencil, Trash2, X, Camera, Upload, Bike } from 'lucide-react'
+import { toast } from 'sonner'
 import { motorApi } from '@/api/motors'
 import { motorImageApi } from '@/api/motorImages'
 import { formatIDR } from '@/utils/formatCurrency'
@@ -36,14 +37,12 @@ export default function AdminMotors() {
   const [deleteId, setDeleteId] = useState(null)
   const [errors, setErrors] = useState({})
   const [saving, setSaving] = useState(false)
-  const [saveError, setSaveError] = useState('')
-  const [deleteError, setDeleteError] = useState('')
-  const [imageError, setImageError] = useState('')
 
   const [imageMotor, setImageMotor] = useState(null)
   const [uploadingImages, setUploadingImages] = useState(false)
   const [deletingImageId, setDeletingImageId] = useState(null)
   const fileInputRef = useRef(null)
+  const originalFormRef = useRef(null)
 
   const fetchMotors = () =>
     motorApi.getAll()
@@ -56,32 +55,51 @@ export default function AdminMotors() {
     setEditing(null)
     setForm(EMPTY_FORM)
     setErrors({})
+    originalFormRef.current = { ...EMPTY_FORM }
     setModal(true)
   }
 
   const openEdit = (motor) => {
     setEditing(motor.id)
-    setForm({ ...motor, status: statusFromMotor(motor) })
+    const initial = { ...motor, status: statusFromMotor(motor) }
+    setForm(initial)
     setErrors({})
+    originalFormRef.current = { ...initial }
     setModal(true)
   }
 
-  const closeModal = () => {
+  const isFormDirty = () => {
+    if (!originalFormRef.current) return false
+    return Object.keys(EMPTY_FORM).some(
+      k => String(form[k] ?? '') !== String(originalFormRef.current[k] ?? '')
+    )
+  }
+
+  const closeModal = (force = false) => {
+    if (!force && isFormDirty()) {
+      if (!window.confirm('Ada perubahan yang belum disimpan. Yakin ingin menutup?')) return
+    }
     setModal(false)
     setEditing(null)
     setErrors({})
-    setSaveError('')
+    originalFormRef.current = null
   }
 
-  const validate = () => {
+  const validate = (f = form) => {
     const errs = {}
-    if (!form.name.trim()) errs.name = 'Wajib diisi'
-    if (!form.cc || form.cc <= 0) errs.cc = 'Wajib diisi'
-    if (!form.year || form.year < 2010) errs.year = 'Tahun tidak valid'
-    if (!form.priceDay || form.priceDay <= 0) errs.priceDay = 'Wajib diisi'
-    if (!form.priceWeek || form.priceWeek <= 0) errs.priceWeek = 'Wajib diisi'
-    if (!form.priceMonth || form.priceMonth <= 0) errs.priceMonth = 'Wajib diisi'
+    if (!f.name.trim()) errs.name = 'Wajib diisi'
+    if (!f.cc || f.cc <= 0) errs.cc = 'Wajib diisi'
+    if (!f.year || f.year < 2010) errs.year = 'Tahun tidak valid'
+    if (!f.priceDay || f.priceDay <= 0) errs.priceDay = 'Wajib diisi'
+    if (!f.priceWeek || f.priceWeek <= 0) errs.priceWeek = 'Wajib diisi'
+    if (!f.priceMonth || f.priceMonth <= 0) errs.priceMonth = 'Wajib diisi'
     return errs
+  }
+
+  const handleFieldChange = (field, value) => {
+    const updated = { ...form, [field]: value }
+    setForm(updated)
+    if (Object.keys(errors).length > 0) setErrors(validate(updated))
   }
 
   const handleSave = async () => {
@@ -102,13 +120,15 @@ export default function AdminMotors() {
     try {
       if (editing) {
         await motorApi.update(editing, data)
+        toast.success('Motor berhasil diperbarui')
       } else {
         await motorApi.create(data)
+        toast.success('Motor berhasil ditambahkan')
       }
       closeModal()
       fetchMotors()
     } catch {
-      setSaveError('Gagal menyimpan data motor. Coba lagi.')
+      toast.error('Gagal menyimpan data motor. Coba lagi.')
     } finally {
       setSaving(false)
     }
@@ -119,13 +139,13 @@ export default function AdminMotors() {
       await motorApi.delete(deleteId)
       setDeleteId(null)
       fetchMotors()
+      toast.success('Motor berhasil dihapus')
     } catch {
-      setDeleteError('Gagal menghapus motor. Coba lagi.')
+      toast.error('Gagal menghapus motor. Coba lagi.')
     }
   }
 
   const openImageModal = (motor) => {
-    setImageError('')
     setImageMotor(motors.find((m) => m.id === motor.id))
   }
 
@@ -139,8 +159,9 @@ export default function AdminMotors() {
       const normalized = updated.map((m) => ({ ...m, transmission: m.transmission?.toLowerCase() }))
       setMotors(normalized)
       setImageMotor(normalized.find((m) => m.id === imageMotor.id))
+      toast.success(`${files.length} foto berhasil diupload`)
     } catch {
-      setImageError('Gagal mengupload gambar. Coba lagi.')
+      toast.error('Gagal mengupload gambar. Coba lagi.')
     } finally {
       setUploadingImages(false)
       e.target.value = ''
@@ -155,8 +176,9 @@ export default function AdminMotors() {
       const normalized = updated.map((m) => ({ ...m, transmission: m.transmission?.toLowerCase() }))
       setMotors(normalized)
       setImageMotor(normalized.find((m) => m.id === imageMotor.id))
+      toast.success('Foto berhasil dihapus')
     } catch {
-      setImageError('Gagal menghapus gambar. Coba lagi.')
+      toast.error('Gagal menghapus gambar. Coba lagi.')
     } finally {
       setDeletingImageId(null)
     }
@@ -188,27 +210,58 @@ export default function AdminMotors() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-50">
-                {['No', 'Nama Motor', 'CC', 'Transmisi', 'Tahun', 'Harga/Hari', 'Foto', 'Status', 'Aksi'].map((h) => (
-                  <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">
-                    {h}
-                  </th>
-                ))}
+                <th className="hidden sm:table-cell text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">No</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Nama Motor</th>
+                <th className="hidden sm:table-cell text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">CC</th>
+                <th className="hidden sm:table-cell text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Transmisi</th>
+                <th className="hidden sm:table-cell text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Tahun</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Harga/Hari</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Foto</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Status</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
+                [...Array(5)].map((_, i) => (
+                  <tr key={i} className="border-b border-gray-50">
+                    {['w-5', 'w-32', 'w-12', 'w-16', 'w-12', 'w-24', 'w-10', 'w-20', 'w-16'].map((w, j) => (
+                      <td key={j} className="px-4 py-3.5">
+                        <div className={`h-3.5 ${w} bg-gray-100 animate-pulse rounded`} />
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : motors.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-8 text-center text-sm text-gray-400">Memuat data...</td>
+                  <td colSpan={9} className="px-4 py-14 text-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-14 h-14 rounded-full bg-gray-50 flex items-center justify-center">
+                        <Bike size={24} className="text-gray-300" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-400 mb-1">Belum ada motor terdaftar</p>
+                        <p className="text-xs text-gray-300">Tambahkan motor pertama untuk mulai menerima booking</p>
+                      </div>
+                      <button
+                        onClick={openAdd}
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold bg-charcoal text-white px-4 py-2 rounded-lg hover:bg-gold transition-colors mt-1"
+                      >
+                        <Plus size={13} />
+                        Tambah Motor
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ) : motors.map((motor, idx) => (
                 <tr key={motor.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50/50">
-                  <td className="px-4 py-3 text-gray-400 text-xs">{idx + 1}</td>
+                  <td className="hidden sm:table-cell px-4 py-3 text-gray-400 text-xs">{idx + 1}</td>
                   <td className="px-4 py-3 font-semibold text-charcoal whitespace-nowrap">{motor.name}</td>
-                  <td className="px-4 py-3 text-gray-600">{motor.cc}</td>
-                  <td className="px-4 py-3 text-gray-600 capitalize">
+                  <td className="hidden sm:table-cell px-4 py-3 text-gray-600">{motor.cc}</td>
+                  <td className="hidden sm:table-cell px-4 py-3 text-gray-600 capitalize">
                     {motor.transmission === 'automatic' ? 'Matik' : 'Manual'}
                   </td>
-                  <td className="px-4 py-3 text-gray-600">{motor.year}</td>
+                  <td className="hidden sm:table-cell px-4 py-3 text-gray-600">{motor.year}</td>
                   <td className="px-4 py-3 font-semibold text-charcoal whitespace-nowrap">
                     {formatIDR(motor.priceDay)}
                   </td>
@@ -261,22 +314,22 @@ export default function AdminMotors() {
               </button>
             </div>
 
-            <div className="px-6 py-5 space-y-4">
+            <div className="px-6 py-5 space-y-4 light-form">
               <div>
                 <label className="block text-xs font-semibold text-charcoal mb-1.5">Nama Motor *</label>
-                <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={fieldClass('name')} placeholder="Honda PCX 160" />
+                <input type="text" value={form.name} onChange={(e) => handleFieldChange('name', e.target.value)} className={fieldClass('name')} placeholder="Honda PCX 160" />
                 {errors.name && <p className="text-xs text-red-400 mt-1">{errors.name}</p>}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-charcoal mb-1.5">CC *</label>
-                  <input type="number" value={form.cc} onChange={(e) => setForm({ ...form, cc: e.target.value })} className={fieldClass('cc')} placeholder="160" min={50} max={1000} />
+                  <input type="number" value={form.cc} onChange={(e) => handleFieldChange('cc', e.target.value)} className={fieldClass('cc')} placeholder="160" min={50} max={1000} />
                   {errors.cc && <p className="text-xs text-red-400 mt-1">{errors.cc}</p>}
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-charcoal mb-1.5">Tahun *</label>
-                  <input type="number" value={form.year} onChange={(e) => setForm({ ...form, year: e.target.value })} className={fieldClass('year')} min={2010} max={2030} />
+                  <input type="number" value={form.year} onChange={(e) => handleFieldChange('year', e.target.value)} className={fieldClass('year')} min={2010} max={2030} />
                   {errors.year && <p className="text-xs text-red-400 mt-1">{errors.year}</p>}
                 </div>
               </div>
@@ -293,7 +346,7 @@ export default function AdminMotors() {
                 {[{ key: 'priceDay', label: 'Harga/Hari *' }, { key: 'priceWeek', label: 'Harga/Minggu *' }, { key: 'priceMonth', label: 'Harga/Bulan *' }].map(({ key, label }) => (
                   <div key={key}>
                     <label className="block text-xs font-semibold text-charcoal mb-1.5">{label}</label>
-                    <input type="number" value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} className={fieldClass(key)} placeholder="0" min={0} />
+                    <input type="number" value={form[key]} onChange={(e) => handleFieldChange(key, e.target.value)} className={fieldClass(key)} placeholder="0" min={0} />
                     {errors[key] && <p className="text-xs text-red-400 mt-1">{errors[key]}</p>}
                   </div>
                 ))}
@@ -320,11 +373,6 @@ export default function AdminMotors() {
               </div>
             </div>
 
-            {saveError && (
-              <div className="px-6 pb-0 pt-0">
-                <p className="text-xs text-red-500 bg-red-50 border border-red-100 rounded px-3 py-2">{saveError}</p>
-              </div>
-            )}
             <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100">
               <button onClick={closeModal} className="text-sm font-medium text-gray-500 px-4 py-2 rounded hover:bg-gray-100 transition-colors">Batal</button>
               <button onClick={handleSave} disabled={saving} className="text-sm font-semibold bg-charcoal text-white px-5 py-2 rounded hover:bg-gold transition-colors disabled:opacity-60">
@@ -395,9 +443,6 @@ export default function AdminMotors() {
                 )}
                 {uploadingImages ? 'Mengupload...' : 'Pilih Foto (bisa lebih dari satu)'}
               </button>
-              {imageError && (
-                <p className="text-xs text-red-500 bg-red-50 border border-red-100 rounded px-3 py-2 mt-2">{imageError}</p>
-              )}
               <p className="text-xs text-gray-400 text-center mt-2">JPG, PNG, WEBP. Hover foto untuk menghapus.</p>
             </div>
           </div>
@@ -412,11 +457,8 @@ export default function AdminMotors() {
             </div>
             <h3 className="font-bold text-charcoal mb-2">Hapus Motor?</h3>
             <p className="text-sm text-gray-500 mb-6">Data motor ini akan dihapus secara permanen dan tidak bisa dikembalikan.</p>
-            {deleteError && (
-              <p className="text-xs text-red-500 bg-red-50 border border-red-100 rounded px-3 py-2 mb-4">{deleteError}</p>
-            )}
             <div className="flex gap-3">
-              <button onClick={() => { setDeleteId(null); setDeleteError('') }} className="flex-1 text-sm font-medium text-gray-600 border border-gray-200 py-2 rounded hover:bg-gray-50 transition-colors">Batal</button>
+              <button onClick={() => setDeleteId(null)} className="flex-1 text-sm font-medium text-gray-600 border border-gray-200 py-2 rounded hover:bg-gray-50 transition-colors">Batal</button>
               <button onClick={handleDelete} className="flex-1 text-sm font-semibold bg-red-500 text-white py-2 rounded hover:bg-red-600 transition-colors">Ya, Hapus</button>
             </div>
           </div>

@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react'
 import { bookingApi } from '@/api/bookings'
 import { motorApi } from '@/api/motors'
+import { formatDate } from '@/utils/formatDate'
 
 const MONTH_NAMES = [
   'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -188,7 +189,10 @@ export default function AdminCalendar() {
           </div>
 
           {selectedBookings.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-4">Tidak ada booking pada tanggal ini.</p>
+            <div className="flex flex-col items-center gap-2 py-8">
+              <CalendarDays size={20} className="text-gray-200" />
+              <p className="text-sm text-gray-400">Tidak ada booking pada tanggal ini</p>
+            </div>
           ) : (
             <div className="space-y-2">
               {selectedBookings.map(b => (
@@ -197,7 +201,7 @@ export default function AdminCalendar() {
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-charcoal">{b.motorName}</p>
                     <p className="text-xs text-gray-400">{b.customerName} · {b.customerPhone}</p>
-                    <p className="text-xs text-gray-400">{b.startDate} → {b.endDate}</p>
+                    <p className="text-xs text-gray-400">{formatDate(b.startDate)} → {formatDate(b.endDate)}</p>
                   </div>
                   <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
                     b.status === 'ACTIVE' ? 'bg-green-50 text-green-600' :

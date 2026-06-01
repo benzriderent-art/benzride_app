@@ -99,7 +99,7 @@ export default function ImageCarousel({ images = [], alt = 'Motor', className = 
                 key={`${img.id ?? i}-${retryCount[i] ?? 0}`}
                 ref={(el) => { if (el) imgElRefs.current[i] = el }}
                 src={img.imageUrl}
-                alt={`${alt} ${i + 1}`}
+                alt={images.length > 1 ? `${alt} — foto ${i + 1} dari ${images.length}` : alt}
                 onLoad={() => setStatus(prev => ({ ...prev, [i]: 'loaded' }))}
                 onError={() => handleError(i)}
                 className={`w-full h-full object-cover transition-opacity duration-300 ${status[i] === 'loaded' ? 'opacity-100' : 'opacity-0'}`}

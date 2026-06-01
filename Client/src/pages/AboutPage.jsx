@@ -33,8 +33,19 @@ export default function AboutPage() {
   const isID = i18n.language === 'id'
   const why = isID ? WHY_ITEMS.id : WHY_ITEMS.en
 
+  const titleText = isID ? 'Tentang Benzride Bali – Rental Motor Premium Bali' : 'About Benzride Bali – Premium Motorcycle Rental'
+  const descText  = isID
+    ? 'Benzride adalah layanan sewa motor premium di Bali. Armada terawat, antar ke villa & hotel, harga transparan. Melayani wisatawan domestik dan mancanegara.'
+    : 'Benzride is a premium motorcycle rental service in Bali. Well-maintained fleet, hotel & villa delivery, transparent pricing for local and international travelers.'
+
   return (
     <>
+      <title>{titleText}</title>
+      <meta name="description" content={descText} />
+      <meta property="og:title" content={titleText} />
+      <meta property="og:description" content={descText} />
+      <meta property="og:type" content="website" />
+      <link rel="canonical" href="https://benzride.com/about" />
       <Navbar />
       <div className="min-h-screen bg-off-white pt-16">
 

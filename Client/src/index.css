@@ -43,6 +43,59 @@ a {
   cursor: pointer;
 }
 
+/* ─── Autofill detection via CSS animation ───────────────────────────────── */
+/* Fires animationstart event that JS listens to, so React state gets updated
+   with the autofilled value — enabling the same gold-border logic as typed input. */
+@keyframes onAutofillStart { from {} to {} }
+@keyframes onAutofillStop  { from {} to {} }
+
+.dark-form input:-webkit-autofill {
+  animation: onAutofillStart 1ms;
+}
+.dark-form input:not(:-webkit-autofill) {
+  animation: onAutofillStop 1ms;
+}
+
+/* ─── Autofill — dark pages (BookingPage) ───────────────────────────────── */
+.dark-form input:-webkit-autofill,
+.dark-form input:-webkit-autofill:hover,
+.dark-form input:-webkit-autofill:focus,
+.dark-form textarea:-webkit-autofill,
+.dark-form textarea:-webkit-autofill:hover,
+.dark-form textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #1d1d1d inset !important;
+  box-shadow: 0 0 0 1000px #1d1d1d inset !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(201, 162, 75, 0.4) !important;
+  outline: none !important;
+  caret-color: white;
+}
+
+/* ─── Filled state — gold border (manually typed) ───────────────────────── */
+.dark-form input:not(:placeholder-shown),
+.dark-form textarea:not(:placeholder-shown) {
+  border-color: rgba(201, 162, 75, 0.4);
+}
+
+/* Error overrides gold */
+.dark-form input.field-error,
+.dark-form textarea.field-error {
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+/* ─── Autofill — light pages (Admin, Login) ─────────────────────────────── */
+.light-form input:-webkit-autofill,
+.light-form input:-webkit-autofill:hover,
+.light-form input:-webkit-autofill:focus,
+.light-form textarea:-webkit-autofill,
+.light-form textarea:-webkit-autofill:hover,
+.light-form textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #1a1a1a !important;
+  caret-color: #1a1a1a;
+}
+
 /* ─── Form inputs — cross-browser normalize ─────────────────────────────── */
 
 /* Date/time inputs: remove native OS chrome for consistent styling across

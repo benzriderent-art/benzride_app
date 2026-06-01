@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { key: 'fleet',     page: '/fleet' },
   { key: 'faq',       page: '/faq' },
   { key: 'about',     page: '/about' },
-  { key: 'howToRent', anchor: '#how-to-rent' },
+  { key: 'contact',   page: '/contact' },
 ]
 
 export default function Navbar() {

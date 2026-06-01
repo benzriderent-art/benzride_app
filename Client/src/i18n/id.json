@@ -192,6 +192,7 @@
     "payXendit": "Bayar dengan Xendit",
     "xenditSoon": "Segera hadir",
     "required": "Wajib diisi",
+    "fillRequired": "Harap lengkapi semua field yang wajib diisi",
     "selectDatesFirst": "Pilih tanggal terlebih dahulu untuk melihat total harga",
     "invalidDate": "Minimal sewa adalah 3 hari",
     "dateConflict": "Motor sudah dipesan pada tanggal ini. Pilih tanggal lain.",
@@ -333,9 +334,17 @@
     "desc": "Terima kasih telah memesan di Benz Rental Bali. Tim kami akan segera menghubungimu untuk konfirmasi pengiriman motor.",
     "idLabel": "ID Booking",
     "idHint": "Simpan ID ini untuk melacak status bookingmu",
+    "copyId": "Salin ID",
+    "copied": "Tersalin!",
     "confirmWA": "Konfirmasi via WhatsApp",
     "trackBtn": "Lacak Status Booking",
-    "backHome": "Kembali ke Beranda"
+    "backHome": "Kembali ke Beranda",
+    "nextStepsTitle": "Langkah Selanjutnya",
+    "steps": [
+      { "title": "Simpan ID Booking", "desc": "Screenshot halaman ini atau catat ID bookingmu. Dibutuhkan untuk melacak status pengiriman." },
+      { "title": "Tunggu Konfirmasi WhatsApp", "desc": "Tim kami akan menghubungimu dalam 1×24 jam untuk konfirmasi jadwal pengiriman motor." },
+      { "title": "Siapkan Dirimu", "desc": "Pastikan dokumen identitas asli (KTP/Passport) tersedia saat motor diantar ke lokasimu." }
+    ]
   },
   "bookingFailed": {
     "badge": "Pembayaran Gagal",
@@ -365,7 +374,7 @@
     "paymentLabel": "Pembayaran",
     "totalLabel": "Total",
     "completePay": "Selesaikan Pembayaran",
-    "payLinkNote": "Link pembayaran memiliki batas waktu. Jika tidak bisa dibuka, hubungi kami via WhatsApp.",
+    "payLinkNote": "Link pembayaran berlaku 24 jam sejak booking dibuat. Jika sudah kedaluwarsa, hubungi kami via WhatsApp.",
     "expiredTitle": "Link Pembayaran Kedaluwarsa",
     "expiredNote": "Hubungi kami via WhatsApp untuk membuat link pembayaran baru.",
     "deliveryLabel": "Lokasi Pengiriman",

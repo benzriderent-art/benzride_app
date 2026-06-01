@@ -124,8 +124,21 @@ export default function FleetPage() {
 
   const availableCount = vehicles.filter(v => v.available).length
 
+  const titleText = isID
+    ? 'Armada Motor Bali – Sewa Motor Pilihan di Bali | Benzride'
+    : 'Motorcycle Fleet Bali – Premium Rental Bikes | Benzride'
+  const descText = isID
+    ? 'Lihat semua armada motor sewa Benzride Bali. Honda PCX, NMAX, Scoopy, Vario tersedia. Antar ke seluruh area Bali.'
+    : 'Browse Benzride Bali\'s full motorcycle rental fleet. Honda PCX, NMAX, Scoopy, Vario available. Delivery across Bali.'
+
   return (
     <>
+      <title>{titleText}</title>
+      <meta name="description" content={descText} />
+      <meta property="og:title" content={titleText} />
+      <meta property="og:description" content={descText} />
+      <meta property="og:type" content="website" />
+      <link rel="canonical" href="https://benzride.com/fleet" />
       <Navbar />
       <main className="page-enter min-h-screen pt-16" style={{ background: DARK }}>
 

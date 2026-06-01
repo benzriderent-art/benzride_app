@@ -1,5 +1,7 @@
-import { useState, useEffect, useMemo } from 'react'
-import { X, Plus, Search, Download, Eye, MessageCircle, MapPin, FileText, Loader2, Pencil } from 'lucide-react'
+import { useState, useEffect, useMemo, useRef } from 'react'
+import { X, Plus, Search, Download, Eye, MessageCircle, MapPin, FileText, Loader2, Pencil, ClipboardList } from 'lucide-react'
+import { toast } from 'sonner'
+import { formatDate } from '@/utils/formatDate'
 import { bookingApi } from '@/api/bookings'
 import { motorApi } from '@/api/motors'
 import { formatIDR } from '@/utils/formatCurrency'
@@ -7,10 +9,10 @@ import { calculateBookingPrice, getPriceBreakdown } from '@/utils/pricingEngine'
 import { waLink } from '@/constants/contact'
 
 const BOOKING_STATUS = {
-  PENDING: { label: 'Menunggu', color: 'bg-yellow-50 text-yellow-600' },
-  ACTIVE: { label: 'Aktif', color: 'bg-green-50 text-green-600' },
-  COMPLETED: { label: 'Selesai', color: 'bg-blue-50 text-blue-600' },
-  CANCELLED: { label: 'Dibatalkan', color: 'bg-red-50 text-red-500' },
+  PENDING:   { label: 'Menunggu',   color: 'bg-yellow-50 text-yellow-600', tooltip: 'Menunggu konfirmasi pembayaran dari pelanggan' },
+  ACTIVE:    { label: 'Aktif',      color: 'bg-green-50 text-green-600',   tooltip: 'Motor sedang aktif disewa oleh pelanggan' },
+  COMPLETED: { label: 'Selesai',    color: 'bg-blue-50 text-blue-600',     tooltip: 'Masa sewa telah selesai' },
+  CANCELLED: { label: 'Dibatalkan', color: 'bg-red-50 text-red-500',       tooltip: 'Booking dibatalkan' },
 }
 
 const PAY_STATUS = {
@@ -49,6 +51,7 @@ export default function AdminBookings() {
   const [editErrors, setEditErrors] = useState({})
   const [editSaving, setEditSaving] = useState(false)
   const [editError, setEditError] = useState('')
+  const originalEditFormRef = useRef(null)
 
   const [showModal, setShowModal] = useState(false)
   const [motors, setMotors] = useState([])
@@ -76,6 +79,7 @@ export default function AdminBookings() {
     a.download = `bookings-${new Date().toISOString().split('T')[0]}.csv`
     a.click()
     URL.revokeObjectURL(url)
+    toast.success(`${filtered.length} data booking berhasil diekspor`)
   }
 
   const fetchBookings = () =>
@@ -105,7 +109,6 @@ export default function AdminBookings() {
     return list
   }, [bookings, filter, search])
 
-  const [statusError, setStatusError] = useState('')
   const [updatingStatusId, setUpdatingStatusId] = useState(null)
   const [paymentUpdatingId, setPaymentUpdatingId] = useState(null)
 
@@ -113,11 +116,10 @@ export default function AdminBookings() {
     setUpdatingStatusId(id)
     try {
       await bookingApi.updateStatus(id, newStatus)
-      setStatusError('')
       fetchBookings()
+      toast.success('Status booking berhasil diperbarui')
     } catch {
-      setStatusError('Gagal mengubah status. Coba lagi.')
-      setTimeout(() => setStatusError(''), 3000)
+      toast.error('Gagal mengubah status. Coba lagi.')
     } finally {
       setUpdatingStatusId(null)
     }
@@ -129,31 +131,59 @@ export default function AdminBookings() {
       await bookingApi.updatePaymentStatus(id, newPaymentStatus)
       setDetailBooking(prev => prev ? { ...prev, paymentStatus: newPaymentStatus } : prev)
       fetchBookings()
+      toast.success('Status pembayaran berhasil diperbarui')
     } catch {
-      setStatusError('Gagal mengubah status pembayaran. Coba lagi.')
-      setTimeout(() => setStatusError(''), 3000)
+      toast.error('Gagal mengubah status pembayaran. Coba lagi.')
     } finally {
       setPaymentUpdatingId(null)
     }
   }
 
+  const validateEditForm = (f = editForm) => {
+    const errs = {}
+    if (!f.startDate) errs.startDate = 'Wajib diisi'
+    if (!f.endDate) errs.endDate = 'Wajib diisi'
+    if (f.startDate && f.endDate) {
+      const days = Math.round((new Date(f.endDate) - new Date(f.startDate)) / 86400000)
+      if (days < 1) errs.endDate = 'Tanggal selesai harus setelah tanggal mulai'
+    }
+    if (!f.customerName?.trim()) errs.customerName = 'Wajib diisi'
+    if (!f.customerPhone?.trim()) errs.customerPhone = 'Wajib diisi'
+    return errs
+  }
+
+  const handleEditFieldChange = (field, value) => {
+    const updated = { ...editForm, [field]: value }
+    setEditForm(updated)
+    if (Object.keys(editErrors).length > 0) setEditErrors(validateEditForm(updated))
+  }
+
   const openEditBooking = (b) => {
+    const initial = { startDate: b.startDate, endDate: b.endDate, customerName: b.customerName, customerPhone: b.customerPhone, deliveryLocation: b.deliveryLocation ?? '', notes: b.notes ?? '' }
     setEditBooking(b)
-    setEditForm({ startDate: b.startDate, endDate: b.endDate, customerName: b.customerName, customerPhone: b.customerPhone, deliveryLocation: b.deliveryLocation ?? '', notes: b.notes ?? '' })
+    setEditForm(initial)
     setEditErrors({})
     setEditError('')
+    originalEditFormRef.current = { ...initial }
+  }
+
+  const isEditFormDirty = () => {
+    if (!originalEditFormRef.current) return false
+    return Object.keys(originalEditFormRef.current).some(
+      k => (editForm[k] ?? '') !== (originalEditFormRef.current[k] ?? '')
+    )
+  }
+
+  const handleCloseEditModal = () => {
+    if (isEditFormDirty()) {
+      if (!window.confirm('Ada perubahan yang belum disimpan. Yakin ingin menutup?')) return
+    }
+    setEditBooking(null)
+    originalEditFormRef.current = null
   }
 
   const handleEditSave = async () => {
-    const errs = {}
-    if (!editForm.startDate) errs.startDate = 'Wajib diisi'
-    if (!editForm.endDate) errs.endDate = 'Wajib diisi'
-    if (editForm.startDate && editForm.endDate) {
-      const days = Math.round((new Date(editForm.endDate) - new Date(editForm.startDate)) / 86400000)
-      if (days < 1) errs.endDate = 'Tanggal selesai harus setelah tanggal mulai'
-    }
-    if (!editForm.customerName.trim()) errs.customerName = 'Wajib diisi'
-    if (!editForm.customerPhone.trim()) errs.customerPhone = 'Wajib diisi'
+    const errs = validateEditForm()
     setEditErrors(errs)
     if (Object.keys(errs).length > 0) return
 
@@ -163,9 +193,11 @@ export default function AdminBookings() {
       await bookingApi.editBooking(editBooking.id, editForm)
       setEditBooking(null)
       fetchBookings()
+      toast.success('Booking berhasil diperbarui')
     } catch (err) {
       const msg = err?.response?.data?.message || 'Gagal menyimpan perubahan.'
       setEditError(typeof msg === 'string' ? msg : 'Gagal menyimpan perubahan.')
+      toast.error(typeof msg === 'string' ? msg : 'Gagal menyimpan perubahan.')
     } finally {
       setEditSaving(false)
     }
@@ -228,9 +260,11 @@ export default function AdminBookings() {
       setForm(EMPTY_FORM)
       setFormErrors({})
       fetchBookings()
+      toast.success('Booking manual berhasil dibuat')
     } catch (err) {
       const msg = err?.response?.data?.message || err?.response?.data || 'Gagal membuat booking.'
       setSubmitError(typeof msg === 'string' ? msg : 'Gagal membuat booking.')
+      toast.error(typeof msg === 'string' ? msg : 'Gagal membuat booking.')
     } finally {
       setSubmitting(false)
     }
@@ -286,12 +320,6 @@ export default function AdminBookings() {
         />
       </div>
 
-      {statusError && (
-        <div className="mb-4 text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-4 py-2.5">
-          {statusError}
-        </div>
-      )}
-
       <div className="flex gap-1 mb-5 bg-white border border-gray-100 rounded-lg p-1 w-fit">
         {FILTER_TABS.map(({ key, label }) => (
           <button
@@ -316,52 +344,110 @@ export default function AdminBookings() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-50">
-                {['ID', 'Motor', 'Pelanggan', 'No HP', 'Tgl Mulai', 'Tgl Selesai', 'Total', 'Pembayaran', 'Status', 'Ubah Status', ''].map(
-                  (h) => (
-                    <th
-                      key={h}
-                      className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap"
-                    >
-                      {h}
-                    </th>
-                  )
-                )}
+                <th className="hidden sm:table-cell text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">ID</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Motor</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Pelanggan</th>
+                <th className="hidden sm:table-cell text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">No HP</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Tgl Mulai</th>
+                <th className="hidden md:table-cell text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Tgl Selesai</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Total</th>
+                <th className="hidden sm:table-cell text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Pembayaran</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Status</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 whitespace-nowrap">Ubah Status</th>
+                <th className="px-4 py-3"></th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr>
-                  <td colSpan={11} className="px-4 py-8 text-center text-sm text-gray-400">
-                    Memuat data...
-                  </td>
-                </tr>
+                [...Array(5)].map((_, i) => (
+                  <tr key={i} className="border-b border-gray-50">
+                    {['w-20','w-24','w-28','w-24','w-20','w-20','w-20','w-14','w-16','w-24','w-10'].map((w, j) => (
+                      <td key={j} className="px-4 py-3.5">
+                        <div className={`h-3.5 ${w} bg-gray-100 animate-pulse rounded`} />
+                      </td>
+                    ))}
+                  </tr>
+                ))
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={11} className="px-4 py-10 text-center text-sm text-gray-400">
-                    Tidak ada booking dengan status ini.
+                  <td colSpan={11} className="px-4 py-14 text-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-14 h-14 rounded-full bg-gray-50 flex items-center justify-center">
+                        {search.trim()
+                          ? <Search size={22} className="text-gray-300" />
+                          : <ClipboardList size={22} className="text-gray-300" />}
+                      </div>
+                      <div>
+                        {search.trim() ? (
+                          <>
+                            <p className="text-sm font-semibold text-gray-400 mb-1">
+                              Tidak ada hasil untuk &ldquo;{search}&rdquo;
+                            </p>
+                            <p className="text-xs text-gray-300">Coba kata kunci lain atau hapus pencarian</p>
+                          </>
+                        ) : bookings.length === 0 ? (
+                          <>
+                            <p className="text-sm font-semibold text-gray-400 mb-1">Belum ada booking</p>
+                            <p className="text-xs text-gray-300">Booking baru akan muncul di sini setelah pelanggan memesan</p>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-sm font-semibold text-gray-400 mb-1">Tidak ada booking dengan status ini</p>
+                            <p className="text-xs text-gray-300">Coba lihat semua booking atau pilih status lain</p>
+                          </>
+                        )}
+                      </div>
+                      {search.trim() ? (
+                        <button
+                          onClick={() => setSearch('')}
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold border border-gray-200 text-gray-500 px-4 py-2 rounded-lg hover:border-gold hover:text-gold transition-colors mt-1"
+                        >
+                          <X size={12} />
+                          Hapus Pencarian
+                        </button>
+                      ) : filter !== 'all' ? (
+                        <button
+                          onClick={() => setFilter('all')}
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold border border-gray-200 text-gray-500 px-4 py-2 rounded-lg hover:border-gold hover:text-gold transition-colors mt-1"
+                        >
+                          Lihat Semua Booking
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => setShowModal(true)}
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold bg-charcoal text-white px-4 py-2 rounded-lg hover:bg-gold transition-colors mt-1"
+                        >
+                          <Plus size={13} />
+                          Tambah Booking Manual
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ) : (
                 filtered.map((b) => (
                   <tr key={b.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50/50">
-                    <td className="px-4 py-3 font-mono text-[11px] text-gray-400 max-w-[90px] truncate" title={b.id}>{b.id}</td>
+                    <td className="hidden sm:table-cell px-4 py-3 font-mono text-[11px] text-gray-400 max-w-[90px] truncate" title={b.id}>{b.id}</td>
                     <td className="px-4 py-3 font-medium text-charcoal whitespace-nowrap">
                       {b.motorName}
                     </td>
                     <td className="px-4 py-3 text-gray-600 whitespace-nowrap">{b.customerName}</td>
-                    <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap">{b.customerPhone}</td>
-                    <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap">{b.startDate}</td>
-                    <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap">{b.endDate}</td>
+                    <td className="hidden sm:table-cell px-4 py-3 text-gray-500 text-xs whitespace-nowrap">{b.customerPhone}</td>
+                    <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap">{formatDate(b.startDate)}</td>
+                    <td className="hidden md:table-cell px-4 py-3 text-gray-500 text-xs whitespace-nowrap">{formatDate(b.endDate)}</td>
                     <td className="px-4 py-3 font-semibold text-charcoal whitespace-nowrap">
                       {formatIDR(b.totalPrice)}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="hidden sm:table-cell px-4 py-3">
                       <span className={`text-xs font-semibold px-2 py-0.5 rounded ${(PAY_STATUS[b.paymentStatus] || PAY_STATUS.UNPAID).color}`}>
                         {(PAY_STATUS[b.paymentStatus] || PAY_STATUS.UNPAID).label}
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`text-xs font-semibold px-2 py-0.5 rounded ${(BOOKING_STATUS[b.status] || BOOKING_STATUS.PENDING).color}`}>
+                      <span
+                        className={`text-xs font-semibold px-2 py-0.5 rounded cursor-help ${(BOOKING_STATUS[b.status] || BOOKING_STATUS.PENDING).color}`}
+                        title={(BOOKING_STATUS[b.status] || BOOKING_STATUS.PENDING).tooltip}
+                      >
                         {(BOOKING_STATUS[b.status] || BOOKING_STATUS.PENDING).label}
                       </span>
                     </td>
@@ -408,6 +494,9 @@ export default function AdminBookings() {
           </table>
         </div>
       </div>
+      <p className="sm:hidden text-xs text-gray-400 mt-2 text-center">
+        Tap ikon <span className="font-semibold">👁</span> untuk detail lengkap · Geser tabel untuk lebih banyak kolom
+      </p>
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)' }}>
@@ -419,7 +508,7 @@ export default function AdminBookings() {
               </button>
             </div>
 
-            <div className="px-6 py-5 space-y-4">
+            <div className="px-6 py-5 space-y-4 light-form">
               <p className="text-xs text-gray-400 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
                 Booking manual langsung aktif (status: Aktif). Gunakan untuk pesanan via telepon atau WhatsApp yang sudah dikonfirmasi.
               </p>
@@ -564,12 +653,12 @@ export default function AdminBookings() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
               <h2 className="font-bold text-charcoal">Edit Booking</h2>
-              <button onClick={() => setEditBooking(null)} className="text-gray-400 hover:text-charcoal transition-colors">
+              <button onClick={handleCloseEditModal} className="text-gray-400 hover:text-charcoal transition-colors">
                 <X size={18} />
               </button>
             </div>
 
-            <div className="px-6 py-5 space-y-4">
+            <div className="px-6 py-5 space-y-4 light-form">
               <p className="text-xs text-gray-400 font-mono bg-gray-50 rounded px-2 py-1">{editBooking.id}</p>
 
               <div className="grid grid-cols-2 gap-3">
@@ -578,7 +667,7 @@ export default function AdminBookings() {
                   <input
                     type="date"
                     value={editForm.startDate}
-                    onChange={e => setEditForm(f => ({ ...f, startDate: e.target.value }))}
+                    onChange={e => handleEditFieldChange('startDate', e.target.value)}
                     className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold ${editErrors.startDate ? 'border-red-300' : 'border-gray-200'}`}
                   />
                   {editErrors.startDate && <p className="text-xs text-red-400 mt-1">{editErrors.startDate}</p>}
@@ -589,7 +678,7 @@ export default function AdminBookings() {
                     type="date"
                     value={editForm.endDate}
                     min={editForm.startDate}
-                    onChange={e => setEditForm(f => ({ ...f, endDate: e.target.value }))}
+                    onChange={e => handleEditFieldChange('endDate', e.target.value)}
                     className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold ${editErrors.endDate ? 'border-red-300' : 'border-gray-200'}`}
                   />
                   {editErrors.endDate && <p className="text-xs text-red-400 mt-1">{editErrors.endDate}</p>}
@@ -601,7 +690,7 @@ export default function AdminBookings() {
                 <input
                   type="text"
                   value={editForm.customerName}
-                  onChange={e => setEditForm(f => ({ ...f, customerName: e.target.value }))}
+                  onChange={e => handleEditFieldChange('customerName', e.target.value)}
                   className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold ${editErrors.customerName ? 'border-red-300' : 'border-gray-200'}`}
                 />
                 {editErrors.customerName && <p className="text-xs text-red-400 mt-1">{editErrors.customerName}</p>}
@@ -612,7 +701,7 @@ export default function AdminBookings() {
                 <input
                   type="tel"
                   value={editForm.customerPhone}
-                  onChange={e => setEditForm(f => ({ ...f, customerPhone: e.target.value }))}
+                  onChange={e => handleEditFieldChange('customerPhone', e.target.value)}
                   className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold ${editErrors.customerPhone ? 'border-red-300' : 'border-gray-200'}`}
                 />
                 {editErrors.customerPhone && <p className="text-xs text-red-400 mt-1">{editErrors.customerPhone}</p>}
@@ -622,7 +711,7 @@ export default function AdminBookings() {
                 <label className="block text-xs font-semibold text-charcoal mb-1.5">Lokasi Pengiriman</label>
                 <textarea
                   value={editForm.deliveryLocation}
-                  onChange={e => setEditForm(f => ({ ...f, deliveryLocation: e.target.value }))}
+                  onChange={e => handleEditFieldChange('deliveryLocation', e.target.value)}
                   rows={2}
                   className="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold resize-none"
                 />
@@ -632,7 +721,7 @@ export default function AdminBookings() {
                 <label className="block text-xs font-semibold text-charcoal mb-1.5">Catatan</label>
                 <textarea
                   value={editForm.notes}
-                  onChange={e => setEditForm(f => ({ ...f, notes: e.target.value }))}
+                  onChange={e => handleEditFieldChange('notes', e.target.value)}
                   rows={2}
                   className="w-full border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold resize-none"
                 />
@@ -645,7 +734,7 @@ export default function AdminBookings() {
 
             <div className="px-6 py-4 border-t border-gray-100 flex gap-3">
               <button
-                onClick={() => setEditBooking(null)}
+                onClick={handleCloseEditModal}
                 className="flex-1 text-sm font-semibold text-gray-500 border border-gray-200 rounded-lg py-2.5 hover:bg-gray-50 transition-colors"
               >
                 Batal
@@ -672,15 +761,15 @@ export default function AdminBookings() {
               </button>
             </div>
 
-            <div className="px-6 py-5 space-y-4">
+            <div className="px-6 py-5 space-y-4 light-form">
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { label: 'ID Booking', value: detailBooking.id, mono: true },
                   { label: 'Motor', value: detailBooking.motorName },
                   { label: 'Pelanggan', value: detailBooking.customerName },
                   { label: 'No HP', value: detailBooking.customerPhone },
-                  { label: 'Tgl Mulai', value: detailBooking.startDate },
-                  { label: 'Tgl Selesai', value: detailBooking.endDate },
+                  { label: 'Tgl Mulai', value: formatDate(detailBooking.startDate) },
+                  { label: 'Tgl Selesai', value: formatDate(detailBooking.endDate) },
                   { label: 'Durasi', value: `${detailBooking.durationDays} hari` },
                   { label: 'Total', value: formatIDR(detailBooking.totalPrice) },
                 ].map(({ label, value, mono }) => (
