@@ -6,10 +6,11 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import { bookingApi } from '@/api/bookings'
 import { formatIDR } from '@/utils/formatCurrency'
+import { formatDate } from '@/utils/formatDate'
 
 export default function BookingTrackPage() {
   const [params] = useSearchParams()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [form, setForm] = useState({ id: params.get('id') ?? '', phone: '' })
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
@@ -48,8 +49,17 @@ export default function BookingTrackPage() {
   const status = result ? (STATUS_CONFIG[result.status] ?? STATUS_CONFIG.PENDING) : null
   const pay = result ? (PAY_CONFIG[result.paymentStatus] ?? PAY_CONFIG.UNPAID) : null
 
+  const isID = i18n.language === 'id'
+  const titleText = isID ? 'Lacak Booking Motor – Benzride Bali' : 'Track Your Motorcycle Booking – Benzride Bali'
+  const descText  = isID
+    ? 'Cek status booking motor sewamu di Benzride Bali. Masukkan ID booking dan nomor HP untuk melihat detail dan status pembayaran.'
+    : 'Check your motorcycle rental booking status at Benzride Bali. Enter your booking ID and phone number to view details and payment status.'
+
   return (
     <>
+      <title>{titleText}</title>
+      <meta name="description" content={descText} />
+      <link rel="canonical" href="https://benzride.com/booking/track" />
       <Navbar />
       <div className="min-h-screen bg-off-white pt-16">
         <div className="max-w-lg mx-auto px-4 sm:px-6 py-16">
@@ -113,8 +123,8 @@ export default function BookingTrackPage() {
                   {[
                     { label: t('track.motorLabel'),    value: result.motorName },
                     { label: t('track.customerLabel'), value: result.customerName },
-                    { label: t('track.startLabel'),    value: result.startDate },
-                    { label: t('track.endLabel'),      value: result.endDate },
+                    { label: t('track.startLabel'),    value: formatDate(result.startDate, i18n.language) },
+                    { label: t('track.endLabel'),      value: formatDate(result.endDate, i18n.language) },
                     { label: t('track.durationLabel'), value: `${result.durationDays} ${t('track.durationUnit')}` },
                     { label: t('track.paymentLabel'),  value: pay.label, className: pay.color },
                   ].map(({ label, value, className }) => (

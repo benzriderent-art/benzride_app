@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, MessageCircle, Star, Bike, AlertCircle, CalendarDays, MapPin, User, Phone, FileText, CreditCard, CheckCircle, Truck, Shield, Wrench, Clock, IdCard } from 'lucide-react'
+import { toast } from 'sonner'
+import { ArrowLeft, MessageCircle, Star, Bike, AlertCircle, CalendarDays, MapPin, User, Phone, FileText, CreditCard, CheckCircle, Truck, Shield, Wrench, Clock, IdCard, X, Upload, ImageIcon } from 'lucide-react'
 import ImageCarousel from '@/components/common/ImageCarousel'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
@@ -14,6 +15,14 @@ import { calculateBookingPrice, getPriceBreakdown } from '@/utils/pricingEngine'
 import { extractIdFromSlug } from '@/utils/slugify'
 import { waLink } from '@/constants/contact'
 import Animate from '@/components/common/Animate'
+
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf']
+const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
+
+const formatFileSize = (bytes) => {
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
 
 const CARD = {
   background: 'rgba(255,255,255,0.04)',
@@ -54,10 +63,11 @@ function DeliveryTimePicker({ value, onChange, isID, hasError }) {
   const parts = value ? value.split(':') : ['', '00']
   const h24 = parts[0] !== '' ? parseInt(parts[0]) : ''
   const min = parts[1] ?? '00'
+  const filled = h24 !== ''
 
   const selCls = (err) =>
     `rounded-xl px-3 py-3 text-sm text-white bg-white/[0.05] border focus:outline-none transition-colors appearance-none cursor-pointer ` +
-    (err ? 'border-red-500/40 focus:border-red-400' : 'border-white/10 focus:border-gold')
+    (err ? 'border-red-500/40 focus:border-red-400' : filled ? 'border-gold/40 focus:border-gold' : 'border-white/10 focus:border-gold')
 
   const commit = (newH24, newMin) => {
     if (newH24 === '' || newH24 === undefined) { onChange(''); return }
@@ -91,7 +101,7 @@ function DeliveryTimePicker({ value, onChange, isID, hasError }) {
             <option key={m} value={m} style={{ background: '#1a1a1a' }}>{m}</option>
           ))}
         </select>
-        <div className="flex items-center justify-center px-3 rounded-xl text-xs font-bold text-white/25 border border-white/10 shrink-0">
+        <div className={`flex items-center justify-center px-3 rounded-xl text-xs font-bold shrink-0 border ${filled ? 'border-gold/40 text-gold/50' : 'border-white/10 text-white/25'}`}>
           WITA
         </div>
       </div>
@@ -200,9 +210,64 @@ export default function BookingPage() {
     notes: '',
   })
   const [errors, setErrors] = useState({})
-  const [touched, setTouched] = useState(false)
+  const [touchedFields, setTouchedFields] = useState({})
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
+
+  const [identityFile, setIdentityFile] = useState(null)
+  const [identityPreview, setIdentityPreview] = useState('')
+  const [identityFileSize, setIdentityFileSize] = useState(0)
+  const [identityFileError, setIdentityFileError] = useState('')
+
+  const handleAutofill = (e) => {
+    if (e.animationName === 'onAutofillStart' && e.target.name) {
+      setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
+    }
+    if (e.animationName === 'onAutofillStop' && e.target.name) {
+      setForm(prev => ({ ...prev, [e.target.name]: '' }))
+    }
+  }
+
+  useEffect(() => {
+    return () => { if (identityPreview) URL.revokeObjectURL(identityPreview) }
+  }, [identityPreview])
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    e.target.value = ''
+    if (!file) return
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setIdentityFileError(isID
+        ? 'Format tidak didukung. Gunakan JPG, PNG, WEBP, atau PDF.'
+        : 'Unsupported format. Use JPG, PNG, WEBP, or PDF.')
+      return
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      setIdentityFileError(isID ? 'Ukuran file maksimal 5 MB.' : 'Maximum file size is 5 MB.')
+      return
+    }
+
+    setIdentityFileError('')
+    setIdentityFile(file)
+    setIdentityFileSize(file.size)
+    setForm(f => ({ ...f, identityFileName: file.name }))
+
+    if (file.type.startsWith('image/')) {
+      setIdentityPreview(URL.createObjectURL(file))
+    } else {
+      setIdentityPreview('')
+    }
+  }
+
+  const clearIdentityFile = () => {
+    if (identityPreview) URL.revokeObjectURL(identityPreview)
+    setIdentityFile(null)
+    setIdentityPreview('')
+    setIdentityFileSize(0)
+    setIdentityFileError('')
+    setForm(f => ({ ...f, identityFileName: '' }))
+  }
 
   useEffect(() => {
     Promise.allSettled([
@@ -264,26 +329,61 @@ export default function BookingPage() {
     return errs
   }
 
+  const REQUIRED_FIELDS = ['startDate', 'endDate', 'deliveryTime', 'name', 'phone', 'deliveryLocation']
+
+  const markTouched = (name) =>
+    setTouchedFields(prev => ({ ...prev, [name]: true }))
+
+  const markAllRequired = () =>
+    setTouchedFields(prev =>
+      REQUIRED_FIELDS.reduce((acc, k) => ({ ...acc, [k]: true }), { ...prev })
+    )
+
+  const scrollToFirstError = (errs) => {
+    const firstField = REQUIRED_FIELDS.find(f => errs[f])
+    if (!firstField) return
+    const el = document.querySelector(`[name="${firstField}"], #field-${firstField}`)
+    el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target
     const updated = { ...form, [name]: value }
     setForm(updated)
-    if (touched) setErrors(validate(updated))
+    if (touchedFields[name]) {
+      const errs = validate(updated)
+      setErrors(prev => ({ ...prev, [name]: errs[name] }))
+    }
+  }
+
+  const handleBlur = (e) => {
+    const { name } = e.target
+    markTouched(name)
+    const errs = validate(form)
+    setErrors(prev => ({ ...prev, [name]: errs[name] }))
   }
 
   const handleWAOrder = () => {
-    setTouched(true)
+    markAllRequired()
     const errs = validate()
     setErrors(errs)
-    if (Object.keys(errs).length > 0) return
+    if (Object.keys(errs).length > 0) {
+      toast.error(t('booking.fillRequired'))
+      scrollToFirstError(errs)
+      return
+    }
     window.open(waLink(buildWAMessage(vehicle, form, duration, totalPrice)), '_blank')
   }
 
   const handleXenditPay = async () => {
-    setTouched(true)
+    markAllRequired()
     const errs = validate()
     setErrors(errs)
-    if (Object.keys(errs).length > 0) return
+    if (Object.keys(errs).length > 0) {
+      toast.error(t('booking.fillRequired'))
+      scrollToFirstError(errs)
+      return
+    }
     setSubmitting(true)
     setSubmitError('')
     try {
@@ -299,17 +399,22 @@ export default function BookingPage() {
       if (result.paymentUrl) window.location.href = result.paymentUrl
     } catch {
       setSubmitError(t('bookingPage.submitError'))
+      toast.error(t('bookingPage.submitError'))
     } finally {
       setSubmitting(false)
     }
   }
 
-  const fieldClass = (field) =>
-    `w-full rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/25 transition-colors focus:outline-none ` +
-    `bg-white/[0.05] ` +
-    (errors[field]
-      ? 'border border-red-500/40 focus:border-red-400'
-      : 'border border-white/10 focus:border-gold')
+  const hasError = (field) => !!(errors[field] && touchedFields[field])
+
+  const fieldClass = (field) => {
+    const val = form[field]
+    const filled = typeof val === 'string' ? val.trim().length > 0 : !!val
+    const base = 'w-full rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/25 transition-colors focus:outline-none bg-white/[0.05] border focus:border-gold '
+    if (hasError(field)) return base + 'border-red-500/40 focus:border-red-400 field-error'
+    if (filled)          return base + 'border-gold/40'
+    return                      base + 'border-white/10'
+  }
 
   const darkBg = { background: '#111111' }
 
@@ -344,8 +449,23 @@ export default function BookingPage() {
     )
   }
 
+  const pageTitle = vehicle
+    ? (isID
+        ? `Sewa ${vehicle.name} di Bali – Benzride`
+        : `Rent ${vehicle.name} in Bali – Benzride`)
+    : 'Booking Motor – Benzride Bali'
+  const pageDesc = vehicle
+    ? (isID
+        ? `Sewa ${vehicle.name} ${vehicle.cc}cc di Bali mulai ${vehicle.priceDay ? `Rp${vehicle.priceDay.toLocaleString('id')}` : ''}/hari. Antar ke hotel & villa seluruh Bali.`
+        : `Rent ${vehicle.name} ${vehicle.cc}cc in Bali from IDR ${vehicle.priceDay ? vehicle.priceDay.toLocaleString() : ''}/day. Delivery to hotels & villas across Bali.`)
+    : ''
+
   return (
     <>
+      <title>{pageTitle}</title>
+      {pageDesc && <meta name="description" content={pageDesc} />}
+      <meta property="og:title" content={pageTitle} />
+      {pageDesc && <meta property="og:description" content={pageDesc} />}
       <Navbar />
       <div className="page-enter min-h-screen pt-16" style={{ background: '#111111' }}>
 
@@ -432,7 +552,7 @@ export default function BookingPage() {
             </div>
 
             <Animate type="right" delay={80}>
-              <div style={CARD} className="p-6 sm:p-8 shadow-sm">
+              <div style={CARD} className="p-6 sm:p-8 shadow-sm dark-form" onAnimationStart={handleAutofill}>
                 {!vehicle.available && (
                   <div className="flex items-start gap-3 rounded-xl px-4 py-3.5 mb-6 bg-amber-50 border border-amber-200">
                     <AlertCircle size={15} className="text-amber-500 mt-0.5 shrink-0" />
@@ -478,9 +598,10 @@ export default function BookingPage() {
                           min={today}
                           value={form.startDate}
                           onChange={handleChange}
+                          onBlur={handleBlur}
                           className={fieldClass('startDate')}
                         />
-                        {errors.startDate && <p className="text-xs text-red-500 mt-1.5">{errors.startDate}</p>}
+                        {hasError('startDate') && <p className="text-xs text-red-500 mt-1.5">{errors.startDate}</p>}
                       </div>
                       <div>
                         <Label icon={CalendarDays} text={t('booking.endDate')} required />
@@ -490,25 +611,27 @@ export default function BookingPage() {
                           min={minEndDate}
                           value={form.endDate}
                           onChange={handleChange}
+                          onBlur={handleBlur}
                           className={fieldClass('endDate')}
                         />
-                        {errors.endDate && <p className="text-xs text-red-500 mt-1.5">{errors.endDate}</p>}
+                        {hasError('endDate') && <p className="text-xs text-red-500 mt-1.5">{errors.endDate}</p>}
                       </div>
                     </div>
 
-                    <div className="mt-3">
+                    <div className="mt-3" id="field-deliveryTime">
                       <Label icon={Clock} text={t('booking.deliveryTime')} required />
                       <DeliveryTimePicker
                         value={form.deliveryTime}
                         onChange={val => {
                           const updated = { ...form, deliveryTime: val }
                           setForm(updated)
-                          if (touched) setErrors(validate(updated))
+                          markTouched('deliveryTime')
+                          setErrors(prev => ({ ...prev, deliveryTime: validate(updated).deliveryTime }))
                         }}
                         isID={isID}
-                        hasError={!!errors.deliveryTime}
+                        hasError={hasError('deliveryTime')}
                       />
-                      {errors.deliveryTime && <p className="text-xs text-red-500 mt-1.5">{errors.deliveryTime}</p>}
+                      {hasError('deliveryTime') && <p className="text-xs text-red-500 mt-1.5">{errors.deliveryTime}</p>}
                       <p className="text-[11px] text-white/20 mt-1.5">{t('booking.deliveryTimeHint')}</p>
                     </div>
                   </div>
@@ -559,10 +682,11 @@ export default function BookingPage() {
                           name="name"
                           value={form.name}
                           onChange={handleChange}
+                          onBlur={handleBlur}
                           placeholder={t('booking.namePlaceholder')}
                           className={fieldClass('name')}
                         />
-                        {errors.name && <p className="text-xs text-red-500 mt-1.5">{errors.name}</p>}
+                        {hasError('name') && <p className="text-xs text-red-500 mt-1.5">{errors.name}</p>}
                       </div>
 
                       <div>
@@ -572,10 +696,11 @@ export default function BookingPage() {
                           name="phone"
                           value={form.phone}
                           onChange={handleChange}
+                          onBlur={handleBlur}
                           placeholder={t('booking.phonePlaceholder')}
                           className={fieldClass('phone')}
                         />
-                        {errors.phone && <p className="text-xs text-red-500 mt-1.5">{errors.phone}</p>}
+                        {hasError('phone') && <p className="text-xs text-red-500 mt-1.5">{errors.phone}</p>}
                       </div>
 
                       <div>
@@ -584,11 +709,12 @@ export default function BookingPage() {
                           name="deliveryLocation"
                           value={form.deliveryLocation}
                           onChange={handleChange}
+                          onBlur={handleBlur}
                           rows={2}
                           placeholder={t('booking.deliveryPlaceholder')}
                           className={`${fieldClass('deliveryLocation')} resize-none`}
                         />
-                        {errors.deliveryLocation && <p className="text-xs text-red-500 mt-1.5">{errors.deliveryLocation}</p>}
+                        {hasError('deliveryLocation') && <p className="text-xs text-red-500 mt-1.5">{errors.deliveryLocation}</p>}
                       </div>
 
                       <div>
@@ -646,27 +772,65 @@ export default function BookingPage() {
 
                       <div>
                         <Label icon={FileText} text={t('booking.identityPhoto')} />
-                        <label
-                          className={`flex items-center gap-3 w-full rounded-xl px-4 py-3 text-sm border transition-colors ${
-                            form.identityFileName
-                              ? 'border-gold/40 bg-gold/5'
-                              : 'border-white/10 bg-white/[0.05] hover:border-white/25'
-                          }`}
-                        >
-                          <FileText size={15} className={form.identityFileName ? 'text-gold shrink-0' : 'text-white/25 shrink-0'} />
-                          <span className={`text-sm truncate ${form.identityFileName ? 'text-white/80' : 'text-white/25'}`}>
-                            {form.identityFileName || t('booking.identityPhotoPlaceholder')}
-                          </span>
-                          <input
-                            type="file"
-                            accept="image/*,.pdf"
-                            className="hidden"
-                            onChange={e => {
-                              const file = e.target.files[0]
-                              if (file) setForm(f => ({ ...f, identityFileName: file.name }))
-                            }}
-                          />
-                        </label>
+
+                        {identityFile ? (
+                          <div className="rounded-xl border border-gold/40 bg-gold/5 overflow-hidden">
+                            {identityPreview ? (
+                              <div className="relative">
+                                <img
+                                  src={identityPreview}
+                                  alt="ID preview"
+                                  className="w-full max-h-40 object-cover"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={clearIdentityFile}
+                                  className="absolute top-2 right-2 w-7 h-7 bg-black/60 rounded-full flex items-center justify-center hover:bg-black/80 transition-colors"
+                                >
+                                  <X size={13} className="text-white" />
+                                </button>
+                              </div>
+                            ) : null}
+                            <div className="flex items-center gap-3 px-4 py-3">
+                              <FileText size={15} className="text-gold shrink-0" />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm text-white/80 truncate">{identityFile.name}</p>
+                                <p className="text-xs text-white/30 mt-0.5">{formatFileSize(identityFileSize)}</p>
+                              </div>
+                              {!identityPreview && (
+                                <button
+                                  type="button"
+                                  onClick={clearIdentityFile}
+                                  className="p-1.5 rounded-lg text-white/30 hover:text-white/70 hover:bg-white/10 transition-colors shrink-0"
+                                >
+                                  <X size={14} />
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        ) : (
+                          <label className="flex flex-col items-center justify-center gap-2 w-full rounded-xl px-4 py-6 text-sm border border-dashed border-white/15 bg-white/[0.03] hover:border-gold/40 hover:bg-gold/5 transition-colors cursor-pointer">
+                            <Upload size={18} className="text-white/25" />
+                            <span className="text-white/30 text-xs text-center leading-relaxed">
+                              {isID
+                                ? 'Klik untuk upload foto KTP / Passport\nJPG, PNG, WEBP, atau PDF · Maks 5 MB'
+                                : 'Click to upload ID photo\nJPG, PNG, WEBP, or PDF · Max 5 MB'}
+                            </span>
+                            <input
+                              type="file"
+                              accept="image/jpeg,image/png,image/webp,application/pdf"
+                              className="hidden"
+                              onChange={handleFileChange}
+                            />
+                          </label>
+                        )}
+
+                        {identityFileError && (
+                          <div className="flex items-center gap-2 mt-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">
+                            <AlertCircle size={12} className="text-red-400 shrink-0" />
+                            <p className="text-xs text-red-400">{identityFileError}</p>
+                          </div>
+                        )}
                       </div>
 
                       <div

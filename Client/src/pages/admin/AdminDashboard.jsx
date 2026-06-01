@@ -3,14 +3,15 @@ import { Bike, ClipboardList, CreditCard, TrendingUp } from 'lucide-react'
 import { motorApi } from '@/api/motors'
 import { bookingApi } from '@/api/bookings'
 import { formatIDR } from '@/utils/formatCurrency'
+import { formatDate } from '@/utils/formatDate'
 
 const thisMonth = new Date().toISOString().slice(0, 7)
 
 const STATUS_LABEL = {
-  PENDING:   { label: 'Menunggu',   color: 'bg-yellow-50 text-yellow-600' },
-  ACTIVE:    { label: 'Aktif',      color: 'bg-green-50 text-green-600' },
-  COMPLETED: { label: 'Selesai',    color: 'bg-blue-50 text-blue-600' },
-  CANCELLED: { label: 'Dibatalkan', color: 'bg-red-50 text-red-500' },
+  PENDING:   { label: 'Menunggu',   color: 'bg-yellow-50 text-yellow-600', tooltip: 'Menunggu konfirmasi pembayaran dari pelanggan' },
+  ACTIVE:    { label: 'Aktif',      color: 'bg-green-50 text-green-600',   tooltip: 'Motor sedang aktif disewa oleh pelanggan' },
+  COMPLETED: { label: 'Selesai',    color: 'bg-blue-50 text-blue-600',     tooltip: 'Masa sewa telah selesai' },
+  CANCELLED: { label: 'Dibatalkan', color: 'bg-red-50 text-red-500',       tooltip: 'Booking dibatalkan' },
 }
 
 const PAY_LABEL = {
@@ -203,9 +204,17 @@ export default function AdminDashboard() {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={3} className="px-4 py-6 text-center text-sm text-gray-400">Memuat data...</td></tr>
+                [...Array(4)].map((_, i) => (
+                  <tr key={i} className="border-b border-gray-50">
+                    {['w-28', 'w-8', 'w-24'].map((w, j) => (
+                      <td key={j} className="px-4 py-3.5">
+                        <div className={`h-3.5 ${w} bg-gray-100 animate-pulse rounded`} />
+                      </td>
+                    ))}
+                  </tr>
+                ))
               ) : motorStats.length === 0 ? (
-                <tr><td colSpan={3} className="px-4 py-6 text-center text-sm text-gray-400">Belum ada data.</td></tr>
+                <tr><td colSpan={3} className="px-4 py-8 text-center"><div className="flex flex-col items-center gap-2"><Bike size={20} className="text-gray-200" /><span className="text-sm text-gray-400">Belum ada motor terdaftar</span></div></td></tr>
               ) : motorStats.map(m => (
                 <tr key={m.name} className="border-b border-gray-50 last:border-0 hover:bg-gray-50/50">
                   <td className="px-4 py-3 font-medium text-charcoal whitespace-nowrap">{m.name}</td>
@@ -235,12 +244,23 @@ export default function AdminDashboard() {
             </thead>
             <tbody>
               {loading ? (
-                <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-sm text-gray-400">Memuat data...</td>
-                </tr>
+                [...Array(5)].map((_, i) => (
+                  <tr key={i} className="border-b border-gray-50">
+                    {['w-20','w-24','w-28','w-32','w-20','w-14','w-16'].map((w, j) => (
+                      <td key={j} className="px-4 py-3.5">
+                        <div className={`h-3.5 ${w} bg-gray-100 animate-pulse rounded`} />
+                      </td>
+                    ))}
+                  </tr>
+                ))
               ) : recentBookings.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-sm text-gray-400">Belum ada booking.</td>
+                  <td colSpan={7} className="px-4 py-10 text-center">
+                    <div className="flex flex-col items-center gap-2">
+                      <ClipboardList size={20} className="text-gray-200" />
+                      <span className="text-sm text-gray-400">Belum ada booking</span>
+                    </div>
+                  </td>
                 </tr>
               ) : (
                 recentBookings.map((b) => (
@@ -249,7 +269,7 @@ export default function AdminDashboard() {
                     <td className="px-4 py-3 font-medium text-charcoal whitespace-nowrap">{b.motorName}</td>
                     <td className="px-4 py-3 text-gray-600 whitespace-nowrap">{b.customerName}</td>
                     <td className="px-4 py-3 text-gray-500 whitespace-nowrap text-xs">
-                      {b.startDate} – {b.endDate}
+                      {formatDate(b.startDate)} – {formatDate(b.endDate)}
                     </td>
                     <td className="px-4 py-3 font-semibold text-charcoal whitespace-nowrap">
                       {formatIDR(b.totalPrice)}
@@ -260,7 +280,10 @@ export default function AdminDashboard() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`text-xs font-semibold px-2 py-0.5 rounded ${(STATUS_LABEL[b.status] || STATUS_LABEL.PENDING).color}`}>
+                      <span
+                        className={`text-xs font-semibold px-2 py-0.5 rounded cursor-help ${(STATUS_LABEL[b.status] || STATUS_LABEL.PENDING).color}`}
+                        title={(STATUS_LABEL[b.status] || STATUS_LABEL.PENDING).tooltip}
+                      >
                         {(STATUS_LABEL[b.status] || STATUS_LABEL.PENDING).label}
                       </span>
                     </td>

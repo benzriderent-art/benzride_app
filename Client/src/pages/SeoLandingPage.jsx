@@ -36,9 +36,13 @@ export default function SeoLandingPage() {
 
   const loc = SEO_LOCATIONS[area]
   const [vehicles, setVehicles] = useState([])
+  const [vehiclesLoading, setVehiclesLoading] = useState(true)
 
   useEffect(() => {
-    motorApi.getAll().then(data => setVehicles(data.filter(v => v.available).slice(0, 6))).catch(() => {})
+    motorApi.getAll()
+      .then(data => setVehicles(data.filter(v => v.available).slice(0, 6)))
+      .catch(() => {})
+      .finally(() => setVehiclesLoading(false))
   }, [])
 
   if (!loc) return <Navigate to="/fleet" replace />
@@ -95,7 +99,7 @@ export default function SeoLandingPage() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6">
             <Animate>
               <div className="flex items-center gap-2 text-xs text-white/30 mb-5">
-                <Link to="/" className="hover:text-gold transition-colors">Home</Link>
+                <Link to="/" className="hover:text-gold transition-colors">{isID ? 'Beranda' : 'Home'}</Link>
                 <span>/</span>
                 <span className="text-white/50">{isID ? `Sewa Motor ${name}` : `Motorcycle Rental ${name}`}</span>
               </div>
@@ -166,7 +170,7 @@ export default function SeoLandingPage() {
         </section>
 
         {/* Fleet */}
-        {vehicles.length > 0 && (
+        {(vehiclesLoading || vehicles.length > 0) && (
           <section className="py-14" style={{ background: '#111111' }}>
             <div className="max-w-5xl mx-auto px-4 sm:px-6">
               <Animate>
@@ -178,7 +182,11 @@ export default function SeoLandingPage() {
                 </h2>
               </Animate>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {vehicles.map((v, i) => (
+                {vehiclesLoading
+                  ? [...Array(6)].map((_, i) => (
+                      <div key={i} className="rounded-2xl animate-pulse" style={{ aspectRatio: '4/3', background: 'rgba(255,255,255,0.06)' }} />
+                    ))
+                  : vehicles.map((v, i) => (
                   <Animate key={v.id} delay={i * 60}>
                     <div
                       className="relative overflow-hidden rounded-2xl hover:-translate-y-1 transition-all duration-300"
@@ -208,15 +216,17 @@ export default function SeoLandingPage() {
                   </Animate>
                 ))}
               </div>
-              <Animate delay={200} className="text-center mt-8">
-                <Link
-                  to="/fleet"
-                  className="inline-flex items-center gap-2 text-sm font-bold text-white/40 hover:text-gold border border-white/10 hover:border-gold/40 px-6 py-3 rounded-xl transition-colors"
-                >
-                  {isID ? 'Lihat Semua Armada' : 'View All Fleet'}
-                  <ArrowRight size={14} />
-                </Link>
-              </Animate>
+              {!vehiclesLoading && (
+                <Animate delay={200} className="text-center mt-8">
+                  <Link
+                    to="/fleet"
+                    className="inline-flex items-center gap-2 text-sm font-bold text-white/40 hover:text-gold border border-white/10 hover:border-gold/40 px-6 py-3 rounded-xl transition-colors"
+                  >
+                    {isID ? 'Lihat Semua Armada' : 'View All Fleet'}
+                    <ArrowRight size={14} />
+                  </Link>
+                </Animate>
+              )}
             </div>
           </section>
         )}

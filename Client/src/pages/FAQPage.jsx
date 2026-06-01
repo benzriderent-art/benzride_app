@@ -29,11 +29,22 @@ function FAQItem({ q, a }) {
 }
 
 export default function FAQPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const isID = i18n.language === 'id'
   const faqs = t('faq.items', { returnObjects: true })
+
+  const titleText = isID ? 'FAQ Sewa Motor Bali – Pertanyaan Umum | Benzride' : 'Motorcycle Rental Bali FAQ – Common Questions | Benzride'
+  const descText  = isID
+    ? 'Jawaban lengkap pertanyaan umum seputar sewa motor di Bali bersama Benzride: dokumen, pengiriman, harga, dan kebijakan sewa.'
+    : 'Complete answers to common questions about renting a motorcycle in Bali with Benzride: documents, delivery, pricing, and rental policy.'
 
   return (
     <>
+      <title>{titleText}</title>
+      <meta name="description" content={descText} />
+      <meta property="og:title" content={titleText} />
+      <meta property="og:description" content={descText} />
+      <link rel="canonical" href="https://benzride.com/faq" />
       <Navbar />
       <div className="min-h-screen bg-off-white pt-16">
 

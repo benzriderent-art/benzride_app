@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { key: 'fleet',     page: '/fleet' },
   { key: 'howToRent', anchor: '#how-to-rent' },
   { key: 'reviews',   anchor: '#reviews' },
-  { key: 'contact',   anchor: '#contact' },
+  { key: 'contact',   page: '/contact' },
 ]
 
 function InstagramIcon({ size = 14 }) {

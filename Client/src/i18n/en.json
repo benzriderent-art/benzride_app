@@ -192,6 +192,7 @@
     "payXendit": "Pay with Xendit",
     "xenditSoon": "Coming soon",
     "required": "Required",
+    "fillRequired": "Please complete all required fields",
     "selectDatesFirst": "Select dates to see your total price",
     "invalidDate": "Minimum rental is 3 days",
     "dateConflict": "This bike is already booked on these dates. Please choose different dates.",
@@ -333,9 +334,17 @@
     "desc": "Thank you for booking with Benz Rental Bali. Our team will contact you shortly to confirm your bike delivery.",
     "idLabel": "Booking ID",
     "idHint": "Save this ID to track your booking status",
+    "copyId": "Copy ID",
+    "copied": "Copied!",
     "confirmWA": "Confirm via WhatsApp",
     "trackBtn": "Track Booking Status",
-    "backHome": "Back to Home"
+    "backHome": "Back to Home",
+    "nextStepsTitle": "What Happens Next",
+    "steps": [
+      { "title": "Save Your Booking ID", "desc": "Screenshot this page or note down your booking ID. You'll need it to track your delivery status." },
+      { "title": "Wait for WhatsApp Confirmation", "desc": "Our team will contact you within 24 hours to confirm your bike delivery schedule." },
+      { "title": "Prepare for Delivery", "desc": "Make sure your original ID document (ID card/Passport) is ready when the bike is delivered to your location." }
+    ]
   },
   "bookingFailed": {
     "badge": "Payment Failed",
@@ -365,7 +374,7 @@
     "paymentLabel": "Payment",
     "totalLabel": "Total",
     "completePay": "Complete Payment",
-    "payLinkNote": "The payment link has an expiry time. If it doesn't open, contact us via WhatsApp.",
+    "payLinkNote": "Payment link is valid for 24 hours from booking creation. If expired, contact us via WhatsApp.",
     "expiredTitle": "Payment Link Expired",
     "expiredNote": "Contact us via WhatsApp to generate a new payment link.",
     "deliveryLabel": "Delivery Location",

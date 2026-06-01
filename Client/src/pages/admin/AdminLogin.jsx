@@ -45,7 +45,7 @@ export default function AdminLogin() {
           </div>
           <h1 className="text-lg font-bold text-charcoal text-center mb-6">Masuk ke Panel Admin</h1>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 light-form">
             <div>
               <label className="block text-xs font-semibold text-charcoal mb-1.5">Username</label>
               <input
