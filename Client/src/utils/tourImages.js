@@ -11,5 +11,7 @@ export function getTourImageUrls(tour) {
 }
 
 export function getTourFirstImage(tour) {
+  // List DTO returns pre-computed firstImageUrl — use it directly if available
+  if (tour?.firstImageUrl) return tour.firstImageUrl
   return getTourImageUrls(tour)[0]
 }

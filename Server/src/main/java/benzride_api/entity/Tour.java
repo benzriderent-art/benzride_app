@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -47,26 +48,31 @@ public class Tour {
     @NotBlank
     private String location;
 
+    // EAGER — lightweight URL strings, needed for list view image
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "tour_images", joinColumns = @JoinColumn(name = "tour_id"))
     @Column(name = "image_url")
     @Builder.Default
     private List<String> images = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    // LAZY — only needed for detail page; @BatchSize batches queries across tours
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "tour_includes", joinColumns = @JoinColumn(name = "tour_id"))
     @Column(name = "item")
+    @BatchSize(size = 25)
     @Builder.Default
     private List<String> includes = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "tour_highlights", joinColumns = @JoinColumn(name = "tour_id"))
     @Column(name = "highlight")
+    @BatchSize(size = 25)
     @Builder.Default
     private List<String> highlights = new ArrayList<>();
 
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @OrderBy("displayOrder ASC")
+    @BatchSize(size = 25)
     @Builder.Default
     private List<TourImage> tourImages = new ArrayList<>();
 
@@ -76,16 +82,18 @@ public class Tour {
     @Builder.Default
     private Boolean featured = false;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "tour_itinerary", joinColumns = @JoinColumn(name = "tour_id"))
     @OrderColumn(name = "step_order")
     @Column(name = "step")
+    @BatchSize(size = 25)
     @Builder.Default
     private List<String> itinerary = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "tour_what_to_bring", joinColumns = @JoinColumn(name = "tour_id"))
     @Column(name = "item")
+    @BatchSize(size = 25)
     @Builder.Default
     private List<String> whatToBring = new ArrayList<>();
 
@@ -94,28 +102,32 @@ public class Tour {
     @Column(columnDefinition = "TEXT")
     private String descriptionEn;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "tour_includes_en", joinColumns = @JoinColumn(name = "tour_id"))
     @Column(name = "item")
+    @BatchSize(size = 25)
     @Builder.Default
     private List<String> includesEn = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "tour_highlights_en", joinColumns = @JoinColumn(name = "tour_id"))
     @Column(name = "highlight")
+    @BatchSize(size = 25)
     @Builder.Default
     private List<String> highlightsEn = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "tour_itinerary_en", joinColumns = @JoinColumn(name = "tour_id"))
     @OrderColumn(name = "step_order")
     @Column(name = "step")
+    @BatchSize(size = 25)
     @Builder.Default
     private List<String> itineraryEn = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "tour_what_to_bring_en", joinColumns = @JoinColumn(name = "tour_id"))
     @Column(name = "item")
+    @BatchSize(size = 25)
     @Builder.Default
     private List<String> whatToBringEn = new ArrayList<>();
 

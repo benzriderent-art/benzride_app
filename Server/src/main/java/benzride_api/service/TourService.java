@@ -1,15 +1,19 @@
 package benzride_api.service;
 
+import benzride_api.dto.TourListResponseDto;
 import benzride_api.dto.TourRequestDto;
 import benzride_api.entity.Tour;
+import benzride_api.entity.TourImage;
 import benzride_api.exception.ResourceNotFoundException;
 import benzride_api.repository.TourRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.hibernate.Hibernate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,64 @@ public class TourService {
 
     public List<Tour> findAvailable() {
         return tourRepository.findByAvailableTrue();
+    }
+
+    @Transactional(readOnly = true)
+    public List<TourListResponseDto> findAllListDto() {
+        return tourRepository.findAll().stream()
+            .map(this::toListDto)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<TourListResponseDto> findAvailableListDto() {
+        return tourRepository.findByAvailableTrue().stream()
+            .map(this::toListDto)
+            .collect(Collectors.toList());
+    }
+
+    private TourListResponseDto toListDto(Tour t) {
+        // Pick first image: uploaded tourImages first, then URL strings
+        String firstImageUrl = null;
+        if (!t.getTourImages().isEmpty()) {
+            firstImageUrl = t.getTourImages().get(0).getImageUrl();
+        } else if (!t.getImages().isEmpty()) {
+            firstImageUrl = t.getImages().get(0);
+        }
+        return TourListResponseDto.builder()
+            .id(t.getId())
+            .name(t.getName())
+            .nameEn(t.getNameEn())
+            .description(t.getDescription())
+            .descriptionEn(t.getDescriptionEn())
+            .category(t.getCategory())
+            .durationHours(t.getDurationHours())
+            .pricePerPerson(t.getPricePerPerson())
+            .maxParticipants(t.getMaxParticipants())
+            .location(t.getLocation())
+            .available(t.getAvailable())
+            .featured(t.getFeatured())
+            .firstImageUrl(firstImageUrl)
+            .includes(t.getIncludes())
+            .includesEn(t.getIncludesEn())
+            .build();
+    }
+
+    @Transactional(readOnly = true)
+    public Tour findByIdFull(Long id) {
+        Tour tour = tourRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Tour not found with id: " + id));
+        // Initialize all lazy collections within this transaction
+        Hibernate.initialize(tour.getTourImages());
+        Hibernate.initialize(tour.getIncludes());
+        Hibernate.initialize(tour.getHighlights());
+        Hibernate.initialize(tour.getItinerary());
+        Hibernate.initialize(tour.getWhatToBring());
+        Hibernate.initialize(tour.getIncludesEn());
+        Hibernate.initialize(tour.getHighlightsEn());
+        Hibernate.initialize(tour.getItineraryEn());
+        Hibernate.initialize(tour.getWhatToBringEn());
+        return tour;
     }
 
     public Tour findById(Long id) {
