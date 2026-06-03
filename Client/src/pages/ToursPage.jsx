@@ -362,7 +362,7 @@ export default function ToursPage() {
         </div>
 
         {/* ── 2. Featured Tours — LIGHT ── */}
-        {!loading && featuredTours.length > 0 && (
+        {(loading || featuredTours.length > 0) && (
           <div className="bg-off-white pt-12 pb-4">
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
               <Animate className="mb-6">
@@ -374,9 +374,49 @@ export default function ToursPage() {
                 </h2>
               </Animate>
               <div className="space-y-5">
-                {featuredTours.map(tour => (
-                  <FeaturedTourCard key={tour.id} tour={tour} lang={lang} />
-                ))}
+                {loading ? (
+                  [...Array(2)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="flex flex-col sm:flex-row rounded-2xl overflow-hidden bg-white"
+                      style={{ border: '1px solid rgba(201,162,75,0.25)', boxShadow: '0 4px 24px rgba(201,162,75,0.07)' }}
+                    >
+                      <div className="sm:w-72 aspect-[4/3] sm:aspect-auto bg-gray-200 animate-pulse shrink-0" />
+                      <div className="flex flex-col flex-1 p-6 gap-3">
+                        <div className="h-3 bg-gray-100 animate-pulse rounded w-20" />
+                        <div className="h-6 bg-gray-200 animate-pulse rounded w-3/4" />
+                        <div className="space-y-1.5">
+                          <div className="h-3 bg-gray-100 animate-pulse rounded w-full" />
+                          <div className="h-3 bg-gray-100 animate-pulse rounded w-2/3" />
+                        </div>
+                        <div className="h-3 bg-gray-100 animate-pulse rounded w-28" />
+                        <div className="flex gap-4">
+                          <div className="h-3 bg-gray-100 animate-pulse rounded w-14" />
+                          <div className="h-3 bg-gray-100 animate-pulse rounded w-20" />
+                          <div className="h-3 bg-gray-100 animate-pulse rounded w-14" />
+                        </div>
+                        <div className="flex gap-1.5">
+                          <div className="h-5 bg-gray-100 animate-pulse rounded-full w-16" />
+                          <div className="h-5 bg-gray-100 animate-pulse rounded-full w-14" />
+                          <div className="h-5 bg-gray-100 animate-pulse rounded-full w-16" />
+                          <div className="h-5 bg-gray-100 animate-pulse rounded-full w-14" />
+                        </div>
+                        <div className="flex items-end justify-between pt-4 border-t border-gray-100 mt-auto">
+                          <div className="space-y-1.5">
+                            <div className="h-2.5 bg-gray-100 animate-pulse rounded w-16" />
+                            <div className="h-7 bg-gray-200 animate-pulse rounded w-28" />
+                            <div className="h-2.5 bg-gray-100 animate-pulse rounded w-10" />
+                          </div>
+                          <div className="h-10 bg-gray-100 animate-pulse rounded-xl w-28" />
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  featuredTours.map(tour => (
+                    <FeaturedTourCard key={tour.id} tour={tour} lang={lang} />
+                  ))
+                )}
               </div>
             </div>
           </div>
