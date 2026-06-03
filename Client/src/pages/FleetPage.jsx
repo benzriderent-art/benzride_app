@@ -86,7 +86,8 @@ function PriceTable({ vehicles, t }) {
 }
 
 export default function FleetPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const isID = i18n.language === 'id'
   const { formatPrice } = useCurrency()
   const [searchParams, setSearchParams] = useSearchParams()
   const [vehicles, setVehicles] = useState([])
@@ -210,12 +211,12 @@ export default function FleetPage() {
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value)}
-                className="text-xs font-bold border text-white/50 rounded-lg px-3 py-2 focus:outline-none focus:border-gold shrink-0"
-                style={{ background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.10)' }}
+                className="text-xs font-bold border text-white/70 rounded-lg px-3 py-2 focus:outline-none focus:border-gold shrink-0"
+                style={{ background: '#1a1a1a', borderColor: 'rgba(255,255,255,0.10)' }}
               >
-                <option value="default">{t('vehicles.sortDefault')}</option>
-                <option value="asc">{t('vehicles.sortPriceAsc')}</option>
-                <option value="desc">{t('vehicles.sortPriceDesc')}</option>
+                <option value="default" style={{ background: '#1a1a1a', color: '#fff' }}>{t('vehicles.sortDefault')}</option>
+                <option value="asc" style={{ background: '#1a1a1a', color: '#fff' }}>{t('vehicles.sortPriceAsc')}</option>
+                <option value="desc" style={{ background: '#1a1a1a', color: '#fff' }}>{t('vehicles.sortPriceDesc')}</option>
               </select>
             </div>
           </div>

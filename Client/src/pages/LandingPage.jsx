@@ -6,6 +6,7 @@ import FeaturesSection from '@/components/home/FeaturesSection'
 import HowToRentSection from '@/components/home/HowToRentSection'
 import ReviewsSection from '@/components/home/ReviewsSection'
 import CTASection from '@/components/home/CTASection'
+import ToursSection from '@/components/home/ToursSection'
 
 export default function LandingPage() {
   return (
@@ -20,6 +21,7 @@ export default function LandingPage() {
       <main>
         <HeroSection />
         <VehiclesSection />
+        <ToursSection />
         <FeaturesSection />
         <HowToRentSection />
         <ReviewsSection />

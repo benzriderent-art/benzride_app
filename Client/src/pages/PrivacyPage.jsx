@@ -79,8 +79,16 @@ export default function PrivacyPage() {
   const isID = i18n.language === 'id'
   const sections = isID ? CONTENT.id : CONTENT.en
 
+  const titleText = isID ? 'Kebijakan Privasi – Benzride Bali' : 'Privacy Policy – Benzride Bali'
+  const descText  = isID
+    ? 'Kebijakan privasi Benzride Bali. Informasi yang kami kumpulkan, cara penggunaannya, dan hak privasi Anda sebagai pelanggan.'
+    : 'Privacy policy for Benzride Bali. What information we collect, how we use it, and your privacy rights as a customer.'
+
   return (
     <>
+      <title>{titleText}</title>
+      <meta name="description" content={descText} />
+      <link rel="canonical" href="https://benzride.com/privacy" />
       <Navbar />
       <div className="min-h-screen bg-off-white pt-16">
 

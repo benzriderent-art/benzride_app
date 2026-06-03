@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
-import { X, Plus, Search, Download, Eye, MessageCircle, MapPin, FileText, Loader2, Pencil, ClipboardList } from 'lucide-react'
+import { X, Plus, Search, Download, Eye, MessageCircle, MapPin, FileText, Loader2, Pencil, ClipboardList, AlertTriangle, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { formatDate } from '@/utils/formatDate'
 import { bookingApi } from '@/api/bookings'
@@ -111,6 +111,9 @@ export default function AdminBookings() {
 
   const [updatingStatusId, setUpdatingStatusId] = useState(null)
   const [paymentUpdatingId, setPaymentUpdatingId] = useState(null)
+  const [showUnsavedEditModal, setShowUnsavedEditModal] = useState(false)
+  const [deleteBookingId, setDeleteBookingId] = useState(null)
+  const [deleting, setDeleting] = useState(false)
 
   const updateStatus = async (id, newStatus) => {
     setUpdatingStatusId(id)
@@ -176,10 +179,32 @@ export default function AdminBookings() {
 
   const handleCloseEditModal = () => {
     if (isEditFormDirty()) {
-      if (!window.confirm('Ada perubahan yang belum disimpan. Yakin ingin menutup?')) return
+      setShowUnsavedEditModal(true)
+      return
     }
     setEditBooking(null)
     originalEditFormRef.current = null
+  }
+
+  const forceCloseEditModal = () => {
+    setShowUnsavedEditModal(false)
+    setEditBooking(null)
+    originalEditFormRef.current = null
+  }
+
+  const handleDeleteBooking = async () => {
+    if (!deleteBookingId) return
+    setDeleting(true)
+    try {
+      await bookingApi.delete(deleteBookingId)
+      setDeleteBookingId(null)
+      fetchBookings()
+      toast.success('Booking berhasil dihapus')
+    } catch {
+      toast.error('Gagal menghapus booking. Coba lagi.')
+    } finally {
+      setDeleting(false)
+    }
   }
 
   const handleEditSave = async () => {
@@ -485,6 +510,13 @@ export default function AdminBookings() {
                         >
                           <Pencil size={14} />
                         </button>
+                        <button
+                          onClick={() => setDeleteBookingId(b.id)}
+                          className="p-1.5 rounded text-gray-400 hover:text-red-400 hover:bg-red-50 transition-colors"
+                          title="Hapus booking"
+                        >
+                          <Trash2 size={14} />
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -509,7 +541,7 @@ export default function AdminBookings() {
             </div>
 
             <div className="px-6 py-5 space-y-4 light-form">
-              <p className="text-xs text-gray-400 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
+              <p className="text-xs text-gray-500 bg-gold/5 border border-gold/20 rounded-lg px-3 py-2">
                 Booking manual langsung aktif (status: Aktif). Gunakan untuk pesanan via telepon atau WhatsApp yang sudah dikonfirmasi.
               </p>
 
@@ -642,6 +674,63 @@ export default function AdminBookings() {
                 className="flex-1 text-sm font-semibold bg-charcoal text-white rounded-lg py-2.5 hover:bg-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Menyimpan...' : 'Simpan Booking'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {deleteBookingId && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4">
+          <div className="bg-white rounded-xl w-full max-w-sm shadow-xl p-6 text-center">
+            <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Trash2 size={20} className="text-red-400" />
+            </div>
+            <h3 className="font-bold text-charcoal mb-2">Hapus Booking?</h3>
+            <p className="text-sm text-gray-500 mb-6">
+              Data booking ini akan dihapus secara permanen dan tidak bisa dikembalikan.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setDeleteBookingId(null)}
+                disabled={deleting}
+                className="flex-1 text-sm font-medium text-gray-600 border border-gray-200 py-2 rounded hover:bg-gray-50 transition-colors"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleDeleteBooking}
+                disabled={deleting}
+                className="flex-1 text-sm font-semibold bg-red-500 text-white py-2 rounded hover:bg-red-600 transition-colors disabled:opacity-60 flex items-center justify-center gap-1.5"
+              >
+                {deleting && <Loader2 size={13} className="animate-spin" />}
+                Ya, Hapus
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showUnsavedEditModal && (
+        <div className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center px-4">
+          <div className="bg-white rounded-xl w-full max-w-sm shadow-xl p-6 text-center">
+            <div className="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <AlertTriangle size={20} className="text-amber-400" />
+            </div>
+            <h3 className="font-bold text-charcoal mb-2">Perubahan Belum Disimpan</h3>
+            <p className="text-sm text-gray-500 mb-6">Ada perubahan yang belum disimpan. Yakin ingin menutup tanpa menyimpan?</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowUnsavedEditModal(false)}
+                className="flex-1 text-sm font-medium text-gray-600 border border-gray-200 py-2 rounded hover:bg-gray-50 transition-colors"
+              >
+                Kembali Edit
+              </button>
+              <button
+                onClick={forceCloseEditModal}
+                className="flex-1 text-sm font-semibold bg-charcoal text-white py-2 rounded hover:bg-red-500 transition-colors"
+              >
+                Tutup Tanpa Simpan
               </button>
             </div>
           </div>

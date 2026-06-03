@@ -8,7 +8,8 @@ import ScrollToTop from '@/components/common/ScrollToTop'
 const LandingPage       = lazy(() => import('@/pages/LandingPage'))
 const BookingPage       = lazy(() => import('@/pages/BookingPage'))
 const FleetPage         = lazy(() => import('@/pages/FleetPage'))
-const VehicleDetailPage = lazy(() => import('@/pages/VehicleDetailPage'))
+const ToursPage         = lazy(() => import('@/pages/ToursPage'))
+const TourDetailPage    = lazy(() => import('@/pages/TourDetailPage'))
 const BookingTrackPage  = lazy(() => import('@/pages/BookingTrackPage'))
 const BookingSuccess    = lazy(() => import('@/pages/BookingSuccess'))
 const BookingFailed     = lazy(() => import('@/pages/BookingFailed'))
@@ -24,7 +25,9 @@ const AdminLayout       = lazy(() => import('@/pages/admin/AdminLayout'))
 const AdminDashboard    = lazy(() => import('@/pages/admin/AdminDashboard'))
 const AdminMotors       = lazy(() => import('@/pages/admin/AdminMotors'))
 const AdminBookings     = lazy(() => import('@/pages/admin/AdminBookings'))
-const AdminCalendar     = lazy(() => import('@/pages/admin/AdminCalendar'))
+const AdminCalendar       = lazy(() => import('@/pages/admin/AdminCalendar'))
+const AdminTours          = lazy(() => import('@/pages/admin/AdminTours'))
+const AdminTourBookings   = lazy(() => import('@/pages/admin/AdminTourBookings'))
 
 function PageLoader() {
   return (
@@ -43,6 +46,8 @@ function AppRoutes() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/fleet" element={<FleetPage />} />
+          <Route path="/tours" element={<ToursPage />} />
+          <Route path="/tours/:slug" element={<TourDetailPage />} />
 
           <Route path="/booking/success" element={<BookingSuccess />} />
           <Route path="/booking/failed" element={<BookingFailed />} />
@@ -60,6 +65,8 @@ function AppRoutes() {
             <Route path="motors" element={<AdminMotors />} />
             <Route path="bookings" element={<AdminBookings />} />
             <Route path="calendar" element={<AdminCalendar />} />
+            <Route path="tours" element={<AdminTours />} />
+            <Route path="tour-bookings" element={<AdminTourBookings />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

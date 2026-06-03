@@ -4,4 +4,4 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/
 
-Sitemap: https://benzrentalbali.com/sitemap.xml
+Sitemap: https://benzride.com/sitemap.xml

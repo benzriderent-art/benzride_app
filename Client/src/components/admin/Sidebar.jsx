@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Bike, ClipboardList, Calendar, LogOut } from 'lucide-react'
+import { LayoutDashboard, Bike, ClipboardList, Calendar, LogOut, X, Map, BookMarked } from 'lucide-react'
 import { useAdminAuth } from '@/context/AdminAuthContext'
 
 const NAV_ITEMS = [
@@ -7,9 +7,11 @@ const NAV_ITEMS = [
   { to: '/admin/motors', icon: Bike, label: 'Manajemen Motor' },
   { to: '/admin/bookings', icon: ClipboardList, label: 'Data Booking' },
   { to: '/admin/calendar', icon: Calendar, label: 'Kalender Armada' },
+  { to: '/admin/tours', icon: Map, label: 'Manajemen Tour' },
+  { to: '/admin/tour-bookings', icon: BookMarked, label: 'Booking Tour' },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ open, onClose }) {
   const { logout } = useAdminAuth()
   const navigate = useNavigate()
 
@@ -19,12 +21,26 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-56 bg-charcoal flex flex-col shrink-0 min-h-screen">
-      <div className="px-5 py-5 border-b border-white/10">
-        <p className="font-heading text-base font-bold text-white tracking-wider">BENZ</p>
-        <p className="text-[10px] text-gold font-bold tracking-[0.2em] uppercase">
-          Admin Panel
-        </p>
+    <aside
+      className={`
+        fixed inset-y-0 left-0 z-50 w-56 bg-charcoal flex flex-col min-h-screen
+        transform transition-transform duration-200 ease-in-out
+        md:relative md:translate-x-0 md:z-auto md:shrink-0
+        ${open ? 'translate-x-0' : '-translate-x-full'}
+      `}
+    >
+      <div className="px-5 py-5 border-b border-white/10 flex items-center justify-between">
+        <div>
+          <p className="font-heading text-base font-bold text-white tracking-wider">BENZ</p>
+          <p className="text-[10px] text-gold font-bold tracking-[0.2em] uppercase">Admin Panel</p>
+        </div>
+        <button
+          onClick={onClose}
+          className="md:hidden text-gray-500 hover:text-white transition-colors p-1"
+          aria-label="Tutup menu"
+        >
+          <X size={16} />
+        </button>
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-0.5">
@@ -33,6 +49,7 @@ export default function Sidebar() {
             key={to}
             to={to}
             end={end}
+            onClick={onClose}
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-colors ${
                 isActive

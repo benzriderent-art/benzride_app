@@ -1,5 +1,6 @@
 package benzride_api.controller;
 
+import benzride_api.dto.BookingEditRequestDto;
 import benzride_api.dto.BookingRequestDto;
 import benzride_api.dto.BookingResponseDto;
 import benzride_api.entity.Booking;
@@ -22,11 +23,11 @@ public class BookingController {
     private final BookingService bookingService;
 
     @GetMapping
-    public ResponseEntity<List<Booking>> getAll(
+    public ResponseEntity<List<BookingResponseDto>> getAll(
             @RequestParam(required = false) BookingStatus status) {
-        List<Booking> bookings = status != null
-            ? bookingService.findByStatus(status)
-            : bookingService.findAll();
+        List<BookingResponseDto> bookings = status != null
+            ? bookingService.findByStatusDto(status)
+            : bookingService.findAllDto();
         return ResponseEntity.ok(bookings);
     }
 
@@ -52,9 +53,21 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.getBookedDates(motorId));
     }
 
+    @PostMapping("/whatsapp")
+    public ResponseEntity<BookingResponseDto> createWhatsApp(@Valid @RequestBody BookingRequestDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookingService.createWhatsApp(dto));
+    }
+
     @PostMapping("/admin")
     public ResponseEntity<BookingResponseDto> createManual(@Valid @RequestBody BookingRequestDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookingService.createManual(dto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BookingResponseDto> editBooking(
+            @PathVariable String id,
+            @Valid @RequestBody BookingEditRequestDto dto) {
+        return ResponseEntity.ok(bookingService.editBooking(id, dto));
     }
 
     @PatchMapping("/{id}/status")
@@ -63,5 +76,11 @@ public class BookingController {
             @RequestBody Map<String, String> body) {
         BookingStatus newStatus = BookingStatus.valueOf(body.get("status").toUpperCase());
         return ResponseEntity.ok(bookingService.updateStatus(id, newStatus));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        bookingService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

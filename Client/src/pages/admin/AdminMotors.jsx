@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Plus, Pencil, Trash2, X, Camera, Upload, Bike } from 'lucide-react'
+import { Plus, Pencil, Trash2, X, Camera, Upload, Bike, AlertTriangle } from 'lucide-react'
 import { toast } from 'sonner'
 import { motorApi } from '@/api/motors'
 import { motorImageApi } from '@/api/motorImages'
@@ -41,6 +41,7 @@ export default function AdminMotors() {
   const [imageMotor, setImageMotor] = useState(null)
   const [uploadingImages, setUploadingImages] = useState(false)
   const [deletingImageId, setDeletingImageId] = useState(null)
+  const [showUnsavedModal, setShowUnsavedModal] = useState(false)
   const fileInputRef = useRef(null)
   const originalFormRef = useRef(null)
 
@@ -77,8 +78,10 @@ export default function AdminMotors() {
 
   const closeModal = (force = false) => {
     if (!force && isFormDirty()) {
-      if (!window.confirm('Ada perubahan yang belum disimpan. Yakin ingin menutup?')) return
+      setShowUnsavedModal(true)
+      return
     }
+    setShowUnsavedModal(false)
     setModal(false)
     setEditing(null)
     setErrors({})
@@ -444,6 +447,32 @@ export default function AdminMotors() {
                 {uploadingImages ? 'Mengupload...' : 'Pilih Foto (bisa lebih dari satu)'}
               </button>
               <p className="text-xs text-gray-400 text-center mt-2">JPG, PNG, WEBP. Hover foto untuk menghapus.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showUnsavedModal && (
+        <div className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center px-4">
+          <div className="bg-white rounded-xl w-full max-w-sm shadow-xl p-6 text-center">
+            <div className="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <AlertTriangle size={20} className="text-amber-400" />
+            </div>
+            <h3 className="font-bold text-charcoal mb-2">Perubahan Belum Disimpan</h3>
+            <p className="text-sm text-gray-500 mb-6">Ada perubahan yang belum disimpan. Yakin ingin menutup tanpa menyimpan?</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowUnsavedModal(false)}
+                className="flex-1 text-sm font-medium text-gray-600 border border-gray-200 py-2 rounded hover:bg-gray-50 transition-colors"
+              >
+                Kembali Edit
+              </button>
+              <button
+                onClick={() => closeModal(true)}
+                className="flex-1 text-sm font-semibold bg-charcoal text-white py-2 rounded hover:bg-red-500 transition-colors"
+              >
+                Tutup Tanpa Simpan
+              </button>
             </div>
           </div>
         </div>

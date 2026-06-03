@@ -73,8 +73,16 @@ export default function TermsPage() {
   const { t, i18n } = useTranslation()
   const isID = i18n.language === 'id'
 
+  const titleText = isID ? 'Syarat & Ketentuan Sewa Motor – Benzride Bali' : 'Rental Terms & Conditions – Benzride Bali'
+  const descText  = isID
+    ? 'Syarat dan ketentuan lengkap layanan sewa motor Benzride Bali. Persyaratan penyewa, kebijakan pembatalan, tanggung jawab, dan aturan penggunaan kendaraan.'
+    : 'Complete rental terms and conditions for Benzride Bali motorcycle rental. Renter requirements, cancellation policy, liability, and vehicle use rules.'
+
   return (
     <>
+      <title>{titleText}</title>
+      <meta name="description" content={descText} />
+      <link rel="canonical" href="https://benzride.com/terms" />
       <Navbar />
       <div className="min-h-screen bg-off-white pt-16">
 
