@@ -911,8 +911,8 @@ export default function BookingPage() {
 
       </div>
 
-      {/* Trust Bar — LIGHT bridge sebelum footer */}
-      <div className="bg-off-white border-t border-gray-100">
+      {/* Trust Bar */}
+      <div className="bg-charcoal-800" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
             {[
@@ -922,10 +922,10 @@ export default function BookingPage() {
               { icon: MessageCircle, key: 'support' },
             ].map(({ icon: Icon, key }) => (
               <div key={key} className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg shrink-0 flex items-center justify-center bg-white border border-gray-100 shadow-sm">
+                <div className="w-9 h-9 rounded-lg shrink-0 flex items-center justify-center" style={{ background: 'rgba(201,162,75,0.12)', border: '1px solid rgba(201,162,75,0.2)' }}>
                   <Icon size={15} className="text-gold" />
                 </div>
-                <p className="text-xs font-semibold text-gray-600 leading-tight">
+                <p className="text-xs font-semibold text-white/45 leading-tight">
                   {t(`bookingTrust.${key}`)}
                 </p>
               </div>

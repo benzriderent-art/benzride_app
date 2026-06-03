@@ -61,36 +61,36 @@ export default function BookingTrackPage() {
       <meta name="description" content={descText} />
       <link rel="canonical" href="https://benzride.com/booking/track" />
       <Navbar />
-      <div className="min-h-screen bg-off-white pt-16">
+      <div className="min-h-screen bg-charcoal-800 pt-16">
         <div className="max-w-lg mx-auto px-4 sm:px-6 py-16">
 
           <div className="text-center mb-10">
             <div className="inline-flex items-center justify-center w-14 h-14 bg-gold/10 rounded-full mb-4">
               <Search size={24} className="text-gold" />
             </div>
-            <h1 className="font-heading text-3xl font-bold text-charcoal mb-2">{t('track.title')}</h1>
-            <p className="text-gray-400 text-sm">{t('track.desc')}</p>
+            <h1 className="font-heading text-3xl font-bold text-white mb-2">{t('track.title')}</h1>
+            <p className="text-white/35 text-sm">{t('track.desc')}</p>
           </div>
 
-          <form onSubmit={handleSearch} className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-4 mb-6">
+          <form onSubmit={handleSearch} className="rounded-2xl p-6 space-y-4 mb-6" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <div>
-              <label className="block text-xs font-semibold text-charcoal mb-1.5">{t('track.idLabel')}</label>
+              <label className="block text-xs font-semibold text-white/60 mb-1.5">{t('track.idLabel')}</label>
               <input
                 type="text"
                 value={form.id}
                 onChange={e => setForm(f => ({ ...f, id: e.target.value }))}
                 placeholder={t('track.idPlaceholder')}
-                className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold font-mono text-charcoal placeholder:text-gray-400"
+                className="w-full rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-gold font-mono text-white placeholder:text-white/25 bg-white/[0.05] border border-white/10"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-charcoal mb-1.5">{t('track.phoneLabel')}</label>
+              <label className="block text-xs font-semibold text-white/60 mb-1.5">{t('track.phoneLabel')}</label>
               <input
                 type="tel"
                 value={form.phone}
                 onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
                 placeholder={t('track.phonePlaceholder')}
-                className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold text-charcoal placeholder:text-gray-400"
+                className="w-full rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-gold text-white placeholder:text-white/25 bg-white/[0.05] border border-white/10"
               />
             </div>
             <button
@@ -103,17 +103,17 @@ export default function BookingTrackPage() {
           </form>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3.5 text-sm text-red-600 text-center mb-6">
+            <div className="rounded-xl px-4 py-3.5 text-sm text-red-400 text-center mb-6" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)' }}>
               {error}
             </div>
           )}
 
           {result && status && (
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-              <div className={`border-b px-6 py-4 flex items-center gap-3 ${status.bg}`}>
+            <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className={`px-6 py-4 flex items-center gap-3 ${status.bg}`} style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                 <status.icon size={20} className={status.color} />
                 <div>
-                  <p className="text-xs text-gray-500 font-medium">{t('track.statusLabel')}</p>
+                  <p className="text-xs text-white/40 font-medium">{t('track.statusLabel')}</p>
                   <p className={`font-bold text-sm ${status.color}`}>{status.label}</p>
                 </div>
               </div>
@@ -129,15 +129,15 @@ export default function BookingTrackPage() {
                     { label: t('track.paymentLabel'),  value: pay.label, className: pay.color },
                   ].map(({ label, value, className }) => (
                     <div key={label}>
-                      <p className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5">{label}</p>
-                      <p className={`text-sm font-semibold ${className ?? 'text-charcoal'}`}>{value}</p>
+                      <p className="text-[10px] text-white/30 uppercase tracking-wider mb-0.5">{label}</p>
+                      <p className={`text-sm font-semibold ${className ?? 'text-white'}`}>{value}</p>
                     </div>
                   ))}
                 </div>
 
-                <div className="border-t border-gray-50 pt-4 flex items-center justify-between">
-                  <span className="text-sm text-gray-500">{t('track.totalLabel')}</span>
-                  <span className="text-lg font-bold text-charcoal">{formatIDR(result.totalPrice)}</span>
+                <div className="pt-4 flex items-center justify-between" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                  <span className="text-sm text-white/40">{t('track.totalLabel')}</span>
+                  <span className="text-lg font-bold text-white">{formatIDR(result.totalPrice)}</span>
                 </div>
 
                 {result.paymentUrl && result.paymentStatus === 'UNPAID' && (
@@ -149,21 +149,21 @@ export default function BookingTrackPage() {
                       {t('track.completePay')}
                       <ArrowRight size={15} />
                     </a>
-                    <p className="text-[11px] text-gray-400 text-center -mt-1">
+                    <p className="text-[11px] text-white/25 text-center -mt-1">
                       {t('track.payLinkNote')}
                     </p>
                   </>
                 )}
                 {result.paymentStatus === 'EXPIRED' && (
-                  <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-center">
-                    <p className="text-xs font-semibold text-gray-500 mb-1">{t('track.expiredTitle')}</p>
-                    <p className="text-[11px] text-gray-400">{t('track.expiredNote')}</p>
+                  <div className="rounded-xl px-4 py-3 text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <p className="text-xs font-semibold text-white/50 mb-1">{t('track.expiredTitle')}</p>
+                    <p className="text-[11px] text-white/30">{t('track.expiredNote')}</p>
                   </div>
                 )}
 
                 {result.deliveryLocation && (
-                  <div className="bg-off-white rounded-lg px-4 py-3 text-xs text-gray-500">
-                    <span className="font-semibold text-charcoal block mb-0.5">{t('track.deliveryLabel')}</span>
+                  <div className="rounded-lg px-4 py-3 text-xs text-white/45" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                    <span className="font-semibold text-white/70 block mb-0.5">{t('track.deliveryLabel')}</span>
                     {result.deliveryLocation}
                   </div>
                 )}
@@ -172,7 +172,7 @@ export default function BookingTrackPage() {
           )}
 
           <div className="text-center mt-8">
-            <Link to="/fleet" className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gold transition-colors">
+            <Link to="/fleet" className="inline-flex items-center gap-1.5 text-sm text-white/30 hover:text-gold transition-colors">
               <Bike size={14} />
               {t('track.viewOther')}
             </Link>

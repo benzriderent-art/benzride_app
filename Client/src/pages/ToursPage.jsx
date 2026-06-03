@@ -85,8 +85,8 @@ function FeaturedTourCard({ tour, lang }) {
     <Animate type="up">
       <Link
         to={`/tours/${tourSlug(tour)}`}
-        className="group relative flex flex-col sm:flex-row rounded-2xl overflow-hidden bg-white hover:shadow-2xl transition-all duration-300 hover:-translate-y-0.5"
-        style={{ border: '1px solid rgba(201,162,75,0.25)', boxShadow: '0 4px 24px rgba(201,162,75,0.07)' }}
+        className="group relative flex flex-col sm:flex-row rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
+        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(201,162,75,0.25)', boxShadow: '0 4px 24px rgba(201,162,75,0.07)' }}
       >
         {/* Image */}
         <div className="relative sm:w-72 aspect-[4/3] sm:aspect-auto overflow-hidden shrink-0">
@@ -111,21 +111,21 @@ function FeaturedTourCard({ tour, lang }) {
           <span className="text-xs font-bold text-gold/70 mb-1.5">
             {CATEGORY_EMOJI[tour.category]} {CATEGORY_LABELS[tour.category]?.[lang]}
           </span>
-          <h3 className="font-heading font-bold text-charcoal text-xl leading-tight mb-2 group-hover:text-gold transition-colors">
+          <h3 className="font-heading font-bold text-white text-xl leading-tight mb-2 group-hover:text-gold transition-colors">
             {name}
           </h3>
 
           {description && (
-            <p className="text-sm text-gray-500 leading-relaxed mb-3 line-clamp-2">{description}</p>
+            <p className="text-sm text-white/45 leading-relaxed mb-3 line-clamp-2">{description}</p>
           )}
 
           <div className="flex items-center gap-1.5 mb-3">
             <Stars count={5} size={11} />
-            <span className="text-xs font-bold text-gray-600">4.9</span>
-            <span className="text-[10px] text-gray-300">· 50+ {isID ? 'ulasan' : 'reviews'}</span>
+            <span className="text-xs font-bold text-white/60">4.9</span>
+            <span className="text-[10px] text-white/25">· 50+ {isID ? 'ulasan' : 'reviews'}</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs text-gray-400 mb-3">
+          <div className="flex flex-wrap items-center gap-4 text-xs text-white/35 mb-3">
             <span className="flex items-center gap-1.5">
               <Clock size={12} className="text-gold" />
               {tour.durationHours} {isID ? 'jam' : 'hours'}
@@ -150,13 +150,13 @@ function FeaturedTourCard({ tour, lang }) {
             </div>
           )}
 
-          <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+          <div className="flex items-center justify-between mt-auto pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
             <div>
-              <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wide">
+              <p className="text-[10px] text-white/30 font-medium uppercase tracking-wide">
                 {isID ? 'Mulai dari' : 'Starting from'}
               </p>
               <p className="text-2xl font-black text-gold">{formatIDR(tour.pricePerPerson)}</p>
-              <p className="text-[10px] text-gray-400">/ {isID ? 'orang' : 'person'}</p>
+              <p className="text-[10px] text-white/30">/ {isID ? 'orang' : 'person'}</p>
             </div>
             <div className="flex items-center gap-2 bg-gold text-charcoal font-bold text-xs px-5 py-2.5 rounded-xl group-hover:bg-gold/90 transition-colors">
               {isID ? 'Lihat Detail' : 'View Details'}
@@ -180,7 +180,8 @@ function TourCard({ tour, lang }) {
     <Animate type="up">
       <Link
         to={`/tours/${tourSlug(tour)}`}
-        className="group flex flex-col rounded-2xl overflow-hidden border border-gray-100 bg-white hover:shadow-xl hover:border-gold/20 transition-all duration-300 hover:-translate-y-1"
+        className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
+        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
       >
         {/* Image */}
         <div className="relative aspect-[4/3] overflow-hidden">
@@ -204,21 +205,21 @@ function TourCard({ tour, lang }) {
 
         {/* Content */}
         <div className="flex flex-col flex-1 p-5">
-          <h3 className="font-heading font-bold text-charcoal text-lg leading-tight mb-1.5 group-hover:text-gold transition-colors">
+          <h3 className="font-heading font-bold text-white text-lg leading-tight mb-1.5 group-hover:text-gold transition-colors">
             {name}
           </h3>
 
           {description && (
-            <p className="text-xs text-gray-400 leading-relaxed mb-3 line-clamp-2">{description}</p>
+            <p className="text-xs text-white/35 leading-relaxed mb-3 line-clamp-2">{description}</p>
           )}
 
           <div className="flex items-center gap-1.5 mb-3">
             <Stars count={5} size={10} />
-            <span className="text-xs font-bold text-gray-500">4.9</span>
-            <span className="text-[10px] text-gray-300">· 50+</span>
+            <span className="text-xs font-bold text-white/50">4.9</span>
+            <span className="text-[10px] text-white/25">· 50+</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 text-xs text-gray-400 mb-3">
+          <div className="flex flex-wrap items-center gap-3 text-xs text-white/30 mb-3">
             <span className="flex items-center gap-1">
               <Clock size={11} className="text-gold" />
               {tour.durationHours} {isID ? 'jam' : 'hrs'}
@@ -243,13 +244,13 @@ function TourCard({ tour, lang }) {
             </div>
           )}
 
-          <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+          <div className="flex items-center justify-between pt-4 mt-auto" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
             <div>
-              <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wide">
+              <p className="text-[10px] text-white/30 font-medium uppercase tracking-wide">
                 {isID ? 'Mulai dari' : 'Starting from'}
               </p>
               <p className="text-xl font-black text-gold">{formatIDR(tour.pricePerPerson)}</p>
-              <p className="text-[10px] text-gray-400">/ {isID ? 'orang' : 'person'}</p>
+              <p className="text-[10px] text-white/30">/ {isID ? 'orang' : 'person'}</p>
             </div>
             <div className="flex items-center gap-1 text-xs font-bold text-gold bg-gold/8 px-3 py-2 rounded-xl group-hover:bg-gold group-hover:text-charcoal transition-all">
               {isID ? 'Lihat Detail' : 'View Details'}
@@ -361,15 +362,15 @@ export default function ToursPage() {
           </div>
         </div>
 
-        {/* ── 2. Featured Tours — LIGHT ── */}
+        {/* ── 2. Featured Tours ── */}
         {(loading || featuredTours.length > 0) && (
-          <div className="bg-off-white pt-12 pb-4">
+          <div className="bg-charcoal-800 pt-12 pb-4">
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
               <Animate className="mb-6">
                 <p className="text-xs font-black text-gold tracking-[0.25em] uppercase mb-1">
                   {isID ? 'Paling Diminati' : 'Most Popular'}
                 </p>
-                <h2 className="font-heading text-2xl font-bold text-charcoal">
+                <h2 className="font-heading text-2xl font-bold text-white">
                   {isID ? 'Tour Terpopuler' : 'Featured Tours'}
                 </h2>
               </Animate>
@@ -378,36 +379,22 @@ export default function ToursPage() {
                   [...Array(2)].map((_, i) => (
                     <div
                       key={i}
-                      className="flex flex-col sm:flex-row rounded-2xl overflow-hidden bg-white"
-                      style={{ border: '1px solid rgba(201,162,75,0.25)', boxShadow: '0 4px 24px rgba(201,162,75,0.07)' }}
+                      className="flex flex-col sm:flex-row rounded-2xl overflow-hidden animate-pulse"
+                      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
                     >
-                      <div className="sm:w-72 aspect-[4/3] sm:aspect-auto bg-gray-200 animate-pulse shrink-0" />
+                      <div className="sm:w-72 aspect-[4/3] sm:aspect-auto shrink-0" style={{ background: 'rgba(255,255,255,0.08)' }} />
                       <div className="flex flex-col flex-1 p-6 gap-3">
-                        <div className="h-3 bg-gray-100 animate-pulse rounded w-20" />
-                        <div className="h-6 bg-gray-200 animate-pulse rounded w-3/4" />
+                        <div className="h-3 rounded w-20" style={{ background: 'rgba(255,255,255,0.08)' }} />
+                        <div className="h-6 rounded w-3/4" style={{ background: 'rgba(255,255,255,0.10)' }} />
                         <div className="space-y-1.5">
-                          <div className="h-3 bg-gray-100 animate-pulse rounded w-full" />
-                          <div className="h-3 bg-gray-100 animate-pulse rounded w-2/3" />
+                          <div className="h-3 rounded w-full" style={{ background: 'rgba(255,255,255,0.06)' }} />
+                          <div className="h-3 rounded w-2/3" style={{ background: 'rgba(255,255,255,0.06)' }} />
                         </div>
-                        <div className="h-3 bg-gray-100 animate-pulse rounded w-28" />
-                        <div className="flex gap-4">
-                          <div className="h-3 bg-gray-100 animate-pulse rounded w-14" />
-                          <div className="h-3 bg-gray-100 animate-pulse rounded w-20" />
-                          <div className="h-3 bg-gray-100 animate-pulse rounded w-14" />
-                        </div>
-                        <div className="flex gap-1.5">
-                          <div className="h-5 bg-gray-100 animate-pulse rounded-full w-16" />
-                          <div className="h-5 bg-gray-100 animate-pulse rounded-full w-14" />
-                          <div className="h-5 bg-gray-100 animate-pulse rounded-full w-16" />
-                          <div className="h-5 bg-gray-100 animate-pulse rounded-full w-14" />
-                        </div>
-                        <div className="flex items-end justify-between pt-4 border-t border-gray-100 mt-auto">
+                        <div className="flex items-end justify-between pt-4 mt-auto" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                           <div className="space-y-1.5">
-                            <div className="h-2.5 bg-gray-100 animate-pulse rounded w-16" />
-                            <div className="h-7 bg-gray-200 animate-pulse rounded w-28" />
-                            <div className="h-2.5 bg-gray-100 animate-pulse rounded w-10" />
+                            <div className="h-7 rounded w-28" style={{ background: 'rgba(255,255,255,0.10)' }} />
                           </div>
-                          <div className="h-10 bg-gray-100 animate-pulse rounded-xl w-28" />
+                          <div className="h-10 rounded-xl w-28" style={{ background: 'rgba(255,255,255,0.08)' }} />
                         </div>
                       </div>
                     </div>
@@ -422,12 +409,12 @@ export default function ToursPage() {
           </div>
         )}
 
-        {/* ── 3. Filter & Grid — LIGHT ── */}
-        <div className="bg-off-white min-h-96">
+        {/* ── 3. Filter & Grid ── */}
+        <div className="bg-charcoal-800 min-h-96">
           <div
             id="tour-grid"
-            className="sticky top-16 z-10 bg-white border-b border-gray-100 shadow-sm"
-            style={{ position: '-webkit-sticky', WebkitTransform: 'translate3d(0,0,0)', transform: 'translate3d(0,0,0)' }}
+            className="sticky top-16 z-10"
+            style={{ background: '#2D2D2D', borderBottom: '1px solid rgba(255,255,255,0.07)', position: '-webkit-sticky', WebkitTransform: 'translate3d(0,0,0)', transform: 'translate3d(0,0,0)' }}
           >
             <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
               <div className="flex gap-2 flex-wrap">
@@ -438,14 +425,14 @@ export default function ToursPage() {
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
                       activeCategory === cat
                         ? 'bg-gold text-charcoal'
-                        : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                        : 'text-white/40 hover:text-white border border-white/10'
                     }`}
                   >
                     {cat !== 'ALL' && CATEGORY_EMOJI[cat] + ' '}
                     {CATEGORY_LABELS[cat][lang]}
                     {categoryCounts[cat] > 0 && (
                       <span className={`text-[9px] font-black rounded-full px-1.5 py-0.5 leading-none ${
-                        activeCategory === cat ? 'bg-charcoal/15 text-charcoal' : 'bg-gray-300/60 text-gray-500'
+                        activeCategory === cat ? 'bg-charcoal/15 text-charcoal' : 'bg-white/10 text-white/40'
                       }`}>
                         {categoryCounts[cat]}
                       </span>
@@ -454,13 +441,14 @@ export default function ToursPage() {
                 ))}
               </div>
               <div className="relative w-full sm:w-56">
-                <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
                 <input
                   type="text"
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                   placeholder={isID ? 'Cari tour...' : 'Search tours...'}
-                  className="w-full pl-8 pr-4 py-2 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-gold transition-colors"
+                  className="w-full pl-8 pr-4 py-2 text-sm rounded-xl text-white placeholder:text-white/25 focus:outline-none focus:border-gold transition-colors"
+                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
                 />
               </div>
             </div>
@@ -470,31 +458,18 @@ export default function ToursPage() {
             {loading ? (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className="rounded-2xl overflow-hidden border border-gray-100 bg-white">
-                    <div className="aspect-[4/3] bg-gray-200 animate-pulse" />
+                  <div key={i} className="rounded-2xl overflow-hidden animate-pulse" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div className="aspect-[4/3]" style={{ background: 'rgba(255,255,255,0.08)' }} />
                     <div className="p-5 space-y-3">
-                      <div className="h-5 bg-gray-200 animate-pulse rounded w-4/5" />
-                      <div className="space-y-1.5">
-                        <div className="h-3 bg-gray-100 animate-pulse rounded w-full" />
-                        <div className="h-3 bg-gray-100 animate-pulse rounded w-2/3" />
-                      </div>
-                      <div className="h-3 bg-gray-100 animate-pulse rounded w-2/5" />
+                      <div className="h-5 rounded w-4/5" style={{ background: 'rgba(255,255,255,0.10)' }} />
+                      <div className="h-3 rounded w-2/3" style={{ background: 'rgba(255,255,255,0.06)' }} />
                       <div className="flex gap-3">
-                        <div className="h-3 bg-gray-100 animate-pulse rounded w-14" />
-                        <div className="h-3 bg-gray-100 animate-pulse rounded w-20" />
-                        <div className="h-3 bg-gray-100 animate-pulse rounded w-14" />
+                        <div className="h-3 rounded w-14" style={{ background: 'rgba(255,255,255,0.06)' }} />
+                        <div className="h-3 rounded w-20" style={{ background: 'rgba(255,255,255,0.06)' }} />
                       </div>
-                      <div className="flex gap-1.5">
-                        <div className="h-5 bg-gray-100 animate-pulse rounded-full w-16" />
-                        <div className="h-5 bg-gray-100 animate-pulse rounded-full w-14" />
-                        <div className="h-5 bg-gray-100 animate-pulse rounded-full w-16" />
-                      </div>
-                      <div className="flex items-end justify-between pt-4 border-t border-gray-100">
-                        <div className="space-y-1.5">
-                          <div className="h-2.5 bg-gray-100 animate-pulse rounded w-14" />
-                          <div className="h-6 bg-gray-200 animate-pulse rounded w-24" />
-                        </div>
-                        <div className="h-8 bg-gray-100 animate-pulse rounded-xl w-20" />
+                      <div className="flex items-end justify-between pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                        <div className="h-6 rounded w-24" style={{ background: 'rgba(255,255,255,0.10)' }} />
+                        <div className="h-8 rounded-xl w-20" style={{ background: 'rgba(255,255,255,0.08)' }} />
                       </div>
                     </div>
                   </div>
@@ -505,10 +480,10 @@ export default function ToursPage() {
                 <div className="w-16 h-16 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-4">
                   <Search size={24} className="text-gold/50" />
                 </div>
-                <p className="text-lg font-semibold text-charcoal mb-1">
+                <p className="text-lg font-semibold text-white mb-1">
                   {isID ? 'Tour tidak ditemukan' : 'No tours found'}
                 </p>
-                <p className="text-sm text-gray-400 mb-5">
+                <p className="text-sm text-white/35 mb-5">
                   {isID ? 'Coba kategori atau kata kunci lain.' : 'Try a different category or keyword.'}
                 </p>
                 <button
@@ -552,18 +527,18 @@ export default function ToursPage() {
           </div>
         </div>
 
-        {/* ── 5. How to Book — LIGHT ── */}
-        <div className="bg-off-white py-16">
+        {/* ── 5. How to Book ── */}
+        <div className="bg-charcoal-800 py-16">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <Animate className="text-center mb-12">
               <p className="text-xs font-black text-gold tracking-[0.25em] uppercase mb-3">
                 {isID ? 'Mudah & Cepat' : 'Easy & Fast'}
               </p>
-              <h2 className="font-heading text-3xl font-bold text-charcoal">
+              <h2 className="font-heading text-3xl font-bold text-white">
                 {isID ? 'Cara Booking Tour' : 'How to Book a Tour'}
               </h2>
             </Animate>
-            <div className="grid sm:grid-cols-3 gap-8 border-t border-gray-200 pt-10">
+            <div className="grid sm:grid-cols-3 gap-8 pt-10" style={{ borderTop: '1px solid rgba(255,255,255,0.10)' }}>
               {[
                 {
                   num: '01',
@@ -591,10 +566,10 @@ export default function ToursPage() {
                   <div>
                     <div className="flex items-center gap-4 mb-4">
                       <span className="font-heading font-black text-3xl text-gold leading-none">{num}</span>
-                      {i < 2 && <div className="hidden sm:block flex-1 h-px bg-gray-200" />}
+                      {i < 2 && <div className="hidden sm:block flex-1 h-px bg-white/10" />}
                     </div>
-                    <h3 className="font-heading font-bold text-charcoal mb-2">{title}</h3>
-                    <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
+                    <h3 className="font-heading font-bold text-white mb-2">{title}</h3>
+                    <p className="text-sm text-white/40 leading-relaxed">{desc}</p>
                   </div>
                 </Animate>
               ))}
@@ -657,17 +632,17 @@ export default function ToursPage() {
           </div>
         </div>
 
-        {/* ── 7. Custom Tour CTA — LIGHT ── */}
-        <div className="bg-off-white py-16">
+        {/* ── 7. Custom Tour CTA ── */}
+        <div className="bg-charcoal-800 py-16">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
             <Animate>
               <p className="text-xs font-black text-gold tracking-[0.25em] uppercase mb-3">
                 {isID ? 'Butuh Sesuatu yang Berbeda?' : 'Need Something Different?'}
               </p>
-              <h2 className="font-heading text-3xl font-bold text-charcoal mb-4">
+              <h2 className="font-heading text-3xl font-bold text-white mb-4">
                 {isID ? 'Request Custom Tour' : 'Request a Custom Tour'}
               </h2>
-              <p className="text-gray-500 text-sm leading-relaxed mb-8 max-w-xl mx-auto">
+              <p className="text-white/40 text-sm leading-relaxed mb-8 max-w-xl mx-auto">
                 {isID
                   ? 'Tidak menemukan tour yang cocok? Ceritakan keinginanmu dan kami akan merancang rute khusus untukmu — destinasi, durasi, dan jadwal sesuai keinginanmu.'
                   : "Can't find the right tour? Tell us what you have in mind and we'll design a custom route just for you — your destination, duration, and schedule."}

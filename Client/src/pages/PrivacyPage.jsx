@@ -90,33 +90,33 @@ export default function PrivacyPage() {
       <meta name="description" content={descText} />
       <link rel="canonical" href="https://benzride.com/privacy" />
       <Navbar />
-      <div className="min-h-screen bg-off-white pt-16">
+      <div className="min-h-screen bg-charcoal-800 pt-16">
 
-        <div className="border-b border-gray-100 bg-white py-12">
+        <div className="py-12" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)', background: 'rgba(255,255,255,0.03)' }}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6">
-            <div className="flex items-center gap-2 text-xs text-gray-400 mb-4">
+            <div className="flex items-center gap-2 text-xs text-white/30 mb-4">
               <Link to="/" className="hover:text-gold transition-colors">{t('common.home')}</Link>
               <span>/</span>
-              <span className="text-gray-600">{t('legal.privacy')}</span>
+              <span className="text-white/50">{t('legal.privacy')}</span>
             </div>
             <p className="text-xs font-black text-gold tracking-[0.25em] uppercase mb-2">{t('legal.badge')}</p>
-            <h1 className="font-heading text-4xl font-bold text-charcoal mb-2">{t('legal.privacy')}</h1>
-            <p className="text-sm text-gray-400">{t('legal.lastUpdated')}</p>
+            <h1 className="font-heading text-4xl font-bold text-white mb-2">{t('legal.privacy')}</h1>
+            <p className="text-sm text-white/30">{t('legal.lastUpdated')}</p>
           </div>
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
-          <div className="bg-white rounded-2xl border border-gray-100 p-8 sm:p-10 space-y-8">
+          <div className="rounded-2xl p-8 sm:p-10 space-y-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             {sections.map((s, i) => (
               <div key={i}>
-                <h2 className="font-heading font-bold text-charcoal text-lg mb-3">{s.title}</h2>
-                <p className="text-sm text-gray-600 leading-relaxed">{s.body}</p>
+                <h2 className="font-heading font-bold text-white text-lg mb-3">{s.title}</h2>
+                <p className="text-sm text-white/50 leading-relaxed">{s.body}</p>
               </div>
             ))}
           </div>
 
           <div className="mt-8 text-center">
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-sm text-white/40 mb-4">
               {isID ? 'Ada pertanyaan tentang privasi data kamu?' : 'Have questions about your data privacy?'}
             </p>
             <Link
