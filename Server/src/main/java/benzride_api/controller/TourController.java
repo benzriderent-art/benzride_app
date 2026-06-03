@@ -1,5 +1,6 @@
 package benzride_api.controller;
 
+import benzride_api.dto.TourListResponseDto;
 import benzride_api.dto.TourRequestDto;
 import benzride_api.entity.Tour;
 import benzride_api.service.TourService;
@@ -19,17 +20,17 @@ public class TourController {
     private final TourService tourService;
 
     @GetMapping
-    public ResponseEntity<List<Tour>> getAll(
+    public ResponseEntity<List<TourListResponseDto>> getAll(
             @RequestParam(required = false) Boolean available) {
-        List<Tour> tours = Boolean.TRUE.equals(available)
-            ? tourService.findAvailable()
-            : tourService.findAll();
+        List<TourListResponseDto> tours = Boolean.TRUE.equals(available)
+            ? tourService.findAvailableListDto()
+            : tourService.findAllListDto();
         return ResponseEntity.ok(tours);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Tour> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(tourService.findById(id));
+        return ResponseEntity.ok(tourService.findByIdFull(id));
     }
 
     @PostMapping
