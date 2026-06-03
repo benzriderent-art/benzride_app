@@ -144,8 +144,65 @@ export default function TourDetailPage() {
       <>
         <title>Benz Rental Bali</title>
         <Navbar />
-        <div className="min-h-screen flex items-center justify-center pt-16 bg-off-white">
-          <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" />
+        <div className="min-h-screen bg-off-white pt-16">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+            {/* Back button */}
+            <div className="h-4 w-32 bg-gray-200 animate-pulse rounded mb-6" />
+
+            <div className="grid lg:grid-cols-[1fr_400px] gap-8">
+              {/* Left column */}
+              <div className="space-y-6">
+                {/* Gallery */}
+                <div className="aspect-video bg-gray-200 animate-pulse rounded-2xl" />
+                {/* Detail card */}
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+                  <div className="h-3 w-20 bg-gray-200 animate-pulse rounded-full" />
+                  <div className="h-7 w-3/4 bg-gray-200 animate-pulse rounded" />
+                  <div className="flex gap-4">
+                    <div className="h-4 w-16 bg-gray-100 animate-pulse rounded" />
+                    <div className="h-4 w-24 bg-gray-100 animate-pulse rounded" />
+                    <div className="h-4 w-20 bg-gray-100 animate-pulse rounded" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-3 bg-gray-100 animate-pulse rounded" />
+                    <div className="h-3 bg-gray-100 animate-pulse rounded" />
+                    <div className="h-3 w-4/5 bg-gray-100 animate-pulse rounded" />
+                  </div>
+                </div>
+                {/* Highlights */}
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-3">
+                  <div className="h-5 w-24 bg-gray-200 animate-pulse rounded" />
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {[...Array(4)].map((_, i) => (
+                      <div key={i} className="h-4 bg-gray-100 animate-pulse rounded" />
+                    ))}
+                  </div>
+                </div>
+                {/* Includes */}
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-3">
+                  <div className="h-5 w-32 bg-gray-200 animate-pulse rounded" />
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="h-4 bg-gray-100 animate-pulse rounded" />
+                  ))}
+                </div>
+              </div>
+
+              {/* Right column — booking form */}
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4 h-fit">
+                <div className="h-7 w-28 bg-gray-200 animate-pulse rounded" />
+                <div className="h-3 w-40 bg-gray-100 animate-pulse rounded" />
+                <div className="space-y-3 pt-2">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i}>
+                      <div className="h-3 w-24 bg-gray-100 animate-pulse rounded mb-2" />
+                      <div className="h-10 bg-gray-100 animate-pulse rounded-xl" />
+                    </div>
+                  ))}
+                </div>
+                <div className="h-12 bg-gray-200 animate-pulse rounded-xl mt-2" />
+              </div>
+            </div>
+          </div>
         </div>
         <Footer />
       </>
