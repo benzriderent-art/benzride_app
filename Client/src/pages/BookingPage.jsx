@@ -363,7 +363,7 @@ export default function BookingPage() {
     setErrors(prev => ({ ...prev, [name]: errs[name] }))
   }
 
-  const handleWAOrder = () => {
+  const handleWAOrder = async () => {
     markAllRequired()
     const errs = validate()
     setErrors(errs)
@@ -371,6 +371,22 @@ export default function BookingPage() {
       toast.error(t('booking.fillRequired'))
       scrollToFirstError(errs)
       return
+    }
+    setSubmitting(true)
+    try {
+      await bookingApi.createWhatsApp({
+        motorId: vehicle.id,
+        customerName: form.name,
+        customerPhone: form.phone,
+        deliveryLocation: form.deliveryLocation,
+        notes: form.notes,
+        startDate: form.startDate,
+        endDate: form.endDate,
+      })
+    } catch {
+      // tetap buka WhatsApp meski gagal simpan
+    } finally {
+      setSubmitting(false)
     }
     window.open(waLink(buildWAMessage(vehicle, form, duration, totalPrice)), '_blank')
   }
@@ -849,7 +865,7 @@ export default function BookingPage() {
                 <div className="mt-7 space-y-3">
                   <button
                     onClick={handleWAOrder}
-                    disabled={!vehicle.available}
+                    disabled={submitting || !vehicle.available}
                     className="w-full inline-flex items-center justify-center gap-2.5 font-bold py-4 rounded-xl text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed text-white hover:opacity-90"
                     style={{ background: '#25D366' }}
                   >

@@ -7,6 +7,7 @@ import LanguageSwitcher from '@/components/common/LanguageSwitcher'
 const NAV_LINKS = [
   { key: 'home',      page: '/' },
   { key: 'fleet',     page: '/fleet' },
+  { key: 'tours',     page: '/tours' },
   { key: 'faq',       page: '/faq' },
   { key: 'about',     page: '/about' },
   { key: 'contact',   page: '/contact' },

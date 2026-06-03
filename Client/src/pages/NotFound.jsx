@@ -6,6 +6,9 @@ export default function NotFound() {
   const { t } = useTranslation()
 
   return (
+    <>
+      <title>404 – Halaman Tidak Ditemukan | Benzride Bali</title>
+      <meta name="robots" content="noindex, nofollow" />
     <div className="min-h-screen bg-charcoal flex flex-col items-center justify-center px-4 text-center relative overflow-hidden">
       <div
         className="absolute font-heading font-black text-gold select-none leading-none pointer-events-none"
@@ -53,5 +56,6 @@ export default function NotFound() {
         </div>
       </div>
     </div>
+    </>
   )
 }

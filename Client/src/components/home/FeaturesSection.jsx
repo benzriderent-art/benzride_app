@@ -15,7 +15,7 @@ export default function FeaturesSection() {
   const { t } = useTranslation()
 
   return (
-    <section className="py-24 bg-off-white">
+    <section className="py-24 bg-charcoal">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid lg:grid-cols-[2fr_3fr] gap-16 items-start">
 
@@ -23,10 +23,10 @@ export default function FeaturesSection() {
             <p className="text-xs font-black text-gold tracking-[0.25em] uppercase mb-3">
               {t('features.title')}
             </p>
-            <h2 className="font-heading text-4xl font-bold text-charcoal leading-[1.1] mb-6">
+            <h2 className="font-heading text-4xl font-bold text-white leading-[1.1] mb-6">
               {t('features.subtitle')}
             </h2>
-            <div className="h-px bg-gray-200 mb-8" />
+            <div className="h-px bg-white/10 mb-8" />
             <div className="grid grid-cols-3 gap-4">
               {[
                 { val: '500+', key: 'statCustomers' },
@@ -35,7 +35,7 @@ export default function FeaturesSection() {
               ].map(({ val, key }) => (
                 <div key={key}>
                   <p className="font-heading text-2xl font-bold text-gold">{val}</p>
-                  <p className="text-[11px] text-gray-400 mt-0.5 leading-tight">{t(`features.${key}`)}</p>
+                  <p className="text-[11px] text-white/30 mt-0.5 leading-tight">{t(`features.${key}`)}</p>
                 </div>
               ))}
             </div>
@@ -45,14 +45,14 @@ export default function FeaturesSection() {
             {FEATURES.map(({ key, icon: Icon }, i) => (
               <Animate key={key} delay={i * 70}>
                 <div className="flex gap-4">
-                  <div className="shrink-0 w-9 h-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shadow-sm">
+                  <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,162,75,0.15)', border: '1px solid rgba(201,162,75,0.25)' }}>
                     <Icon size={16} className="text-gold" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-charcoal text-sm mb-1">
+                    <h3 className="font-semibold text-white text-sm mb-1">
                       {t(`features.items.${key}.title`)}
                     </h3>
-                    <p className="text-xs text-gray-500 leading-relaxed">
+                    <p className="text-xs text-white/40 leading-relaxed">
                       {t(`features.items.${key}.desc`)}
                     </p>
                   </div>

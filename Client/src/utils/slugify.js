@@ -11,6 +11,10 @@ export function motorSlug(vehicle) {
   return `${slugify(vehicle.name)}-${vehicle.id}`
 }
 
+export function tourSlug(tour) {
+  return `${slugify(tour.name)}-${tour.id}`
+}
+
 export function extractIdFromSlug(slug) {
   const parts = slug.split('-')
   const last = parts[parts.length - 1]

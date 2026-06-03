@@ -1,5 +1,6 @@
 package benzride_api.service;
 
+import benzride_api.dto.BookingEditRequestDto;
 import benzride_api.dto.BookingRequestDto;
 import benzride_api.dto.BookingResponseDto;
 import benzride_api.entity.Booking;
@@ -32,6 +33,20 @@ public class BookingService {
 
     public List<Booking> findByStatus(BookingStatus status) {
         return bookingRepository.findByStatus(status);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookingResponseDto> findAllDto() {
+        return bookingRepository.findAll().stream()
+            .map(b -> toResponseDto(b, b.getPayment()))
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookingResponseDto> findByStatusDto(BookingStatus status) {
+        return bookingRepository.findByStatus(status).stream()
+            .map(b -> toResponseDto(b, b.getPayment()))
+            .collect(Collectors.toList());
     }
 
     public Booking findById(String id) {
@@ -114,6 +129,42 @@ public class BookingService {
     }
 
     @Transactional
+    public BookingResponseDto createWhatsApp(BookingRequestDto dto) {
+        Motor motor = motorService.findById(dto.getMotorId());
+
+        if (!motor.getAvailable()) {
+            throw new IllegalStateException("Motor is not available for rent");
+        }
+
+        if (!bookingRepository.findOverlapping(dto.getMotorId(), dto.getStartDate(), dto.getEndDate(), ACTIVE_STATUSES).isEmpty()) {
+            throw new IllegalStateException("Motor sudah dipesan pada tanggal tersebut. Pilih tanggal lain.");
+        }
+
+        int durationDays = (int) ChronoUnit.DAYS.between(dto.getStartDate(), dto.getEndDate());
+        if (durationDays < 1) {
+            throw new IllegalArgumentException("End date must be at least 1 day after start date");
+        }
+
+        long totalPrice = calculateTotalPrice(motor, durationDays);
+
+        Booking booking = Booking.builder()
+            .motor(motor)
+            .customerName(dto.getCustomerName())
+            .customerPhone(dto.getCustomerPhone())
+            .deliveryLocation(dto.getDeliveryLocation())
+            .notes(dto.getNotes())
+            .startDate(dto.getStartDate())
+            .endDate(dto.getEndDate())
+            .durationDays(durationDays)
+            .totalPrice(totalPrice)
+            .status(BookingStatus.PENDING)
+            .build();
+
+        booking = bookingRepository.save(booking);
+        return toResponseDto(booking, null);
+    }
+
+    @Transactional
     public BookingResponseDto createManual(BookingRequestDto dto) {
         Motor motor = motorService.findById(dto.getMotorId());
 
@@ -154,11 +205,43 @@ public class BookingService {
         return toResponseDto(booking, booking.getPayment());
     }
 
+    @Transactional
+    public BookingResponseDto editBooking(String id, BookingEditRequestDto dto) {
+        Booking booking = bookingRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: " + id));
+
+        int durationDays = (int) ChronoUnit.DAYS.between(dto.getStartDate(), dto.getEndDate());
+        if (durationDays < 1) {
+            throw new IllegalArgumentException("End date must be at least 1 day after start date");
+        }
+
+        long totalPrice = calculateTotalPrice(booking.getMotor(), durationDays);
+
+        booking.setStartDate(dto.getStartDate());
+        booking.setEndDate(dto.getEndDate());
+        booking.setDurationDays(durationDays);
+        booking.setTotalPrice(totalPrice);
+        booking.setCustomerName(dto.getCustomerName());
+        booking.setCustomerPhone(dto.getCustomerPhone());
+        if (dto.getDeliveryLocation() != null) booking.setDeliveryLocation(dto.getDeliveryLocation());
+        booking.setNotes(dto.getNotes());
+
+        booking = bookingRepository.save(booking);
+        return toResponseDto(booking, booking.getPayment());
+    }
+
     public BookingResponseDto updateStatus(String id, BookingStatus newStatus) {
         Booking booking = findById(id);
         booking.setStatus(newStatus);
         booking = bookingRepository.save(booking);
         return toResponseDto(booking, booking.getPayment());
+    }
+
+    @Transactional
+    public void delete(String id) {
+        Booking booking = bookingRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: " + id));
+        bookingRepository.delete(booking);
     }
 
     private BookingResponseDto toResponseDto(Booking booking, Payment payment) {
