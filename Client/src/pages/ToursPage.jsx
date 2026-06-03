@@ -428,8 +428,37 @@ export default function ToursPage() {
 
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
             {loading ? (
-              <div className="flex justify-center py-20">
-                <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" />
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="rounded-2xl overflow-hidden border border-gray-100 bg-white">
+                    <div className="aspect-[4/3] bg-gray-200 animate-pulse" />
+                    <div className="p-5 space-y-3">
+                      <div className="h-5 bg-gray-200 animate-pulse rounded w-4/5" />
+                      <div className="space-y-1.5">
+                        <div className="h-3 bg-gray-100 animate-pulse rounded w-full" />
+                        <div className="h-3 bg-gray-100 animate-pulse rounded w-2/3" />
+                      </div>
+                      <div className="h-3 bg-gray-100 animate-pulse rounded w-2/5" />
+                      <div className="flex gap-3">
+                        <div className="h-3 bg-gray-100 animate-pulse rounded w-14" />
+                        <div className="h-3 bg-gray-100 animate-pulse rounded w-20" />
+                        <div className="h-3 bg-gray-100 animate-pulse rounded w-14" />
+                      </div>
+                      <div className="flex gap-1.5">
+                        <div className="h-5 bg-gray-100 animate-pulse rounded-full w-16" />
+                        <div className="h-5 bg-gray-100 animate-pulse rounded-full w-14" />
+                        <div className="h-5 bg-gray-100 animate-pulse rounded-full w-16" />
+                      </div>
+                      <div className="flex items-end justify-between pt-4 border-t border-gray-100">
+                        <div className="space-y-1.5">
+                          <div className="h-2.5 bg-gray-100 animate-pulse rounded w-14" />
+                          <div className="h-6 bg-gray-200 animate-pulse rounded w-24" />
+                        </div>
+                        <div className="h-8 bg-gray-100 animate-pulse rounded-xl w-20" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : filtered.length === 0 ? (
               <div className="text-center py-20">
