@@ -43,8 +43,8 @@ export default function Navbar() {
       : 'text-sm font-medium text-charcoal hover:text-gold transition-colors'
 
     const mobileClass = active
-      ? 'block py-3 text-sm font-semibold text-gold border-b border-gray-50'
-      : 'block py-3 text-sm font-medium text-charcoal border-b border-gray-50 hover:text-gold transition-colors'
+      ? 'block py-3 text-sm font-semibold text-gold border-b border-white/8'
+      : 'block py-3 text-sm font-medium text-white/70 border-b border-white/8 hover:text-gold transition-colors'
 
     const className = isMobile ? mobileClass : desktopClass
 
@@ -98,7 +98,7 @@ export default function Navbar() {
       </nav>
 
       {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 px-4 pb-5">
+        <div className="md:hidden border-t border-white/10 px-4 pb-5" style={{ background: '#1A1A1A' }}>
           {NAV_LINKS.map(link => renderNavLink(link, true))}
           <div className="flex items-center justify-between pt-4">
             <LanguageSwitcher />

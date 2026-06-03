@@ -103,25 +103,25 @@ export default function ContactPage() {
       <meta property="og:description" content={descText} />
       <link rel="canonical" href="https://benzride.com/contact" />
       <Navbar />
-      <div className="min-h-screen bg-off-white pt-16">
+      <div className="min-h-screen bg-charcoal-800 pt-16">
 
         {/* Hero */}
-        <div className="bg-white border-b border-gray-100 py-14">
+        <div className="py-14" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)', background: 'rgba(255,255,255,0.03)' }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
-            <div className="flex items-center gap-2 text-xs text-gray-400 mb-4">
+            <div className="flex items-center gap-2 text-xs text-white/30 mb-4">
               <Link to="/" className="hover:text-gold transition-colors">
                 {isID ? 'Beranda' : 'Home'}
               </Link>
               <span>/</span>
-              <span className="text-gray-600">{isID ? 'Hubungi Kami' : 'Contact Us'}</span>
+              <span className="text-white/50">{isID ? 'Hubungi Kami' : 'Contact Us'}</span>
             </div>
             <p className="text-xs font-black text-gold tracking-[0.25em] uppercase mb-3">
               {isID ? 'Hubungi Kami' : 'Contact Us'}
             </p>
-            <h1 className="font-heading text-4xl sm:text-5xl font-bold text-charcoal leading-[1.1] mb-5">
+            <h1 className="font-heading text-4xl sm:text-5xl font-bold text-white leading-[1.1] mb-5">
               {isID ? 'Kami Siap Membantu Anda' : 'We Are Here to Help'}
             </h1>
-            <p className="text-gray-500 leading-relaxed max-w-2xl">
+            <p className="text-white/40 leading-relaxed max-w-2xl">
               {isID
                 ? 'Punya pertanyaan tentang sewa motor, ketersediaan unit, atau layanan kami? Hubungi tim Benz Rental Bali — kami siap merespons dengan cepat dan ramah.'
                 : 'Have questions about rentals, vehicle availability, or our services? Reach out to the Benz Rental Bali team — we respond quickly and professionally.'}
@@ -140,7 +140,8 @@ export default function ContactPage() {
                   href={href}
                   target={external ? '_blank' : undefined}
                   rel={external ? 'noopener noreferrer' : undefined}
-                  className="group bg-white rounded-xl border border-gray-100 p-6 hover:border-gold/40 hover:shadow-sm transition-all flex items-start gap-4"
+                  className="group rounded-xl p-6 hover:border-gold/40 transition-all flex items-start gap-4"
+                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
                 >
                   <div
                     className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-colors"
@@ -149,8 +150,8 @@ export default function ContactPage() {
                     <Icon size={20} style={{ color }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] font-black text-gray-400 tracking-[0.2em] uppercase mb-1">{label}</p>
-                    <p className="text-sm font-semibold text-charcoal truncate mb-3">{value}</p>
+                    <p className="text-[10px] font-black text-white/30 tracking-[0.2em] uppercase mb-1">{label}</p>
+                    <p className="text-sm font-semibold text-white truncate mb-3">{value}</p>
                     <span className="inline-flex items-center gap-1 text-xs font-semibold text-gold group-hover:gap-2 transition-all">
                       {cta} <ArrowRight size={11} />
                     </span>
@@ -164,25 +165,25 @@ export default function ContactPage() {
 
             {/* Operating hours */}
             <Animate type="left" delay={80}>
-              <div className="bg-white rounded-xl border border-gray-100 p-6">
+              <div className="rounded-xl p-6" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-9 h-9 rounded-xl bg-gold/10 flex items-center justify-center">
                     <Clock size={17} className="text-gold" />
                   </div>
-                  <h2 className="font-bold text-charcoal">
+                  <h2 className="font-bold text-white">
                     {isID ? 'Jam Operasional' : 'Operating Hours'}
                   </h2>
                 </div>
                 <div className="space-y-3">
                   {HOURS.map(({ day, time }) => (
                     <div key={day.en} className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">{isID ? day.id : day.en}</span>
-                      <span className="font-semibold text-charcoal">{time}</span>
+                      <span className="text-white/40">{isID ? day.id : day.en}</span>
+                      <span className="font-semibold text-white">{time}</span>
                     </div>
                   ))}
                 </div>
-                <div className="mt-5 pt-4 border-t border-gray-50">
-                  <p className="text-xs text-gray-400 leading-relaxed">
+                <div className="mt-5 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                  <p className="text-xs text-white/30 leading-relaxed">
                     {isID
                       ? 'Di luar jam operasional, Anda tetap dapat menghubungi kami via WhatsApp. Pesan akan kami balas saat jam buka.'
                       : 'Outside operating hours, you can still reach us via WhatsApp. Messages will be replied during opening hours.'}
@@ -193,12 +194,12 @@ export default function ContactPage() {
 
             {/* Social media */}
             <Animate type="right" delay={80}>
-              <div className="bg-white rounded-xl border border-gray-100 p-6">
+              <div className="rounded-xl p-6" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-9 h-9 rounded-xl bg-gold/10 flex items-center justify-center">
                     <InstagramIcon size={17} />
                   </div>
-                  <h2 className="font-bold text-charcoal">
+                  <h2 className="font-bold text-white">
                     {isID ? 'Ikuti Kami' : 'Follow Us'}
                   </h2>
                 </div>
@@ -209,16 +210,16 @@ export default function ContactPage() {
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-off-white transition-colors group"
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group"
                     >
                       <div className="w-8 h-8 rounded-lg bg-gold/10 flex items-center justify-center shrink-0">
                         <Icon size={15} className="text-gold" />
                       </div>
                       <div>
-                        <p className="text-xs font-semibold text-charcoal">{label}</p>
-                        <p className="text-xs text-gray-400">{handle}</p>
+                        <p className="text-xs font-semibold text-white">{label}</p>
+                        <p className="text-xs text-white/30">{handle}</p>
                       </div>
-                      <ArrowRight size={13} className="text-gray-300 group-hover:text-gold ml-auto transition-colors" />
+                      <ArrowRight size={13} className="text-white/20 group-hover:text-gold ml-auto transition-colors" />
                     </a>
                   ))}
                 </div>
@@ -269,7 +270,7 @@ export default function ContactPage() {
                 <Link
                   key={to}
                   to={to}
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-charcoal border border-gray-200 px-4 py-2.5 rounded-lg hover:border-gold hover:text-gold transition-colors"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/50 border border-white/15 px-4 py-2.5 rounded-lg hover:border-gold hover:text-gold transition-colors"
                 >
                   {label} <ArrowRight size={13} />
                 </Link>

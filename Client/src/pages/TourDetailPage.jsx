@@ -36,7 +36,7 @@ Mohon konfirmasi ketersediaan. Terima kasih!`
 
 function Label({ icon: Icon, text, required }) {
   return (
-    <label className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 mb-2">
+    <label className="flex items-center gap-1.5 text-xs font-semibold text-white/50 mb-2">
       <Icon size={11} className="text-gold" />
       {text}
       {required && <span className="text-red-400 ml-0.5">*</span>}
@@ -106,10 +106,10 @@ export default function TourDetailPage() {
   const fieldClass = (field) => {
     const val = form[field]
     const filled = typeof val === 'string' ? val.trim().length > 0 : !!val
-    const base = 'w-full rounded-xl px-4 py-3 text-sm text-gray-800 placeholder:text-gray-300 transition-colors focus:outline-none bg-white border focus:border-gold '
-    if (hasError(field)) return base + 'border-red-400'
+    const base = 'w-full rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/25 transition-colors focus:outline-none bg-white/[0.05] border focus:border-gold '
+    if (hasError(field)) return base + 'border-red-400/50'
     if (filled) return base + 'border-gold/40'
-    return base + 'border-gray-200'
+    return base + 'border-white/10'
   }
 
   const handleBook = async () => {
@@ -144,62 +144,28 @@ export default function TourDetailPage() {
       <>
         <title>Benz Rental Bali</title>
         <Navbar />
-        <div className="min-h-screen bg-off-white pt-16">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-            {/* Back button */}
-            <div className="h-4 w-32 bg-gray-200 animate-pulse rounded mb-6" />
-
+        <div className="min-h-screen bg-charcoal-800 pt-16">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 animate-pulse">
+            <div className="h-4 w-32 rounded mb-6" style={{ background: 'rgba(255,255,255,0.08)' }} />
             <div className="grid lg:grid-cols-[1fr_400px] gap-8">
-              {/* Left column */}
               <div className="space-y-6">
-                {/* Gallery */}
-                <div className="aspect-video bg-gray-200 animate-pulse rounded-2xl" />
-                {/* Detail card */}
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
-                  <div className="h-3 w-20 bg-gray-200 animate-pulse rounded-full" />
-                  <div className="h-7 w-3/4 bg-gray-200 animate-pulse rounded" />
-                  <div className="flex gap-4">
-                    <div className="h-4 w-16 bg-gray-100 animate-pulse rounded" />
-                    <div className="h-4 w-24 bg-gray-100 animate-pulse rounded" />
-                    <div className="h-4 w-20 bg-gray-100 animate-pulse rounded" />
-                  </div>
-                  <div className="space-y-2">
-                    <div className="h-3 bg-gray-100 animate-pulse rounded" />
-                    <div className="h-3 bg-gray-100 animate-pulse rounded" />
-                    <div className="h-3 w-4/5 bg-gray-100 animate-pulse rounded" />
-                  </div>
-                </div>
-                {/* Highlights */}
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-3">
-                  <div className="h-5 w-24 bg-gray-200 animate-pulse rounded" />
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {[...Array(4)].map((_, i) => (
-                      <div key={i} className="h-4 bg-gray-100 animate-pulse rounded" />
-                    ))}
-                  </div>
-                </div>
-                {/* Includes */}
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-3">
-                  <div className="h-5 w-32 bg-gray-200 animate-pulse rounded" />
-                  {[...Array(4)].map((_, i) => (
-                    <div key={i} className="h-4 bg-gray-100 animate-pulse rounded" />
-                  ))}
+                <div className="aspect-video rounded-2xl" style={{ background: 'rgba(255,255,255,0.08)' }} />
+                <div className="rounded-2xl p-6 space-y-4" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className="h-7 w-3/4 rounded" style={{ background: 'rgba(255,255,255,0.10)' }} />
+                  <div className="h-3 rounded" style={{ background: 'rgba(255,255,255,0.06)' }} />
+                  <div className="h-3 w-4/5 rounded" style={{ background: 'rgba(255,255,255,0.06)' }} />
                 </div>
               </div>
-
-              {/* Right column — booking form */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4 h-fit">
-                <div className="h-7 w-28 bg-gray-200 animate-pulse rounded" />
-                <div className="h-3 w-40 bg-gray-100 animate-pulse rounded" />
-                <div className="space-y-3 pt-2">
-                  {[...Array(4)].map((_, i) => (
-                    <div key={i}>
-                      <div className="h-3 w-24 bg-gray-100 animate-pulse rounded mb-2" />
-                      <div className="h-10 bg-gray-100 animate-pulse rounded-xl" />
-                    </div>
-                  ))}
-                </div>
-                <div className="h-12 bg-gray-200 animate-pulse rounded-xl mt-2" />
+              <div className="rounded-2xl p-6 space-y-4 h-fit" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className="h-7 w-28 rounded" style={{ background: 'rgba(255,255,255,0.10)' }} />
+                <div className="h-3 w-40 rounded" style={{ background: 'rgba(255,255,255,0.06)' }} />
+                {[...Array(4)].map((_, i) => (
+                  <div key={i}>
+                    <div className="h-3 w-24 rounded mb-2" style={{ background: 'rgba(255,255,255,0.06)' }} />
+                    <div className="h-10 rounded-xl" style={{ background: 'rgba(255,255,255,0.08)' }} />
+                  </div>
+                ))}
+                <div className="h-12 rounded-xl mt-2" style={{ background: 'rgba(255,255,255,0.10)' }} />
               </div>
             </div>
           </div>
@@ -214,8 +180,8 @@ export default function TourDetailPage() {
       <>
         <title>{isID ? 'Tour Tidak Ditemukan – Benz Rental Bali' : 'Tour Not Found – Benz Rental Bali'}</title>
         <Navbar />
-        <div className="min-h-screen flex flex-col items-center justify-center pt-16 px-4 text-center bg-off-white">
-          <h2 className="font-heading text-2xl font-bold text-charcoal mb-2">
+        <div className="min-h-screen flex flex-col items-center justify-center pt-16 px-4 text-center bg-charcoal">
+          <h2 className="font-heading text-2xl font-bold text-white mb-2">
             {isID ? 'Tour tidak ditemukan' : 'Tour not found'}
           </h2>
           <Link to="/tours" className="mt-4 text-sm text-gold font-semibold hover:underline flex items-center gap-1">
@@ -243,12 +209,12 @@ export default function TourDetailPage() {
       <meta name="description" content={tDescription} />
       <Navbar />
 
-      <div className="page-enter min-h-screen bg-off-white pt-16">
+      <div className="page-enter min-h-screen bg-charcoal-800 pt-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
 
           <button
             onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gold transition-colors mb-6"
+            className="inline-flex items-center gap-1.5 text-sm text-white/35 hover:text-gold transition-colors mb-6"
           >
             <ArrowLeft size={15} />
             {isID ? 'Kembali ke Tours' : 'Back to Tours'}
@@ -266,7 +232,7 @@ export default function TourDetailPage() {
                   className="w-full aspect-video object-cover"
                 />
                 {images.length > 1 && (
-                  <div className="flex gap-2 p-3 bg-white">
+                  <div className="flex gap-2 p-3" style={{ background: 'rgba(255,255,255,0.04)' }}>
                     {images.map((img, i) => (
                       <button
                         key={i}
@@ -284,7 +250,7 @@ export default function TourDetailPage() {
 
               {/* Detail */}
               <Animate type="up">
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <div className="rounded-2xl p-6" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
                   <div className="flex flex-wrap gap-2 mb-3">
                     <span className="text-xs font-bold px-3 py-1 rounded-full bg-gold/10 text-gold">
                       {catLabel}
@@ -296,9 +262,9 @@ export default function TourDetailPage() {
                     )}
                   </div>
 
-                  <h1 className="font-heading text-3xl font-bold text-charcoal mb-3">{tName}</h1>
+                  <h1 className="font-heading text-3xl font-bold text-white mb-3">{tName}</h1>
 
-                  <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-5">
+                  <div className="flex flex-wrap gap-4 text-sm text-white/40 mb-5">
                     <span className="flex items-center gap-1.5">
                       <Clock size={14} className="text-gold" />
                       {tour.durationHours} {isID ? 'jam' : 'hours'}
@@ -320,13 +286,13 @@ export default function TourDetailPage() {
               {/* Highlights */}
               {tHighlights?.length > 0 && (
                 <Animate type="up" delay={60}>
-                  <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                    <h2 className="font-heading font-bold text-charcoal text-lg mb-4">
+                  <div className="rounded-2xl p-6" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <h2 className="font-heading font-bold text-white text-lg mb-4">
                       {isID ? 'Highlight' : 'Highlights'}
                     </h2>
                     <div className="grid sm:grid-cols-2 gap-3">
                       {tHighlights.map((h, i) => (
-                        <div key={i} className="flex items-center gap-2.5 text-sm text-gray-600">
+                        <div key={i} className="flex items-center gap-2.5 text-sm text-white/50">
                           <ChevronRight size={14} className="text-gold shrink-0" />
                           {h}
                         </div>
@@ -339,13 +305,13 @@ export default function TourDetailPage() {
               {/* Includes */}
               {tIncludes?.length > 0 && (
                 <Animate type="up" delay={80}>
-                  <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                    <h2 className="font-heading font-bold text-charcoal text-lg mb-4">
+                  <div className="rounded-2xl p-6" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <h2 className="font-heading font-bold text-white text-lg mb-4">
                       {isID ? 'Sudah Termasuk' : 'What\'s Included'}
                     </h2>
                     <div className="space-y-2.5">
                       {tIncludes.map((item, i) => (
-                        <div key={i} className="flex items-center gap-2.5 text-sm text-gray-600">
+                        <div key={i} className="flex items-center gap-2.5 text-sm text-white/50">
                           <CheckCircle size={14} className="text-gold shrink-0" />
                           {item}
                         </div>
@@ -358,12 +324,12 @@ export default function TourDetailPage() {
               {/* Itinerary */}
               {tItinerary?.length > 0 && (
                 <Animate type="up" delay={100}>
-                  <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                    <h2 className="font-heading font-bold text-charcoal text-lg mb-5">
+                  <div className="rounded-2xl p-6" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <h2 className="font-heading font-bold text-white text-lg mb-5">
                       {isID ? 'Jadwal Perjalanan' : 'Itinerary'}
                     </h2>
                     <div className="relative">
-                      <div className="absolute left-[52px] top-3 bottom-3 w-px bg-gray-100" />
+                      <div className="absolute left-[52px] top-3 bottom-3 w-px bg-white/10" />
                       <div className="space-y-4">
                         {tItinerary.map((step, i) => {
                           const [time, ...rest] = step.split(' | ')
@@ -374,7 +340,7 @@ export default function TourDetailPage() {
                                 {time}
                               </span>
                               <div className="w-2 h-2 rounded-full bg-gold mt-1.5 shrink-0 relative z-10" />
-                              <p className="text-sm text-gray-600 leading-relaxed">{activity}</p>
+                              <p className="text-sm text-white/50 leading-relaxed">{activity}</p>
                             </div>
                           )
                         })}
@@ -387,14 +353,14 @@ export default function TourDetailPage() {
               {/* Info Praktis */}
               {(tWhatToBring?.length > 0 || tour.guideLanguage || tour.minBookingHours) && (
                 <Animate type="up" delay={120}>
-                  <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                    <h2 className="font-heading font-bold text-charcoal text-lg mb-4">
+                  <div className="rounded-2xl p-6" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <h2 className="font-heading font-bold text-white text-lg mb-4">
                       {isID ? 'Info Praktis' : 'Good to Know'}
                     </h2>
                     <div className="space-y-5">
                       {tour.guideLanguage && (
                         <div>
-                          <p className="text-xs font-black text-gold uppercase tracking-widest mb-1.5">
+                          <p className="text-xs font-black text-gold/80 uppercase tracking-widest mb-1.5">
                             {isID ? 'Bahasa Guide' : 'Guide Language'}
                           </p>
                           <p className="text-sm text-gray-600">{tour.guideLanguage}</p>
@@ -402,7 +368,7 @@ export default function TourDetailPage() {
                       )}
                       {tour.minBookingHours && (
                         <div>
-                          <p className="text-xs font-black text-gold uppercase tracking-widest mb-1.5">
+                          <p className="text-xs font-black text-gold/80 uppercase tracking-widest mb-1.5">
                             {isID ? 'Minimal Booking' : 'Minimum Notice'}
                           </p>
                           <p className="text-sm text-gray-600">
@@ -417,7 +383,7 @@ export default function TourDetailPage() {
                           </p>
                           <div className="space-y-1.5">
                             {tWhatToBring.map((item, i) => (
-                              <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                              <div key={i} className="flex items-center gap-2 text-sm text-white/50">
                                 <span className="text-gold">·</span>
                                 {item}
                               </div>
@@ -434,12 +400,12 @@ export default function TourDetailPage() {
             {/* Kanan: Form Booking */}
             <div className="lg:sticky lg:top-24">
               <Animate type="right" delay={80}>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <div className="rounded-2xl p-6" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
                   <div className="flex items-center justify-between mb-1">
                     <p className="text-2xl font-black text-gold">{formatIDR(tour.pricePerPerson)}</p>
-                    <span className="text-xs text-gray-400">/ {isID ? 'orang' : 'person'}</span>
+                    <span className="text-xs text-white/30">/ {isID ? 'orang' : 'person'}</span>
                   </div>
-                  <p className="text-xs text-gray-400 mb-6">{isID ? 'Harga sudah termasuk guide & motor' : 'Price includes guide & motorcycle'}</p>
+                  <p className="text-xs text-white/30 mb-6">{isID ? 'Harga sudah termasuk guide & motor' : 'Price includes guide & motorcycle'}</p>
 
                   <div className="space-y-4">
                     <div>
@@ -462,20 +428,20 @@ export default function TourDetailPage() {
                         <button
                           type="button"
                           onClick={() => setForm(f => ({ ...f, participants: Math.max(1, f.participants - 1) }))}
-                          className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-gray-200 text-gray-600 font-bold hover:border-gold hover:text-gold transition-colors flex items-center justify-center text-base sm:text-lg shrink-0"
+                          className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-white/15 text-white/50 font-bold hover:border-gold hover:text-gold transition-colors flex items-center justify-center text-base sm:text-lg shrink-0"
                         >
                           −
                         </button>
-                        <span className="flex-1 text-center font-bold text-charcoal text-lg">{form.participants}</span>
+                        <span className="flex-1 text-center font-bold text-white text-lg">{form.participants}</span>
                         <button
                           type="button"
                           onClick={() => setForm(f => ({ ...f, participants: Math.min(tour.maxParticipants, f.participants + 1) }))}
-                          className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-gray-200 text-gray-600 font-bold hover:border-gold hover:text-gold transition-colors flex items-center justify-center text-base sm:text-lg shrink-0"
+                          className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-white/15 text-white/50 font-bold hover:border-gold hover:text-gold transition-colors flex items-center justify-center text-base sm:text-lg shrink-0"
                         >
                           +
                         </button>
                       </div>
-                      <p className="text-xs text-gray-400 mt-1.5 text-center">
+                      <p className="text-xs text-white/30 mt-1.5 text-center">
                         {isID ? `Maks ${tour.maxParticipants} orang` : `Max ${tour.maxParticipants} people`}
                       </p>
                     </div>
@@ -523,7 +489,7 @@ export default function TourDetailPage() {
                     {/* Total */}
                     <div className="rounded-xl p-4 bg-gold/5 border border-gold/20">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600 font-medium">
+                        <span className="text-sm text-white/60 font-medium">
                           {form.participants} × {formatIDR(tour.pricePerPerson)}
                         </span>
                         <span className="text-xl font-black text-gold">{formatIDR(totalPrice)}</span>
@@ -542,7 +508,7 @@ export default function TourDetailPage() {
                         : (isID ? 'Pesan via WhatsApp' : 'Book via WhatsApp')}
                     </button>
 
-                    <div className="flex items-start gap-2 text-xs text-gray-400 leading-relaxed">
+                    <div className="flex items-start gap-2 text-xs text-white/35 leading-relaxed">
                       <AlertCircle size={11} className="text-gold mt-0.5 shrink-0" />
                       {isID
                         ? 'Tim kami akan konfirmasi ketersediaan dan detail pick-up via WhatsApp di hari yang sama.'
@@ -577,16 +543,16 @@ export default function TourDetailPage() {
         </div>
       </div>
 
-      {/* Other Tours — light */}
+      {/* Other Tours */}
       {otherTours.length > 0 && (
-        <div className="bg-off-white py-16">
+        <div className="bg-charcoal-800 py-16">
           <div className="max-w-5xl mx-auto px-4 sm:px-6">
             <Animate className="flex items-end justify-between mb-8">
               <div>
                 <p className="text-xs font-black text-gold tracking-[0.25em] uppercase mb-2">
                   {isID ? 'Jelajahi Lebih Banyak' : 'Explore More'}
                 </p>
-                <h2 className="font-heading text-2xl font-bold text-charcoal">
+                <h2 className="font-heading text-2xl font-bold text-white">
                   {isID ? 'Tour Lainnya' : 'Other Tours'}
                 </h2>
               </div>
@@ -606,7 +572,8 @@ export default function TourDetailPage() {
                   <Animate key={ot.id} type="up" delay={idx * 60}>
                     <Link
                       to={`/tours/${tourSlug(ot)}`}
-                      className="group flex flex-col rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                      className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
+                      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
                     >
                       <div className="relative aspect-video overflow-hidden">
                         <img
@@ -616,11 +583,11 @@ export default function TourDetailPage() {
                         />
                       </div>
                       <div className="p-4">
-                        <h3 className="font-heading font-bold text-charcoal text-sm leading-tight mb-2 group-hover:text-gold transition-colors">
+                        <h3 className="font-heading font-bold text-white text-sm leading-tight mb-2 group-hover:text-gold transition-colors">
                           {ot.name}
                         </h3>
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3 text-[11px] text-gray-400">
+                          <div className="flex items-center gap-3 text-[11px] text-white/30">
                             <span className="flex items-center gap-1"><Clock size={10} className="text-gold" />{ot.durationHours} {isID ? 'jam' : 'hrs'}</span>
                             <span className="flex items-center gap-1"><MapPin size={10} className="text-gold" />{ot.location}</span>
                           </div>

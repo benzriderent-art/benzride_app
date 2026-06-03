@@ -38,7 +38,7 @@ export default function ToursSection() {
   if (tours.length === 0) return null
 
   return (
-    <section className="py-24 bg-off-white">
+    <section className="py-24 bg-charcoal-800">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
         <Animate className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
@@ -46,10 +46,10 @@ export default function ToursSection() {
             <p className="text-xs font-black text-gold tracking-[0.25em] uppercase mb-3">
               {isID ? 'Jelajahi Bali' : 'Explore Bali'}
             </p>
-            <h2 className="font-heading text-4xl font-bold text-charcoal leading-[1.1]">
+            <h2 className="font-heading text-4xl font-bold text-white leading-[1.1]">
               {isID ? 'Guided Tours' : 'Guided Tours'}
             </h2>
-            <p className="text-gray-500 mt-3 max-w-md text-sm leading-relaxed">
+            <p className="text-white/40 mt-3 max-w-md text-sm leading-relaxed">
               {isID
                 ? 'Nikmati pengalaman berkendara Bali bersama guide lokal kami yang berpengalaman.'
                 : 'Experience Bali riding with our experienced local guides by your side.'}
@@ -73,7 +73,8 @@ export default function ToursSection() {
               <Animate key={tour.id} type="up" delay={idx * 70}>
                 <Link
                   to={`/tours/${tour.id}`}
-                  className="group flex flex-col rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
+                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <img
@@ -82,7 +83,7 @@ export default function ToursSection() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-                      <span className="text-xs font-bold px-3 py-1 rounded-full bg-white/90 text-charcoal backdrop-blur-sm shadow-sm">
+                      <span className="text-xs font-bold px-3 py-1 rounded-full text-white backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.60)' }}>
                         {CATEGORY_EMOJI[tour.category]} {catLabel}
                       </span>
                       {tour.featured && (
@@ -94,11 +95,11 @@ export default function ToursSection() {
                   </div>
 
                   <div className="flex flex-col flex-1 p-5">
-                    <h3 className="font-heading font-bold text-charcoal text-lg leading-tight mb-2 group-hover:text-gold transition-colors">
+                    <h3 className="font-heading font-bold text-white text-lg leading-tight mb-2 group-hover:text-gold transition-colors">
                       {tour.name}
                     </h3>
 
-                    <div className="flex items-center gap-4 text-xs text-gray-400 mb-3">
+                    <div className="flex items-center gap-4 text-xs text-white/30 mb-3">
                       <span className="flex items-center gap-1">
                         <Clock size={11} className="text-gold" />
                         {tour.durationHours} {isID ? 'jam' : 'hrs'}
@@ -116,20 +117,20 @@ export default function ToursSection() {
                     {tour.includes?.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 mb-4">
                         {tour.includes.slice(0, 3).map((item, i) => (
-                          <span key={i} className="text-[10px] font-semibold text-gray-500 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-100">
+                          <span key={i} className="text-[10px] font-semibold text-white/40 px-2 py-0.5 rounded-full" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}>
                             ✓ {item.split(' ')[0]} {item.split(' ')[1] || ''}
                           </span>
                         ))}
                       </div>
                     )}
 
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+                    <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-auto">
                       <div>
-                        <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wide">
+                        <p className="text-[10px] text-white/30 font-medium uppercase tracking-wide">
                           {isID ? 'Mulai dari' : 'From'}
                         </p>
                         <p className="text-xl font-black text-gold">{formatIDR(tour.pricePerPerson)}</p>
-                        <p className="text-[10px] text-gray-400">/ {isID ? 'orang' : 'person'}</p>
+                        <p className="text-[10px] text-white/30">/ {isID ? 'orang' : 'person'}</p>
                       </div>
                       <span className="flex items-center gap-1 text-xs font-bold text-gold group-hover:gap-2 transition-all">
                         {isID ? 'Detail' : 'Details'}

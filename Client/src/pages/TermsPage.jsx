@@ -8,12 +8,12 @@ import Footer from '@/components/layout/Footer'
 function Section({ title, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen)
   return (
-    <div className="border-b border-gray-100 last:border-0">
+    <div className="border-b border-white/8 last:border-0">
       <button
         onClick={() => setOpen(v => !v)}
         className="w-full flex items-center justify-between py-5 text-left gap-4"
       >
-        <h2 className="font-heading font-bold text-charcoal text-base">{title}</h2>
+        <h2 className="font-heading font-bold text-white text-base">{title}</h2>
         <ChevronDown size={16} className={`text-gold shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && <div className="pb-6 space-y-4">{children}</div>}
@@ -22,7 +22,7 @@ function Section({ title, children, defaultOpen = false }) {
 }
 
 function P({ children }) {
-  return <p className="text-sm text-gray-600 leading-relaxed">{children}</p>
+  return <p className="text-sm text-white/50 leading-relaxed">{children}</p>
 }
 
 function TableGrid({ headers, rows }) {
@@ -32,15 +32,15 @@ function TableGrid({ headers, rows }) {
         <thead>
           <tr>
             {headers.map(h => (
-              <th key={h} className="text-left text-xs font-bold text-charcoal bg-off-white px-4 py-3 first:rounded-tl-lg last:rounded-tr-lg border border-gray-100">{h}</th>
+              <th key={h} className="text-left text-xs font-bold text-white/60 px-4 py-3 first:rounded-tl-lg last:rounded-tr-lg" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={i} className={i % 2 === 1 ? 'bg-gray-50/50' : ''}>
+            <tr key={i} style={{ background: i % 2 === 1 ? 'rgba(255,255,255,0.03)' : 'transparent' }}>
               {row.map((cell, j) => (
-                <td key={j} className="px-4 py-3 text-gray-600 border border-gray-100 text-xs">{cell}</td>
+                <td key={j} className="px-4 py-3 text-white/45 text-xs" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>{cell}</td>
               ))}
             </tr>
           ))}
@@ -52,15 +52,15 @@ function TableGrid({ headers, rows }) {
 
 function InsuranceCard({ label, fee, highlight, items }) {
   return (
-    <div className={`rounded-2xl border p-5 ${highlight ? 'border-gold bg-gold/5' : 'border-gray-200'}`}>
-      <p className={`text-xs font-black tracking-widest uppercase mb-1 ${highlight ? 'text-gold' : 'text-gray-400'}`}>
+    <div className={`rounded-2xl p-5 ${highlight ? 'border-gold bg-gold/5 border' : ''}`} style={!highlight ? { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.10)' } : {}}>
+      <p className={`text-xs font-black tracking-widest uppercase mb-1 ${highlight ? 'text-gold' : 'text-white/30'}`}>
         {highlight ? '★ Recommended' : 'Option'}
       </p>
-      <p className="font-heading font-bold text-charcoal text-lg mb-1">{label}</p>
+      <p className="font-heading font-bold text-white text-lg mb-1">{label}</p>
       <p className="text-sm font-bold text-gold mb-3">{fee}</p>
       <ul className="space-y-1.5">
         {items.map(item => (
-          <li key={item} className="flex items-start gap-2 text-xs text-gray-600">
+          <li key={item} className="flex items-start gap-2 text-xs text-white/45">
             <span className="text-gold mt-0.5">✓</span> {item}
           </li>
         ))}
@@ -84,23 +84,23 @@ export default function TermsPage() {
       <meta name="description" content={descText} />
       <link rel="canonical" href="https://benzride.com/terms" />
       <Navbar />
-      <div className="min-h-screen bg-off-white pt-16">
+      <div className="min-h-screen bg-charcoal-800 pt-16">
 
-        <div className="border-b border-gray-100 bg-white py-12">
+        <div className="py-12" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)', background: 'rgba(255,255,255,0.03)' }}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6">
-            <div className="flex items-center gap-2 text-xs text-gray-400 mb-4">
+            <div className="flex items-center gap-2 text-xs text-white/30 mb-4">
               <Link to="/" className="hover:text-gold transition-colors">{t('common.home')}</Link>
               <span>/</span>
-              <span className="text-gray-600">{t('legal.terms')}</span>
+              <span className="text-white/50">{t('legal.terms')}</span>
             </div>
             <p className="text-xs font-black text-gold tracking-[0.25em] uppercase mb-2">{t('legal.badge')}</p>
-            <h1 className="font-heading text-4xl font-bold text-charcoal mb-2">{t('legal.terms')}</h1>
-            <p className="text-sm text-gray-400">{t('legal.lastUpdated')}</p>
+            <h1 className="font-heading text-4xl font-bold text-white mb-2">{t('legal.terms')}</h1>
+            <p className="text-sm text-white/30">{t('legal.lastUpdated')}</p>
           </div>
         </div>
 
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
-          <div className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8">
+          <div className="rounded-2xl p-6 sm:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
 
             {/* 1. Rental Requirements */}
             <Section title={isID ? '1. Persyaratan Penyewa' : '1. Rental Requirements'} defaultOpen>
@@ -123,7 +123,7 @@ export default function TermsPage() {
                   'Provide accurate personal information during the booking process',
                   'Accept responsibility for the vehicle during the rental period',
                 ]).map(item => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-gray-600">
+                  <li key={item} className="flex items-start gap-2 text-sm text-white/45">
                     <span className="text-gold mt-0.5 shrink-0">•</span> {item}
                   </li>
                 ))}
@@ -154,7 +154,7 @@ export default function TermsPage() {
                   'Using the vehicle for illegal activities',
                   'Riding under the influence of alcohol, drugs, or any impairing substances',
                 ]).map(item => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-gray-600">
+                  <li key={item} className="flex items-start gap-2 text-sm text-white/45">
                     <span className="text-red-400 mt-0.5 shrink-0">✕</span> {item}
                   </li>
                 ))}
@@ -206,7 +206,7 @@ export default function TermsPage() {
                 ? 'Penyewa bertanggung jawab atas setiap kehilangan atau kerusakan yang terjadi selama masa sewa. Berikut estimasi biaya perbaikan:'
                 : 'The renter is responsible for any loss or damage occurring during the rental period. The following are estimated repair or replacement costs:'}</P>
 
-              <p className="text-xs font-bold text-charcoal uppercase tracking-wider mt-4 mb-2">{isID ? 'Goresan & Kerusakan Body' : 'Body Scratches & Panel Damage'}</p>
+              <p className="text-xs font-bold text-white/60 uppercase tracking-wider mt-4 mb-2">{isID ? 'Goresan & Kerusakan Body' : 'Body Scratches & Panel Damage'}</p>
               <TableGrid
                 headers={[isID ? 'Jenis Kerusakan' : 'Damage Type', isID ? 'Biaya' : 'Charge']}
                 rows={[
@@ -217,7 +217,7 @@ export default function TermsPage() {
                 ]}
               />
 
-              <p className="text-xs font-bold text-charcoal uppercase tracking-wider mt-4 mb-2">{isID ? 'Spion Rusak' : 'Broken Mirrors'}</p>
+              <p className="text-xs font-bold text-white/60 uppercase tracking-wider mt-4 mb-2">{isID ? 'Spion Rusak' : 'Broken Mirrors'}</p>
               <TableGrid
                 headers={[isID ? 'Jenis Kerusakan' : 'Damage Type', isID ? 'Biaya' : 'Charge']}
                 rows={[
@@ -227,7 +227,7 @@ export default function TermsPage() {
                 ]}
               />
 
-              <p className="text-xs font-bold text-charcoal uppercase tracking-wider mt-4 mb-2">{isID ? 'Lampu Rusak' : 'Damaged Lights'}</p>
+              <p className="text-xs font-bold text-white/60 uppercase tracking-wider mt-4 mb-2">{isID ? 'Lampu Rusak' : 'Damaged Lights'}</p>
               <TableGrid
                 headers={[isID ? 'Jenis Kerusakan' : 'Damage Type', isID ? 'Biaya' : 'Charge']}
                 rows={[
@@ -238,7 +238,7 @@ export default function TermsPage() {
                 ]}
               />
 
-              <p className="text-xs font-bold text-charcoal uppercase tracking-wider mt-4 mb-2">{isID ? 'Kerusakan Mesin Akibat Kelalaian' : 'Engine Damage Due to Misuse'}</p>
+              <p className="text-xs font-bold text-white/60 uppercase tracking-wider mt-4 mb-2">{isID ? 'Kerusakan Mesin Akibat Kelalaian' : 'Engine Damage Due to Misuse'}</p>
               <TableGrid
                 headers={[isID ? 'Jenis Kerusakan' : 'Damage Type', isID ? 'Biaya' : 'Charge']}
                 rows={[
@@ -248,7 +248,7 @@ export default function TermsPage() {
                 ]}
               />
 
-              <p className="text-xs font-bold text-charcoal uppercase tracking-wider mt-4 mb-2">{isID ? 'Aksesoris Hilang' : 'Missing Accessories'}</p>
+              <p className="text-xs font-bold text-white/60 uppercase tracking-wider mt-4 mb-2">{isID ? 'Aksesoris Hilang' : 'Missing Accessories'}</p>
               <TableGrid
                 headers={[isID ? 'Aksesoris' : 'Item', isID ? 'Biaya' : 'Charge']}
                 rows={[
@@ -260,7 +260,7 @@ export default function TermsPage() {
                 ]}
               />
 
-              <p className="text-xs font-bold text-charcoal uppercase tracking-wider mt-4 mb-2">{isID ? 'Kunci Hilang' : 'Lost Keys'}</p>
+              <p className="text-xs font-bold text-white/60 uppercase tracking-wider mt-4 mb-2">{isID ? 'Kunci Hilang' : 'Lost Keys'}</p>
               <TableGrid
                 headers={[isID ? 'Item' : 'Item', isID ? 'Biaya' : 'Charge']}
                 rows={[
@@ -317,7 +317,7 @@ export default function TermsPage() {
                   'Theft of the vehicle', 'Total loss of the vehicle', 'Intentional damage',
                   'Use by unauthorized drivers',
                 ]).map(item => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-gray-600">
+                  <li key={item} className="flex items-start gap-2 text-sm text-white/45">
                     <span className="text-red-400 mt-0.5 shrink-0">✕</span> {item}
                   </li>
                 ))}
@@ -360,7 +360,7 @@ export default function TermsPage() {
                   'Delays caused by weather, traffic, road conditions, or force majeure events',
                   'Costs incurred due to accidents caused by renter negligence',
                 ]).map(item => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-gray-600">
+                  <li key={item} className="flex items-start gap-2 text-sm text-white/45">
                     <span className="text-gold mt-0.5 shrink-0">•</span> {item}
                   </li>
                 ))}
@@ -376,7 +376,7 @@ export default function TermsPage() {
           </div>
 
           <div className="mt-8 text-center">
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-sm text-white/40 mb-4">
               {isID ? 'Ada pertanyaan tentang syarat & ketentuan ini?' : 'Have questions about these terms?'}
             </p>
             <Link
